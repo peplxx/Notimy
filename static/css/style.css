@@ -1,0 +1,232 @@
+ html{
+    font-size: 16px;
+}
+
+.form-contact label {
+    font-size: 24px;
+}
+
+.navbar-link{
+    font-size: 22px;
+    color: #ffffff;
+    text-decoration : none;
+    padding: 5px 10px 5px 10px ;
+}
+
+.navbar-link:hover{
+    background: #f4f4f4;
+    color: #000000;
+    border-radius: 10px;
+}
+
+.title {
+    font-size: 16px;
+    text-align: center;
+}
+
+.navbar {
+    padding : 15px;
+    background: transparent;
+    background-image: url(/static/1.jpg);
+}
+
+.link {
+    margin: 5px 10px 50px 10px ;
+    color: #000000;
+    text-decoration : none;
+
+}
+
+.new_link {
+    color: #000000;
+    text-decoration: none;
+    padding-top: 17px;
+}
+
+.new_link:hover{
+    color: silver;
+}
+
+.link:hover{
+    color: silver;
+}
+
+.table-dark {
+    text-align : center;
+    background-color : #141414;
+
+}
+
+.table_container {
+    padding-top: 25px;
+}
+.Current_name {
+    font-size: 22px;
+    color: #ffffff;
+    text-decoration : none;
+}
+
+.btn {
+    background: #000000;
+    color: #ffffff;
+    border-radius: 10px;
+}
+.btn:hover{
+    background: #000000;
+    color: #bbbbbb;
+    border-radius: 10px;
+}
+
+.anchor {
+    color: #000000;
+}
+
+.form-control {
+    width: 500px;
+    font-size: 25px;
+    width: 450px;
+}
+
+.inline {
+
+    height:100%;
+    padding: 25px 0px 25px 0px;
+
+}
+
+.child_inline{
+    font-size: 25px;
+    flex-basis: 45%;
+}
+
+.make_border {
+    outline: 2px solid #000;
+    border-radius: 10px;
+}
+
+.navbar-link_MAIN{
+    font-size: 35px;
+    color: #ffffff;
+    text-decoration : none;
+    padding: 5px 10px 5px 10px ;
+}
+
+.navbar-link_MAIN:hover{
+
+    color: #ffffff;
+    border-radius: 10px;
+}
+.txt_dark {
+    box-shadow: 15px 20px 25px -13px #bababa;
+    background-color: #141414;
+    margin:10px;
+    padding: 5px 15px 10px 15px;
+    text-decoration : none;
+    color: #ffffff;
+
+    background-color: #444444;
+
+}
+
+.btn_dark {
+    box-shadow: 15px 20px 25px -13px #bababa;
+    background-color: #141414;
+    padding: 5px 15px 10px 15px;
+    text-decoration : none;
+    color: #ffffff;
+    border-radius: 10px;
+    background-color: #444444;
+
+}
+
+.btn_dark:hover {
+    text-decoration : none;
+    color: silver;
+    border-radius: 15px;
+
+}
+
+.dropbtn {
+  background-color: #141414;
+  color: white;
+  padding: 5px 10px 5px 10px ;
+  font-size: 24px;
+  border: none;
+  border-radius: 10px 10px 0px 0px;
+  background-color: transparent;
+}
+
+
+.dropdown {
+
+  position: relative;
+  display: inline-block;
+}
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+
+.dropdown:hover .dropdown-content {
+    text-color: #141414;
+    display: block;
+}
+
+
+.dropdown:hover .dropbtn {
+    background-color: #ffffff;
+    color: #141414
+}
+
+.RadioButton {
+    font-size: 23px;
+    color: #000;
+    border-radius: 15px;
+    list-style-type: none;
+    width: 30%
+}
+
+.btn_dark_big {
+    box-shadow: 15px 20px 25px -13px #bababa;
+    font-size: 25px;
+    background-color: #141414;
+    text-align: center;
+    padding: 10px 25px 10px 25px;
+    margin: 10px 0px 30px 0px;
+    text-decoration : none;
+    color: #ffffff;
+    border-radius: 15px;
+
+}
+
+.btn_dark_big:hover {
+    text-decoration : none;
+    color: silver;
+    border-radius: 15px;
+
+}
+
+.navbar_notlink {
+    font-size: 15px;
+    color: #ffffff;
+    text-decoration : none;
+    padding: 5px 10px 5px 15px ;
+}
