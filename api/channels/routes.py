@@ -10,12 +10,12 @@ from data.database.db_session import get_session
 from data.datatypes import ChanelCreation
 
 blueprint = Blueprint(
-    "providers",
+    "channels",
     __name__,
 )
 
 
-@blueprint.route("/channels", methods=['POST'], status_code=status.HTTP_201_CREATED)
+@blueprint.route("/channels", methods=['POST'])
 @validate()
 def create_channel(data: ChanelCreation):
     session = get_session()

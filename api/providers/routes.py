@@ -1,6 +1,6 @@
 __all__ = ["blueprint"]
 
-from flask import request, Blueprint
+from flask import Blueprint
 from flask_pydantic import validate
 
 from data import config, exceptions
@@ -42,7 +42,6 @@ def update_providers_data(body: UpdateProviderData):
     session = get_session()
     provider = session.query(Provider).filter(Provider.token == body.token).first()
     if not provider:
-
         return exceptions.BadTokenException
     provider.name = body.name
     provider.description = body.description

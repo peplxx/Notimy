@@ -27,7 +27,6 @@ def index():
     return {"message": 'root'}
 
 
-
 if __name__ == '__main__':
     global_init(database=config.database_name,
                 user=config.database_user,
@@ -36,7 +35,6 @@ if __name__ == '__main__':
 
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
-
 
     port = int(os.environ.get("PORT", 5000))
     # app.run(host='0.0.0.0', port=port)

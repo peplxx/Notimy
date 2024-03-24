@@ -8,7 +8,7 @@ from data.database import User
 from data.database.db_session import get_session
 
 blueprint = Blueprint(
-    "providers",
+    "users",
     __name__,
 )
 
