@@ -3,9 +3,9 @@ aniso8601
 certifi
 chardet
 click
-Flask
-Flask-Login
-Flask-WTF
+flask
+flask-Login
+flask-WTF
 greenlet
 idna
 itsdangerous

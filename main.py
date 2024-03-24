@@ -20,7 +20,7 @@ login_manager.init_app(app)
 
 
 # @app.errorhandler(404)
-# def not_found(error):  # Error 404
+# def not_found(error):  # Error/home/hellboy4/hellboyAcerman/Notimy/.venv/bin/python3 404
 #     return render_template('404.html', title='Страница не найдена'), 404
 
 @app.route('/')
