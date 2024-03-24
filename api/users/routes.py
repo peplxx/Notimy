@@ -13,5 +13,7 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route("/providers", methods=["POST"])
+@blueprint.route("/users", methods=["POST"])
 @validate()
+async def create_user():
+    pass
