@@ -1,22 +1,24 @@
+import uuid
+
 from . import Provider, User, Channel
 from .db_session import get_session
-from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation
+from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation, RegisterUser
 
-__factory = None
+manager = None
 
 
 def init_manager() -> None:
-    global __factory
+    global manager
 
-    if __factory:
+    if manager:
         return
 
-    __factory = DatabaseManager()
+    manager = DatabaseManager()
 
 
 def get_manager():
-    global __factory
-    return __factory
+    global manager
+    return manager
 
 
 class DatabaseManager:
@@ -49,10 +51,33 @@ class DatabaseManager:
 
     def create_channel(self, data: ChanelCreation) -> Channel | ValueError:
         provider = self.__get_provider(data.token)
+        print(provider.name)
         channel = Channel(name=data.name,
                           provider=provider.id,
                           messages=[data.start_message])
-        provider.add_channel(channel)
+        print(channel.id)
         self.session.add(channel)
         self.session.commit()
+        provider.add_channel(channel)
+        self.session.commit()
         return channel
+
+    def __get_user(self, id: int):
+        user = self.session.query(User).filter(User.id == id).first()
+        return user
+
+    def create_user(self) -> User:
+        # user = self.__get_user(user_id)
+
+        user = User(listen_to=[])
+        self.session.add(user)
+        self.session.commit()
+        return user
+
+    def make_user_listen(self, user_id: int, chanel_id: int) -> None:
+        user = self.__get_user(user_id)
+        user.add_listen_to(chanel_id)
+        self.session.commit()
+
+    def load_user(self, user_id: int):
+        return self.session.query(User).filter(User.id == user_id)

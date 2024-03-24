@@ -17,10 +17,10 @@ blueprint = Blueprint(
 
 @blueprint.route("/channels", methods=['POST'])
 @validate()
-def create_channel(data: ChanelCreation):
+def create_channel(body: ChanelCreation):
     db = get_manager()
     try:
-        channel = db.create_channel(data=data)
+        channel = db.create_channel(data=body)
         return {"id": channel.id,
                 "code": channel.code,
                 "channel": channel.dict}

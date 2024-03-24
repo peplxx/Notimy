@@ -3,12 +3,10 @@ from fastapi import HTTPException
 from fastapi import status
 
 # TODO: HTTP Exceptions
-BadTokenException = {
-    "code": status.HTTP_403_FORBIDDEN,
-    "description": "Token not recognized, access denied!"
-}
-
-
+BadTokenException = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail= "Token not recognized, access denied!"
+)
 
 ProviderAlreadyExists = HTTPException(
     status_code=status.HTTP_200_OK,

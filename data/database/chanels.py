@@ -20,10 +20,10 @@ class Channel(Base):
     id = sa.Column(sa.Integer, nullable=False, primary_key=True, autoincrement=True)
     name = sa.Column(sa.String, nullable=False)
     provider = sa.Column(sa.Integer, nullable=False)
-    listeners = sa.Column(sa.JSON, nullable=False, default='[]')
+    listeners = sa.Column(sa.JSON, nullable=False, default=[])
     closed_by = sa.Column(sa.Integer, nullable=False, default=-1)
     code = sa.Column(sa.String, nullable=False, unique=True)
-    messages = sa.Column(sa.JSON, nullable=False, default='[]')
+    messages = sa.Column(sa.JSON, nullable=False, default=[])
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.now())
     closed_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.now() + timedelta(1))
 

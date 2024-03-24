@@ -20,7 +20,7 @@ class Provider(Base):
     name = sa.Column(sa.String, nullable=False)
     description = sa.Column(sa.String, nullable=False)
     registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.datetime.now())
-    channels = sa.Column(sa.JSON, default='[]', nullable=False)
+    channels = sa.Column(sa.JSON, default=[], nullable=False)
     last_channel = sa.Column(sa.Integer, default=-1, nullable=False)
 
     def __init__(
