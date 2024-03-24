@@ -6,6 +6,7 @@ from flask_pydantic import validate
 from data import config, exceptions
 from data.database import Provider
 from data.database.db_session import get_session
+from data.database.manager import DatabaseManager, get_manager
 from data.datatypes import RegisterProvider, UpdateProviderData
 
 blueprint = Blueprint(
@@ -17,36 +18,25 @@ blueprint = Blueprint(
 @blueprint.route("/providers", methods=["POST"])
 @validate()
 def register_provider(body: RegisterProvider):
+    manager = get_manager()
     if body.token != config.token:
         raise exceptions.BadTokenException
-    session = get_session()
-    provider = session.query(Provider).filter(
-        Provider.name == body.name and Provider.description == body.description).first()
-    if provider:
-        return {
-            "id": provider.id,
-            "token": provider.token
-        }
-    new_provider = Provider(name=body.name, description=body.description)
-    session.add(new_provider)
-    session.commit()
+    provider = manager.register_provider(data=body)
     return {
-        "id": new_provider.id,
-        "token": new_provider.token
+        "id": provider.id,
+        "token": provider.token
     }
 
 
 @blueprint.route("/providers", methods=['PUT'])
 @validate()
 def update_providers_data(body: UpdateProviderData):
-    session = get_session()
-    provider = session.query(Provider).filter(Provider.token == body.token).first()
-    if not provider:
+    manager = get_manager()
+    try:
+        manager.update_provider(data=body)
+        return {"message": "Data was successfully updated!"}
+    except ValueError as e:
         return exceptions.BadTokenException
-    provider.name = body.name
-    provider.description = body.description
-    session.commit()
-    return {"message": "Data was successfully updated!"}
 
 
 

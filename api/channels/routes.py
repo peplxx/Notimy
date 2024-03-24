@@ -5,8 +5,8 @@ from flask_pydantic import validate
 from starlette import status
 
 from data import exceptions
-from data.database import Provider, Channel
 from data.database.db_session import get_session
+from data.database.manager import get_manager
 from data.datatypes import ChanelCreation
 
 blueprint = Blueprint(
@@ -18,13 +18,12 @@ blueprint = Blueprint(
 @blueprint.route("/channels", methods=['POST'])
 @validate()
 def create_channel(data: ChanelCreation):
-    session = get_session()
-    provider = session.query(Provider).filter(Provider.token == data.token).first()
-    if not provider:
+    db = get_manager()
+    try:
+        channel = db.create_channel(data=data)
+        return {"id": channel.id,
+                "code": channel.code,
+                "channel": channel.dict}
+    except ValueError:
         raise exceptions.BadTokenException
-    new_channel = Channel(name=data.name, provider=provider.id, messages=[data.start_message, ])
-    session.add(new_channel)
-    session.commit()
-    return {"id": new_channel.id,
-            "code": new_channel.code,
-            "channel": new_channel.dict}
+

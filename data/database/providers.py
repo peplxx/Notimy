@@ -2,6 +2,8 @@ import datetime
 import random
 
 import sqlalchemy as sa
+
+from . import Channel
 from .db_session import Base
 from string import ascii_letters as TOKEN_ALPHABET
 
@@ -28,3 +30,7 @@ class Provider(Base):
         self.name = name
         self.description = description
         self.token = generate_token()
+
+    def add_channel(self, channel: Channel):
+        self.channels.append(channel)
+        self.last_channel = channel.id

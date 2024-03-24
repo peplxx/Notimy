@@ -8,6 +8,7 @@ from api.blueprints import blueprints
 from data import config, exceptions
 from data.database import Provider, Channel, User
 from data.database.db_session import get_session, global_init
+from data.database.manager import init_manager
 from data.config import database_pass, database_user, database_name, database_host
 from data.datatypes import RegisterProvider, ChanelCreation, Message, UpdateProviderData
 
@@ -28,6 +29,7 @@ def index():
 
 
 if __name__ == '__main__':
+
     global_init(database=config.database_name,
                 user=config.database_user,
                 password=config.database_pass,
