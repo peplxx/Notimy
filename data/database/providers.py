@@ -7,7 +7,7 @@ from string import ascii_letters as TOKEN_ALPHABET
 
 
 def generate_token() -> str:
-    return ''.join([TOKEN_ALPHABET[random.randint(0,len(TOKEN_ALPHABET))-1] for i in range(50)])
+    return ''.join([TOKEN_ALPHABET[random.randint(0, len(TOKEN_ALPHABET)) - 1] for i in range(50)])
 
 
 class Provider(Base):
@@ -18,6 +18,8 @@ class Provider(Base):
     name = sa.Column(sa.String, nullable=False)
     description = sa.Column(sa.String, nullable=False)
     registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.datetime.now())
+    channels = sa.Column(sa.JSON, default='[]', nullable=False)
+    last_channel = sa.Column(sa.Integer, default=-1, nullable=False)
 
     def __init__(
             self,
