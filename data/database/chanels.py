@@ -20,6 +20,7 @@ class Channel(Base):
     id = sa.Column(sa.Integer, nullable=False, primary_key=True, autoincrement=True)
     name = sa.Column(sa.String, nullable=False)
     provider = sa.Column(sa.Integer, nullable=False)
+    spot = sa.Column(sa.Integer, nullable=False)
     listeners = sa.Column(sa.JSON, nullable=False, default=[])
     closed_by = sa.Column(sa.Integer, nullable=False, default=-1)
     code = sa.Column(sa.String, nullable=False, unique=True)
@@ -36,12 +37,14 @@ class Channel(Base):
             name: str,
             provider: int,
             messages: list[Message],
+            spot: int,
             code: str = None):
         self.name = name
         self.provider = provider
         self.messages = jsonable_encoder(messages)
         self.code = generate_code() if not code else code
         self.read_messages = 0
+        self.spot = spot
 
     @property
     def dict(self):

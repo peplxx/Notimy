@@ -18,6 +18,7 @@ blueprint = Blueprint(
 @blueprint.route("/channels", methods=['POST'])
 @validate()
 def create_channel(body: ChanelCreation):
+    # Creation channel from spot
     db = get_manager()
     try:
         channel = db.create_channel(data=body)

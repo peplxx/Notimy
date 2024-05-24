@@ -11,3 +11,7 @@ class UpdateProviderData(BaseModel):
     token: str
     name: str
     description: str
+
+
+class ProviderAuth(BaseModel):
+    token: str
