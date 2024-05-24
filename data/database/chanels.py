@@ -41,9 +41,17 @@ class Channel(Base):
         self.provider = provider
         self.messages = jsonable_encoder(messages)
         self.code = generate_code() if not code else code
+        self.read_messages = 0
 
     @property
     def dict(self):
         items = self.__dict__
         items.pop("_sa_instance_state")
         return items
+
+    def read_messages(self):
+        self.read_messages = len(self.messages)
+
+    @property
+    def unread_messages(self):
+        return len(self.messages) - self.read_messages

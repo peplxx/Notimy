@@ -23,7 +23,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-
 # @app.errorhandler(404)
 # def not_found(error):  # Error/home/hellboy4/hellboyAcerman/Notimy/.venv/bin/python3 404
 #     return render_template('404.html', title='Страница не найдена'), 404
@@ -32,27 +31,42 @@ def load_user(user_id):  # find user in database
     db_sess = get_session()
     return db_sess.get(User, user_id)
 
-@app.route("/login", methods=["POST","GET"])
-def login():
-    manager = get_manager()
-    user = manager.create_user()
-    login_user(user,remember=True)
-    return {
-        "id": user.id,
-        "listen_to": user.listen_to}
 
-@app.route("/me", methods=["POST","GET"])
+@app.errorhandler(401)
+def handle_unauthorized(error):
+    # User is unauthorized so redirecting to login page
+    return redirect("/login")
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    user = current_user
+    try:
+        # User already exists and there is no need to create new one
+        user.id
+    except AttributeError:
+        manager = get_manager()
+        user = manager.create_user()
+        login_user(user, remember=True)
+    return redirect('/me')
+
+
+@app.route("/me", methods=["POST", "GET"])
 @login_required
 def show_user_info():
     user = current_user
     return {
         "id": user.id,
         "listen_to": user.listen_to}
-@app.route("/logout", methods=["POST","GET"])
+
+
+@app.route("/logout", methods=["POST", "GET"])
 @login_required
 def logout():
     logout_user()
     return {"message": "You successfully logged out."}
+
+
 @app.route('/')
 def index():
     return {"message": 'root'}
