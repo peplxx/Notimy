@@ -156,3 +156,5 @@ cython_debug/
 .idea/vcs.xml
 .idea/NotyMe.iml
 .idea/misc.xml
+
+data.log

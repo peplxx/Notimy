@@ -1,4 +1,4 @@
-from flask import json, Blueprint
+from flask import Blueprint
 from werkzeug.exceptions import HTTPException
 
 blueprint = Blueprint(

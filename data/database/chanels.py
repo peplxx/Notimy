@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 import random
-from hashlib import sha256
 
 import sqlalchemy as sa
 from .db_session import Base

@@ -1,19 +1,14 @@
 import json
 import os
-from datetime import datetime
-import random
-from multiprocessing import Process
-from flask import Flask, render_template, redirect, request, abort, jsonify
+from flask import Flask, redirect, request, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_pydantic import validate
 
 from api.blueprints import blueprints
-from data import config, exceptions
-from data.database import Provider, Channel, User
+from data import config
+from data.database import User
 from data.database.db_session import get_session, global_init
 from data.database.manager import init_manager, get_manager
-from data.config import database_pass, database_user, database_name, database_host
-from data.datatypes import RegisterProvider, ChanelCreation, Message, UpdateProviderData
 from data.datatypes.users import UserListen
 
 from logging.config import dictConfig
@@ -36,6 +31,11 @@ def load_user(user_id):  # find user in database
     db_sess = get_session()
     return db_sess.get(User, user_id)
 
+@app.before_request
+def track_previous_url():
+    session['previous_url'] = session.get('current_url')
+    session['current_url'] = request.url
+
 
 @app.errorhandler(401)
 def handle_unauthorized(error):
@@ -54,8 +54,9 @@ def login():
         manager = get_manager()
         user = manager.create_user()
         login_user(user, remember=True)
-    log.debug("Redirecting to /me")
-    return redirect('/me')
+    previous_url = session.get('previous_url')
+    log.debug(f"Redirecting to {previous_url}")
+    return redirect(previous_url)
 
 
 @app.route("/me", methods=["POST", "GET"])
@@ -73,6 +74,7 @@ def show_user_info():
 def logout():
     log.debug("Logging out user [id=%s]",current_user.id)
     logout_user()
+    log.debug("Successfully logged out!")
     return {"message": "You successfully logged out."}
 
 
@@ -86,13 +88,14 @@ def index():
 @validate()
 @login_required
 def listen_a_channel(body: UserListen):
+    # THIS FUNCTION IS OLD IMPLEMENTATION DO NOT READ
     manager = get_manager()
     manager.make_user_listen(current_user, body.channel)
     return {
         "message": "User connected to a new channel successfully"
     }
 
-
+# @app.route("/get/", methods=[""])
 
 
 if __name__ == '__main__':

@@ -1,8 +1,7 @@
-import uuid
 
 from . import Provider, User, Channel, Spot
 from .db_session import get_session
-from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation, RegisterUser, ProviderAuth
+from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation
 from logging import getLogger
 
 manager = None
