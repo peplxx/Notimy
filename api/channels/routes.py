@@ -1,6 +1,5 @@
 __all__ = ["blueprint"]
 
-import json
 
 from flask import Blueprint
 from flask_pydantic import validate

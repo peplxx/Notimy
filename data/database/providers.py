@@ -3,7 +3,6 @@ import random
 
 import sqlalchemy as sa
 
-from . import Channel
 from .db_session import Base
 from string import ascii_letters as TOKEN_ALPHABET
 

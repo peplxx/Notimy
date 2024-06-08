@@ -1,7 +1,6 @@
 import json
 from datetime import datetime, timedelta
 import random
-from json import JSONEncoder
 
 import sqlalchemy as sa
 from .db_session import Base
@@ -79,6 +78,7 @@ class Channel(Base):
     @property
     def dict(self):
         return {
+            "id":self.id,
             "name": self.name,
             'code': self.code,
             'provider': self.provider,
