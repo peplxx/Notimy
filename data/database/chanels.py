@@ -1,5 +1,7 @@
+import json
 from datetime import datetime, timedelta
 import random
+from json import JSONEncoder
 
 import sqlalchemy as sa
 from .db_session import Base
@@ -20,12 +22,41 @@ class Channel(Base):
     name = sa.Column(sa.String, nullable=False)
     provider = sa.Column(sa.Integer, nullable=False)
     spot = sa.Column(sa.Integer, nullable=False)
-    listeners = sa.Column(sa.JSON, nullable=False, default=[])
+    users = sa.Column(sa.String, nullable=False, default='{"listeners":[]}')
     closed_by = sa.Column(sa.Integer, nullable=False, default=-1)
     code = sa.Column(sa.String, nullable=False, unique=True)
-    messages = sa.Column(sa.JSON, nullable=False, default=[])
+    messages_raw = sa.Column(sa.String, nullable=False, default='{"messages":[]}')
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.now())
     closed_at = sa.Column(sa.TIMESTAMP, nullable=False, default=datetime.now() + timedelta(1))
+
+    @property
+    def listeners(self):
+        return json.loads(self.users)['listeners']
+
+    @listeners.setter
+    def listeners(self, value):
+        self.users = '{'+f'"listeners":{json.dumps(value)}'+'}'
+
+    def add_listener(self, listener: int):
+        usr = self.listeners
+        if listener not in usr:
+            usr.append(listener)
+        self.listeners = usr
+
+    @property
+    def messages(self):
+        return json.loads(self.messages_raw)['messages']
+
+    @messages.setter
+    def messages(self, value: dict):
+        self.messages_raw = '{'+f'"messages":{json.dumps(value)}'+'}'
+
+    def add_message(self, message: Message):
+        msg = self.messages
+        if message not in msg:
+            msg.append(message.__dict__)
+        print(msg)
+        self.messages = msg
 
     @property
     def isClosed(self):
@@ -47,9 +78,17 @@ class Channel(Base):
 
     @property
     def dict(self):
-        items = self.__dict__
-        items.pop("_sa_instance_state")
-        return items
+        return {
+            "name": self.name,
+            'code': self.code,
+            'provider': self.provider,
+            "spot": self.spot,
+            "listeners": self.listeners,
+            "closed_by": self.closed_by,
+            "created_at": self.created_at,
+            "messages": self.messages,
+            "closed_at": self.closed_at
+        }
 
     def read_messages(self):
         self.read_messages = len(self.messages)

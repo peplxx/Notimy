@@ -6,3 +6,5 @@ database_host = 'localhost'
 database_url = f"postgresql://{database_user}:{database_pass}@{database_host}/{database_name}"
 
 token = "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX"
+
+PROVIDER_TOKEN_SIZE = 50

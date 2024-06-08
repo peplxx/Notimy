@@ -1,7 +1,9 @@
+from typing import List
 
 from . import Provider, User, Channel, Spot
+
 from .db_session import get_session
-from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation
+from ..datatypes import RegisterProvider, UpdateProviderData, ChanelCreation, Message
 from logging import getLogger
 
 manager = None
@@ -37,7 +39,8 @@ class DatabaseManager:
             raise ValueError("Provider is not found!")
         log.debug("Provider exists!")
         return provider
-    def __provider_by_id(self,provider_id: int) -> Provider:
+
+    def __provider_by_id(self, provider_id: int) -> Provider:
         # TODO: To make an approach for getting a provider from different args in one method
         # for getting by id and token from the same method
         log.debug("Getting provider [id=%s]", str(provider_id))
@@ -47,6 +50,7 @@ class DatabaseManager:
             raise ValueError("Provider is not found!")
         log.debug("Provider exists!")
         return provider
+
     def __get_spot(self, token: str) -> Spot | ValueError:
         log.debug("Getting spot [token=%s]", token)
         spot = self.session.query(Spot).filter(
@@ -86,6 +90,7 @@ class DatabaseManager:
         self.session.add(spot)
         self.session.commit()
         log.debug("Spot created!")
+        print(1)
         return spot
 
     def create_channel(self, data: ChanelCreation) -> Channel | ValueError:
@@ -96,9 +101,10 @@ class DatabaseManager:
                           spot=spot.id,
                           messages=[data.start_message])
         self.session.add(channel)
-        provider = self.__provider_by_id(spot.provider)
-        provider.add_channel(channel)
+        self.session.commit()
+        print(channel.id)
         spot.add_channel(channel)
+        log.debug(f"Spot channels: {spot.channels}")
         self.session.commit()
         log.debug("Channel successfully added!")
         return channel
@@ -109,7 +115,7 @@ class DatabaseManager:
 
     def create_user(self) -> User:
         log.debug("Creating new user")
-        user = User(listen_to=[])
+        user = User()
         self.session.add(user)
         self.session.commit()
         log.debug("Created new user [id=%s]!", user.id)
@@ -117,8 +123,44 @@ class DatabaseManager:
 
     def make_user_listen(self, user_id: int, chanel_id: int) -> None:
         user = self.__get_user(user_id)
-        user.add_listen_to(chanel_id)
+        user.add_channel(chanel_id)
+        channel = self.get_channel(chanel_id)
+        channel.add_listener(user_id)
         self.session.commit()
 
+    def get_spot(self, id: int) -> Spot:
+        spot = self.session.query(Spot).filter(Spot.id == id).first()
+        if spot is None:
+            return None  # TODO: BETTER ERROR HANDLING
+        return spot
+    def get_channel_by_code(self, code: str) -> Channel:
+        channel = self.session.query(Channel).filter(Channel.code == code).first()
+        if channel is None:
+            return None  # TODO: BETTER ERROR HANDLING
+        return channel
+
     def load_user(self, user_id: int):
-        return self.session.query(User).filter(User.id == user_id)
+        return self.session.query(User).filter(User.id == user_id).first()
+
+    def assign_channel(self, user: User, channel_id: int):
+        user.add_channel(channel_id)
+        self.session.commit()
+
+    def get_channel(self, id: int) -> Channel:
+        channel = self.session.query(Channel).filter(Channel.id == id).first()
+        if channel is None:
+            return None  # TODO: BETTER ERROR HANDLING
+        return channel
+
+    def users_channels(self, user: User) -> List[dict]:
+        print()
+        return [self.get_channel(i).dict for i in user.listen_to]
+
+    def add_message(self,spot_token:str,channel_id: int, message:Message):
+        spot = self.__get_spot(spot_token)
+        channels = spot.channels
+        if channel_id not in channels:
+            raise AttributeError
+        channel = self.get_channel(channel_id)
+        channel.add_message(message)
+        self.session.commit()

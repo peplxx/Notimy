@@ -11,3 +11,8 @@ class ChanelCreation(BaseModel):
     token: str
     start_message: Message
     name: str
+
+class AddMessage(BaseModel):
+    token: str
+    message: Message
+    channel: int

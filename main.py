@@ -29,10 +29,12 @@ log = getLogger("main")
 @login_manager.user_loader
 def load_user(user_id):  # find user in database
     db_sess = get_session()
-    return db_sess.get(User, user_id)
+    user =  db_sess.get(User, user_id)
+    return user
 
 @app.before_request
 def track_previous_url():
+    session.permanent = True
     session['previous_url'] = session.get('current_url')
     session['current_url'] = request.url
 
@@ -59,14 +61,15 @@ def login():
     return redirect(previous_url)
 
 
-@app.route("/me", methods=["POST", "GET"])
+@app.route("/my_channels", methods=["POST", "GET"])
 @login_required
 def show_user_info():
-    log.debug("Accessing page /me [id=%s]", current_user.id)
+    log.debug("Accessing page /my_channels [id=%s]", current_user.id)
     user = current_user
+    manager = get_manager()
     return {
         "id": user.id,
-        "listen_to": user.listen_to}
+        "channels": manager.users_channels(user)}
 
 
 @app.route("/logout", methods=["POST", "GET"])
