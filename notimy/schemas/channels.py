@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -13,3 +14,7 @@ class CreateChannel(BaseModel):
     name: str
 
 
+class AddMessage(BaseModel):
+    token: Optional[str] = None
+    channel_id: UUID
+    message: Message
