@@ -16,8 +16,8 @@ provider_data = loads(requests.post(
     url=f"{host}/providers/new",
     headers={"Authorization": f"Bearer {root_token}"},
     json={
-        "name": "test-1",
-        "description": "test-purpose provider"
+        "name": "tests-1",
+        "description": "tests-purpose provider"
     }
 ).text)
 
