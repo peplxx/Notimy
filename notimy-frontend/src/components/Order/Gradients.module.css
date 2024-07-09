@@ -1,0 +1,14 @@
+.gradientPinkGreen {
+    background: hsl(135, 71%, 79%);
+    background: linear-gradient(345deg, hsla(135, 71%, 79%, 1) 0%, hsla(334, 70%, 81%, 1) 58%);
+}
+
+.gradientYellowPurple{
+  background: hsl(43, 71%, 79%);
+  background: linear-gradient(345deg, hsla(43, 71%, 79%, 1) 0%, hsla(250, 70%, 81%, 1) 60%)
+}
+
+.gradientYellowGreen{
+  background: hsl(70, 71%, 79%);
+  background: linear-gradient(345deg, hsla(70, 71%, 79%, 1) 0%, hsla(140, 70%, 81%, 1) 60%);
+}

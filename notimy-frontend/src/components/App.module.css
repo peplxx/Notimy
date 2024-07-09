@@ -1,0 +1,11 @@
+.App {
+
+}
+
+.Background {
+  top: 0;
+  position: fixed;
+  background-color: black;
+  width: 100%;
+  height: 100vh;
+}
