@@ -1,0 +1,21 @@
+/*@import './variables.tsx';*/
+
+.App {
+    width: 100%;
+    padding: 0;
+    /*background: var(--html-background);*/
+    font-size: min(5vw, 1000px); /* var(--html-max-font-size) */
+    font-family: 'Rubik', sans-serif;
+    user-select: none; /* Disables text selection globally */
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For Internet Explorer/Edge */
+}
+
+.Background {
+  top: 0;
+  position: fixed;
+  background-color: black;
+  width: 100%;
+  height: 100vh;
+}
