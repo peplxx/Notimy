@@ -7,16 +7,14 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ title }) => {
-  return <header className={styles.container}>
-      <div className={styles.letter}>
-          <span className={styles.irregularShape}>N</span>
-          <span className={styles.irregularShape}>O</span>
-          <span className={styles.irregularShape}>T</span>
-          <span className={styles.irregularShape}>I</span>
-          <span className={styles.irregularShape}>M</span>
-          <span className={styles.irregularShape}>Y</span>
+  return (
+      <div className={styles.header}>
+          <img src='/logo.svg' className={styles.logo}></img>
+          <div className={styles.text}>
+            OTIMY
+          </div>
       </div>
-  </header>;
+  );
 };
 
 export default Header;
