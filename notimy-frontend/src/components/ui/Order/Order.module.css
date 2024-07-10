@@ -103,6 +103,7 @@
     align-items: flex-start; /* Align items to the start (left) */
     margin-bottom: 7%;
     overflow: auto;
+    scrollbar-width: none;
 }
 
 .message {
