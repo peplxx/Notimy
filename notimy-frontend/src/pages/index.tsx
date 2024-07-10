@@ -1,10 +1,9 @@
 import React from 'react';
-import Header from './Header';
-import Order from "./Order/Order";
-import OrderList from "./OrderList/OrderList";
-import styles from './App.module.css'
+import Header from '../components/layout/Header/Header';
+import Order from "../components/ui/Order/Order";
+import OrderList from "../components/layout/OrderList/OrderList";
+import styles from '../assets/styles/App.module.css'
 import gradients from './Order/Gradients.module.css'
-import 'normalize.css';
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axiosBase from "../../config/axios";
+import axiosBase from "../../../utils/axios";
 import styles from './OrderList.module.css';
-import Order from '../Order/Order';
+import Order from '../../ui/Order/Order';
 
 interface OrderData {
     id: number;
