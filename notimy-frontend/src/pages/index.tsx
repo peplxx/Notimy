@@ -10,11 +10,17 @@ function App() {
     // <Order title="hi" subtitle="asd" />
     <div className={styles.App}>
         <div className={styles.Background}/>
-        <Header title="Notimy" />
+        <Header/>
         <OrderList/>
-            <Order title="BAZZAR" description="-Бургер Дмитрий" color={gradients.gradientPinkGreen} />
-            <Order title="108 BAR" description="-Медовуха Сергей" color={gradients.gradientYellowPurple} />
-            <Order title="InnoMAX" description="-Питса Никита" color={gradients.gradientYellowGreen} />
+        <Order title="BAZZAR" description="-Бургер Дмитрий" id="123" />
+        <Order title="108 BAR" description="-Медовуха Сергей" id="456" />
+        <Order title="InnoMAX" description="-Питса Никита" id="789" />
+        <Order title="InnoMAX" description="-Питса Никита" id="2" />
+        <Order title="InnoMAX" description="-Питса Никита" id="5" />
+        <Order title="InnoMAX" description="-Питса Никита" id="asd" />
+        <Order title="InnoMAX" description="-Питса Никита" id="75as5" />
+        <Order title="InnoMAX" description="-Питса Никита" id="712sd234" />
+        <Order title="InnoMAX" description="-Питса Никита" id="78asd234" />
     </div>
   );
 }

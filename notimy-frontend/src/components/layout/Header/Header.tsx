@@ -2,11 +2,8 @@ import React from 'react';
 
 import styles from './Header.module.css'
 
-interface Props {
-  title: string;
-}
 
-const Header: React.FC<Props> = ({ title }) => {
+const Header: React.FC = () => {
   return (
       <div className={styles.header}>
           <img src='/logo.svg' className={styles.logo}></img>

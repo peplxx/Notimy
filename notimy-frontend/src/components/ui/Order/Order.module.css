@@ -26,30 +26,30 @@
     box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, .6);
     border-radius: inherit;
     z-index: 2;
-    background-color: red;
 }
 
 .side {
     position: absolute;
-    right: 0.25rem;
+    right: 1%;
     top: 5%;
     height: 90%;
     width: 13%;
     z-index:4;
     border-radius: inherit;
-    box-shadow: inset 6px 4px 2px rgba(0, 0, 0, 0.2);
-    background-color: black;
+    box-shadow: inset 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.4);
+    background-color: #202123;
 }
 
 .title {
     font-family: "Rubik", sans-serif;
-    color: white;
+    color: #202123;
     font-weight: 700;
     max-width:82%;
     text-align:left;
     position: absolute;
     bottom: 5%;
     left: 5%;
+    font-size: 2em;
 }
 
 
@@ -93,69 +93,30 @@
     /*padding-top: 50%;*/
 }
 
-.messages {
-    height: 51.5%;
-    width:100%;
-
-    border-radius: 0 0.8rem 0  0.8rem;
-    display: flex; /* Make it a flexbox container */
-    flex-direction: column; /* Arrange items in a column */
-    align-items: flex-start; /* Align items to the start (left) */
-    margin-bottom: 7%;
-    overflow: auto;
-    scrollbar-width: none;
-}
-
-.message {
-    font-size: 0.7em;
-    padding: 0.5em 1em;
-    background-color: blue; /* var(--message-background); /* Dark background */
-    color: white; /* var(--message-text); /* White text */
-    border-radius: 1em 0.2em 1em 0.2em; /* Rounded corners */
-    display: inline-block;
-    max-width: 80%; /* Ensure the message doesn't take full width */
-    word-wrap: break-word; /* Ensure long words break correctly */
-    margin: 0.15em 0.5em; /* Add some space between messages */
-
-    -webkit-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
-    -moz-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
-    box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
-}
 
 .date {
     font-family: "Rubik", sans-serif;
-    color: var(--html-background);
+    color: #202123;
     font-weight: 700;
-    font-size: min(3.4vw,30px);
+    font-size: 0.6em;
     position: absolute;
     bottom: 2%;
     right: 3.5%;
 }
 
-.toggle-btn {
-        position: absolute;
-    bottom: 0;
-    color: black;
-    margin: auto;
-    border-radius: inherit;
-    font-size: 1.5em;
-    left: 0;
-    right: 0;
-}
-
 
 .deleteBtn {
     position: absolute;
-  bottom: 0;
-  left: 0;
-  height:100%;
-  z-index:4;
-  border-radius: inherit;
-  box-shadow: inset 6px 4px 2px rgba(0, 0, 0, 0.2);
-  background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    bottom: 0;
+    left: 0;
+    height:100%;
+    z-index:4;
+    border-radius: inherit;
+    box-shadow: inset 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.2);
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .menuClosed .deleteBtn {
   transition: width 0.2s;
@@ -194,18 +155,18 @@
 }
 
 .menuClickable {
-      position: absolute;
-      right:0;
-      z-index:3;
-      height: 100%;
-      width:100%;
+    position: absolute;
+    right:0;
+    z-index:3;
+    height: 100%;
+    width:100%;
 }
 
 .code {
-        font-family: "Rubik", sans-serif;
+    font-family: "Rubik", sans-serif;
     color: white;
     font-weight: 700;
-    font-size: min(10vw, 70px);
+    font-size: 2em;
     line-height:  min(11vw, 74px);
     position: absolute;
     display: flex;

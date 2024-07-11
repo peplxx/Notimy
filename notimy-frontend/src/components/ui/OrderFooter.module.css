@@ -1,0 +1,10 @@
+.toggleBtn {
+    position: absolute;
+    bottom: 0;
+    color: #202123;
+    margin: auto;
+    border-radius: inherit;
+    font-size: 1.5em;
+    left: 0;
+    right: 0;
+}
