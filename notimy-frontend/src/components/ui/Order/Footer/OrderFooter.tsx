@@ -1,7 +1,7 @@
 import React from "react";
-import MessagesList from "./MessagesList/MessagesList";
+import MessagesList from "../../MessagesList/MessagesList";
 
-import styles from "./Order/Order.module.css";
+import styles from "../Order.module.css";
 import stylesFooter from "./OrderFooter.module.css";
 
 interface Props {

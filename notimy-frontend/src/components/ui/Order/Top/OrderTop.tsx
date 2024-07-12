@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from "classnames";
 
-import styles from './Order/Order.module.css';
+import styles from '../Order.module.css';
 
 interface Props {
     title: string;
@@ -37,7 +37,7 @@ const OrderTop: React.FC<Props> = ({ title, backgroundStyle }) => {
                 </div>
                 <div className={styles.menuClickable}></div>
                 <span className={styles.code}>BEBRA</span>
-                <span className={styles.expandSign}></span>
+                <span className={styles.expandSign}>{"<"}</span>
             </div>
         </div>
     );

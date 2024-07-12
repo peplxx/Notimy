@@ -167,25 +167,24 @@
     color: white;
     font-weight: 700;
     font-size: 2em;
-    line-height:  min(11vw, 74px);
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index:2;
     height:100%;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     left: 20%;
+    overflow: hidden;
 }
 .menuClosed .code {
-  transition: visibility 0s 0.15s;
+  font-size: 0;
+  transition: visibility 0s 0.2s;
   visibility: hidden;
 }
 .menuOpened .code {
-  transition: visibility 0s 150ms;
+  transition: visibility 0s 250ms;
   visibility: visible;
 }
-
 
 .expandSign {
       font-family: "Rubik", sans-serif;
@@ -199,13 +198,12 @@
 }
 
 .menuClosed .expandSign {
-  transition: visibility 0s 0.2s;
-  visibility: visible;
+  transition: transform 0.2s 0s;
 }
 
 .menuOpened .expandSign {
-    transition: visibility 0s 0.1s;
-    visibility: hidden;
+    transform: translateX(-25%) rotate(180deg);
+    transition: transform 0.2s 0s;
 }
 
 

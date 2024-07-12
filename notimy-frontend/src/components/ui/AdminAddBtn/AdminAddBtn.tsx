@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import OrderFooter from './Footer/OrderFooter';
-import OrderTop from './Top/OrderTop';
-import styles from './Order.module.css';
+// import OrderFooter from './Footer/OrderFooter';
+import OrderTop from '../Order/Top/OrderTop';
+import styles from '../Order/Order.module.css';
 import classNames from 'classnames';
 import stylesHeader from './Top/OrderTop.module.css';
 import stylesFooter from './OrderFooter.module.css';
@@ -29,14 +29,11 @@ const Order: React.FC<Props> = ({ title, description, id }) => {
 
     return (
         <div
-            className={classNames(styles.order, {
-                [styles.orderClosed]: !isOpen,
-                [styles.orderOpened]: isOpen,
-            })}
+            className={classNames(styles.order)}
             onClick={toggleOrder}
         >
             <OrderTop title={title} backgroundStyle={backgroundStyle} />
-            <OrderFooter backgroundStyle={backgroundStyle} />
+            {/*<OrderFooter backgroundStyle={backgroundStyle} />*/}
         </div>
     );
 };

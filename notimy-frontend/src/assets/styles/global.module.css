@@ -3,6 +3,7 @@
 .App {
     width: 100%;
     padding: 0;
+    margin: 0;
     /*background: var(--html-background);*/
     font-size: min(5vw, 1000px); /* var(--html-max-font-size) */
     font-family: 'Rubik', sans-serif;

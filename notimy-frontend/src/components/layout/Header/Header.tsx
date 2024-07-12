@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Header.module.css'
+import styles from './Header.module.css';
 
 
 const Header: React.FC = () => {
@@ -11,7 +11,7 @@ const Header: React.FC = () => {
             OTIMY
           </div>
       </div>
-  );
+  )
 };
 
-export default Header;
+export default Header
