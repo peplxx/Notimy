@@ -1,0 +1,42 @@
+.btnWrap {
+    display: flex; /* Added */
+    justify-content: center; /* Added */
+    margin: 1px 0px;
+}
+
+.btn {
+    width: 35%;
+    text-align: center;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 60px;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,152,84,1) 0%, rgba(0,255,132,1) 100%);
+    border-radius: 0 0px 30px 30px;
+    box-shadow: inset 10px 7rem 10px rgba(0, 0, 0, 0.2), 0 8px 10px rgba(0, 0, 0, 0.5);
+}
+
+.btnTrapezoidOutline {
+    display: inline-block;
+    color: #ffffff;
+    transform-style: preserve-3d;
+    padding: 0px 30px;
+    border-right: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-bottom: 3px solid #ffffff;
+    -webkit-backface-visibility: hidden;
+    transition: all 0.3s ease-out;
+    line-height: 1.5; /* Adjusted */
+}
+
+.btn-trapezoid-outline span {
+    font-size: 20px;
+    letter-spacing: 3px;
+    display: block;
+    transform: perspective(160px) rotateX(0deg) translateZ(0px) translateY(0px); /* Adjusted */
+}
+
+.btn-trapezoid-outline:hover {
+    color: #136377;
+}
