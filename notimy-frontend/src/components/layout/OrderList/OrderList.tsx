@@ -4,11 +4,10 @@ import styles from './OrderList.module.css';
 import Order from '../../ui/Order/Order';
 
 interface OrderData {
-    id: number;
+    id: string;
     title: string;
-    description: string;
-    color: string;
 }
+
 
 const OrderList: React.FC = () => {
     const [orders, setOrders] = useState<OrderData[]>([]);
@@ -24,16 +23,19 @@ const OrderList: React.FC = () => {
         };
 
         fetchOrders();
+        // Обновляем данные каждые 1 секунд
+        const interval = setInterval(fetchOrders, 1000);
+
+        // Чистим интервал при размонтировании компонента
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div className={styles.order_list}>
             {orders.map(order => (
                 <Order
-                    key={order.id}
                     title={order.title}
-                    description={order.description}
-                    color={order.color}
+                    id={order.id}
                 />
             ))}
         </div>
