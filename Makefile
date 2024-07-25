@@ -44,6 +44,9 @@ revision:  ##@Database Create new revision file automatically with prefix (ex. 2
 migrate:
 	alembic upgrade head
 
+test:
+	cd tests && poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
+
 psql:
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
 %::

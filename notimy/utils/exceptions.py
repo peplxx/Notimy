@@ -1,20 +1,22 @@
-from fastapi import HTTPException
+from werkzeug.exceptions import HTTPException
 from fastapi import status
 
-BadTokenException = HTTPException(
-    status_code=status.HTTP_403_FORBIDDEN,
-    detail= "Token not recognized, access denied!"
-)
-MaxSpotsLimit = HTTPException(
-    status_code=status.HTTP_403_FORBIDDEN,
-    detail= "Reached max amount of spots!"
-)
+
+class BadTokenException(HTTPException):
+    code = 403
+    description = "Token not recognized, access denied!"
 
 
-ProviderAlreadyExists = HTTPException(
-    status_code=status.HTTP_200_OK,
-    detail="Provider with such name and description already exists!")
+class MaxSpotsLimit(HTTPException):
+    code = 403
+    description = "Reached max amount of spots!"
 
-ChannelDoesntExist = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail="Channel id is invalid or current spot doesn't have it!")
+
+class ProviderAlreadyExists(HTTPException):
+    code = 200
+    description = "Provider with such name and description already exists!"
+
+
+class ChannelDoesntExist(HTTPException):
+    code = 400
+    description = "Channel id is invalid or current spot doesn't have it!"
