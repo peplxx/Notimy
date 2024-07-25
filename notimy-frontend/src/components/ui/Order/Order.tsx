@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import OrderFooter from './Footer/OrderFooter';
 import OrderTop from './Top/OrderTop';
 import styles from './Order.module.css';
 import classNames from 'classnames';
-import stylesHeader from './Top/OrderTop.module.css';
-import stylesFooter from './OrderFooter.module.css';
 
 import CryptoJS from 'crypto-js';
 
@@ -13,7 +11,7 @@ interface Props {
     id: string;
 }
 
-const Order: React.FC<Props> = ({ title, id }) => {
+const Order: React.FC<Props> = ({title, id}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleOrder = () => {
         setIsOpen(!isOpen);
@@ -24,13 +22,13 @@ const Order: React.FC<Props> = ({ title, id }) => {
 
 
     let mainHue1 = ((hashNumber) % 360);
-    if ( mainHue1 < 150 ) mainHue1 += mainHue1/150 * 50;
+    if (mainHue1 < 150) mainHue1 += mainHue1 / 150 * 50;
     let mainHue2 = ((mainHue1 + 100) % 360);
     let backgroundStyle = {
-            background: `linear-gradient(345deg, hsla(${mainHue2}, 71%, 79%, 1) 10%, hsla(${mainHue1}, 70%, 81%, 1) 60%)`
-        };
+        background: `linear-gradient(345deg, hsla(${mainHue2}, 71%, 79%, 1) 10%, hsla(${mainHue1}, 70%, 81%, 1) 60%)`
+    };
 
-    if ( title == 'BAZZAR' ) {
+    if (title == 'BAZZAR') {
         // Зеленый градиент (оттенки зелёного цвета)
         const greenHue2 = (hashNumber % 40) + 100; // Диапазон 90-150
         const greenHue1 = ((hashNumber + 30) % 60) + 90;
@@ -49,8 +47,8 @@ const Order: React.FC<Props> = ({ title, id }) => {
             })}
             onClick={toggleOrder}
         >
-            <OrderTop title={title} backgroundStyle={backgroundStyle} />
-            <OrderFooter backgroundStyle={backgroundStyle} />
+            <OrderTop title={title} backgroundStyle={backgroundStyle}/>
+            <OrderFooter backgroundStyle={backgroundStyle}/>
         </div>
     );
 };
