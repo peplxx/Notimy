@@ -29,25 +29,25 @@ help: ##@Help Show this help
 	@echo -e "Usage: make [target] ...\n"
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
-run.win:
+run.win: ##@Run Run especially on Windows
 	poetry run python -m $(APP_NAME)
 
-run.linux:
+run.linux: ##@Run Run especially on Linux
 	poetry run python3 -m $(APP_NAME)
 
-run:
+run: ##@Run Run on actual platform
 	make run.linux
 
 revision:  ##@Database Create new revision file automatically with prefix (ex. 2022_01_01_14cs34f_message.py)
 	alembic revision --autogenerate
 
-migrate:
+migrate: ##@Database Migrate head to last migration
 	alembic upgrade head
 
-test:
+test: ##@Test make testing
 	cd tests && poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
 
-psql:
+psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
 %::
 	echo $(MESSAGE)
