@@ -27,6 +27,5 @@
     border-left: 0.1em solid #ffffff;
     border-bottom: 0.1em solid #ffffff;
     -webkit-backface-visibility: hidden;
-    transition: all 0.3s ease-out;
     line-height: 1.5;
 }

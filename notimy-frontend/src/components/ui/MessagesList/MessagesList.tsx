@@ -7,7 +7,7 @@ interface MessageListProps {
     children: ReactNode;
 }
 
-const MessagesList: React.FC<MessageListProps> = ({messages=[], children}) => {
+const MessagesList: React.FC<MessageListProps> = ({messages, children}) => {
     return (
         <div className={styles.messages}>
             {messages.map((message) => (
