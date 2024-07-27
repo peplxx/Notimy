@@ -1,16 +1,19 @@
 import styles from "./MessagesList.module.css";
-import React from "react";
+import React, { ReactNode } from "react";
 
 
-const MessagesList: React.FC = () => {
+interface MessageListProps {
+    messages: string[];
+    children: ReactNode;
+}
+
+const MessagesList: React.FC<MessageListProps> = ({messages, children}) => {
     return (
         <div className={styles.messages}>
-            <div className={styles.message}>asd</div>
-            <div className={styles.message}>asd</div>
-            <div className={styles.message}>asd</div>
-            <div className={styles.message}>asd</div>
-            <div className={styles.message}>asd</div>
-            <div className={styles.message}>asd</div>
+            {messages.map((message) => (
+                <div className={styles.message}>{message}</div>
+            ))}
+            {children}
         </div>
     )
 }

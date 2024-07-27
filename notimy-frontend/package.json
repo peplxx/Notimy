@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "css-modules-typescript-loader": "^4.0.1"
   }
 }

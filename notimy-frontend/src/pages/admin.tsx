@@ -5,7 +5,7 @@ import AdminAddBtn from "../components/ui/AdminAddBtn/AdminAddBtn";
 
 import styles from '../assets/styles/global.module.css';
 import OrderList from "../components/layout/OrderList/OrderList";
-import Order from "../components/ui/Order/Order";
+import AdminOrder from "@/components/ui/AdminOrder/AdminOrder";
 
 
 function Admin() {
@@ -13,8 +13,9 @@ function Admin() {
         <div className={styles.App}>
             <div className={styles.Background}/>
             <Header/>
-            <AdminAddBtn/>
-            {/*<OrderList/>*/}
+            <OrderList>
+                <AdminOrder title={"1"} id={"1"}/>
+            </OrderList>
         </div>
     )
 }
