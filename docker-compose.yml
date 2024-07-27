@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  database:
+    container_name: 'notimy_postgres'
+    image: 'postgres:14'
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+  backend:
+    build: .
+    env_file:
+      - ./.env
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    depends_on:
+      - database
+    command: ["sh", "-c", "alembic upgrade head  && poetry run python3 -m notimy"]

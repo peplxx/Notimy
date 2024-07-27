@@ -1,8 +1,5 @@
-from uuid import uuid4
 
 import pytest
-from sqlalchemy import select
-from starlette import status
 import requests
 
 APP_HOST = "http://127.0.0.1"
@@ -11,7 +8,7 @@ ROOT_TOKEN = "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX"
 class TestCreateProvider:
     @staticmethod
     def get_url():
-        return f"{APP_HOST}:{APP_PORT}" + f"/providers/new"
+        return f"{APP_HOST}:{APP_PORT}" + "/providers/new"
 
     @staticmethod
     def auth_header(token):

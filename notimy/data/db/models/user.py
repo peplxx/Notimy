@@ -1,12 +1,13 @@
-from datetime import timezone, datetime
-from json import loads, dumps
-from uuid import uuid4, UUID
+import json
+from datetime import datetime, timezone
+from json import dumps, loads
+from uuid import UUID, uuid4
 
+import sqlalchemy as sa
 from flask_login import UserMixin
 
+from notimy.config.roles import Roles
 from notimy.data.db import DeclarativeBase as Base
-import sqlalchemy as sa
-
 from notimy.utils.json_encoder import UUIDEncoder
 
 now = datetime.now(tz=timezone.utc)
@@ -18,6 +19,9 @@ class User(Base, UserMixin):
     id = sa.Column(sa.UUID, primary_key=True, default=uuid4)
     channels_raw = sa.Column(sa.String, nullable=False, default='[]')
     registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
+    role = sa.Column(sa.String, nullable=False, default=Roles.default.value)
+    data = sa.Column(sa.String, nullable=False, default='{}')
+
 
     @property
     def channels(self):
@@ -31,6 +35,11 @@ class User(Base, UserMixin):
         channels = set(self.channels)
         channels.add(channel_id)
         self.channels = [e for e in channels]
+
+    def get_data(self):
+        return json.loads(self.data)
+
+
 
     def dict(self) -> dict:
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}

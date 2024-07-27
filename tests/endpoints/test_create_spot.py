@@ -1,11 +1,7 @@
 import json
-from uuid import uuid4
 
 import pytest
-from sqlalchemy import select
-from starlette import status
 import requests
-
 
 APP_HOST = "http://127.0.0.1"
 
@@ -13,7 +9,7 @@ APP_PORT = 5000
 ROOT_TOKEN = "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX"
 def create_provider():
     result = requests.post(
-        url=f"{APP_HOST}:{APP_PORT}" + f"/providers/new",
+        url=f"{APP_HOST}:{APP_PORT}" + "/providers/new",
         json={
             "token": ROOT_TOKEN,
             "name": "some name",
@@ -26,7 +22,7 @@ def create_provider():
 class TestCreateSpot:
     @staticmethod
     def get_url():
-        return f"{APP_HOST}:{APP_PORT}" + f"/providers/new_spot"
+        return f"{APP_HOST}:{APP_PORT}" + "/providers/new_spot"
 
     @pytest.mark.parametrize(
         "provider_token",

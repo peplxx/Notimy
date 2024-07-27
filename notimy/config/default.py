@@ -1,7 +1,6 @@
 from datetime import timedelta
 from os import environ
 
-from flask import Config
 from pydantic_settings import BaseSettings
 
 

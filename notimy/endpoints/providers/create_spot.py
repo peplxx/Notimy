@@ -1,3 +1,4 @@
+import json
 from logging import getLogger
 
 from flask import Blueprint
@@ -5,10 +6,10 @@ from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.config import config
+from notimy.config.roles import Roles
 from notimy.data.db.connection import get_session
-from notimy.data.db.models import Provider, Spot
-from notimy.middleware.token_auth import provider_auth, get_token
+from notimy.data.db.models import Provider, Spot, User
+from notimy.middleware.token_auth import get_token, provider_auth
 from notimy.schemas.providers import ProviderAuth
 from notimy.utils import exceptions
 
@@ -30,9 +31,17 @@ def create_provider(
     provider = session.scalar(select(Provider).where(Provider.token == token))
     if provider.spots >= provider.max_spots:
         raise exceptions.MaxSpotsLimit
-    spot = Spot(provider=provider.id)
+    spot_user = User(role=Roles.spotUser.value)
+    session.add(spot_user)
+    session.commit()
+
+    spot = Spot(provider=provider.id, account=spot_user.id)
     provider.spots += 1
     session.add(spot)
+    session.commit()
+    spot_user.data = json.dumps({
+        "token": spot.token
+    })
     session.commit()
     return spot.dict()
 

@@ -3,11 +3,12 @@ from functools import wraps
 from flask import request
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
+from flask_login import current_user
 from notimy.config import config
 from notimy.data.db.connection import get_session
+from notimy.data.db.models import Provider, Spot, User
 from notimy.utils import exceptions
-from notimy.data.db.models import Spot, Provider
+
 
 def get_token() -> str:
     token = None
@@ -15,20 +16,28 @@ def get_token() -> str:
         token = request.headers['Authorization'].split(" ")[1]
     elif request.data and request.json.get('token'):
         token = request.json['token']
+    try: # Get token from user.data
+        user: User = current_user
+        user_data = user.get_data()
+        token = user_data['token']
+    except Exception:
+        pass # User is anonimous
     if not token:
         raise exceptions.BadTokenException
     return token
+
+
 def token_validation(
         session: Session,
         base_class,
 ):
     token: str = get_token()
-    print(token)
     result = session.scalar(
         select(base_class).where(base_class.token == token)
     )
     if not result:
         raise exceptions.BadTokenException
+
 
 def spot_auth(fun):
     @wraps(fun)
@@ -42,6 +51,7 @@ def spot_auth(fun):
 
     return wrapper
 
+
 def provider_auth(fun):
     @wraps(fun)
     def wrapper(*args,
@@ -53,6 +63,8 @@ def provider_auth(fun):
         return fun(*args)
 
     return wrapper
+
+
 def root_auth(fun):
     @wraps(fun)
     def wrapper(*args):

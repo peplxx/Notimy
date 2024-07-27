@@ -7,8 +7,7 @@ from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Provider, Spot
-from notimy.middleware.token_auth import provider_auth, get_token
-
+from notimy.middleware.token_auth import get_token, provider_auth
 
 blueprint = Blueprint(
     "get_provider",

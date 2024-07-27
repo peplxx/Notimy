@@ -1,5 +1,4 @@
 from werkzeug.exceptions import HTTPException
-from fastapi import status
 
 
 class BadTokenException(HTTPException):

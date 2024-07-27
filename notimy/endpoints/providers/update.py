@@ -1,16 +1,14 @@
 from logging import getLogger
-from sqlalchemy import select
 
 from flask import Blueprint
 from flask_pydantic import validate
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.config import config
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Provider
 from notimy.middleware.token_auth import get_token, provider_auth
 from notimy.schemas.providers import UpdateProviderData
-from notimy.utils import exceptions
 
 blueprint = Blueprint(
     "update_provider",

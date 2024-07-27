@@ -1,13 +1,13 @@
 from logging import getLogger
 from uuid import UUID
 
-from flask import Blueprint, redirect
-from flask_login import login_required, current_user
+from flask import Blueprint
+from flask_login import current_user, login_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
-from notimy.data.db.models import Spot, User, Channel
+from notimy.data.db.models import Channel, Spot, User
 
 log = getLogger("api.spots")
 

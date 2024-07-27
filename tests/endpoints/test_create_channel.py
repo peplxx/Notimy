@@ -1,11 +1,6 @@
 import json
-from uuid import uuid4
 
-import pytest
-from sqlalchemy import select
-from starlette import status
 import requests
-
 
 APP_HOST = "http://127.0.0.1"
 APP_PORT = 5000
@@ -13,7 +8,7 @@ ROOT_TOKEN = "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX"
 
 def create_provider():
     result = requests.post(
-        url=f"{APP_HOST}:{APP_PORT}" + f"/providers/new",
+        url=f"{APP_HOST}:{APP_PORT}" + "/providers/new",
         json={
             "token": ROOT_TOKEN,
             "name": "some name",
@@ -25,7 +20,7 @@ def create_provider():
 
 def create_spot(provider_token):
     result = requests.post(
-        url=f"{APP_HOST}:{APP_PORT}" + f"/providers/new_spot",
+        url=f"{APP_HOST}:{APP_PORT}" + "/providers/new_spot",
         json={
             "token": provider_token,
         }
@@ -43,7 +38,7 @@ def get_spot(token):
 class TestCreateChannel:
     @staticmethod
     def get_url():
-        return f"{APP_HOST}:{APP_PORT}" + f"/channels/new"
+        return f"{APP_HOST}:{APP_PORT}" + "/channels/new"
 
     def test_success_channel_creation(self):
         provider = create_provider()
