@@ -1,13 +1,13 @@
-from datetime import timezone
 import datetime
-from json import loads, dumps
+from datetime import timezone
+from json import dumps, loads
+from uuid import UUID, uuid4
+
 import pytz
-from notimy.config import config
-from uuid import uuid4, UUID
-from notimy.data.db import DeclarativeBase as Base
 import sqlalchemy as sa
 
-from sqlalchemy import func
+from notimy.config import config
+from notimy.data.db import DeclarativeBase as Base
 from notimy.utils import generate_code
 from notimy.utils.json_encoder import UUIDEncoder
 
@@ -29,6 +29,7 @@ class Channel(Base):
     messages_raw = sa.Column(sa.String, nullable=False, default='[]')
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     closed_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now+config.CHANNEL_LIFETIME)
+
 
     @property
     def listeners(self):

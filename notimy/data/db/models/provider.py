@@ -1,5 +1,5 @@
-from datetime import timezone, datetime
-from uuid import uuid4
+from datetime import datetime, timezone
+from uuid import uuid4, UUID
 
 import sqlalchemy as sa
 
@@ -18,13 +18,17 @@ class Provider(Base):
     last_channel = sa.Column(sa.Integer, default=-1, nullable=False)
     spots = sa.Column(sa.Integer, nullable=False, default=0)
     max_spots = sa.Column(sa.Integer, nullable=False, default=1)
+    account = sa.Column(sa.UUID, nullable=False)
 
     def __init__(
             self,
             name: str,
-            description: str = None):
+            account: UUID,
+            description: str = None,
+    ):
         self.name = name
         self.description = description if description else "NO_DESCRIPTION"
+        self.account = account
 
     def dict(self) -> dict:
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}

@@ -1,11 +1,12 @@
 from json import load
 from logging import getLogger
 from logging.config import dictConfig
+
+from flask import Flask, redirect, request, session
+
 from notimy.config import config
 from notimy.endpoints import blueprints
 from notimy.middleware.login_manager import login_manager
-from flask import Flask, session, request, redirect
-from notimy.utils.json_encoder import UUIDEncoder
 
 log = getLogger("main")
 
@@ -44,9 +45,13 @@ def handle_unauthorized(error):
     return redirect("/login")
 
 
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     return {"message": "Hello, it is Notimy!"}
+
+
 
 
 if __name__ == '__main__':

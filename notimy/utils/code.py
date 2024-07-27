@@ -1,6 +1,5 @@
 from random import randint
-from string import ascii_uppercase,digits
-
+from string import ascii_uppercase, digits
 
 CODE_ALPHABET = ascii_uppercase+digits
 CODE_LENGTH = 5

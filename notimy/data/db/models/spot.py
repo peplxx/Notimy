@@ -1,6 +1,6 @@
-from datetime import timezone, datetime
-from json import loads, dumps
-from uuid import uuid4, UUID
+from datetime import datetime, timezone
+from json import dumps, loads
+from uuid import UUID, uuid4
 
 import sqlalchemy as sa
 
@@ -21,6 +21,7 @@ class Spot(Base):
     provider = sa.Column(sa.UUID, nullable=False)
     channels_raw = sa.Column(sa.String, nullable=False, default='[]')
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
+    account = sa.Column(sa.UUID, nullable=False)
 
     @property
     def channels(self):
@@ -37,7 +38,8 @@ class Spot(Base):
 
     @property
     def last_channel(self):
-        if not self.channels: return None
+        if not self.channels:
+            return None
         return self.channels[-1]
 
     def dict(self) -> dict:

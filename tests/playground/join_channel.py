@@ -1,6 +1,8 @@
-import requests
-from notimy.config import config
 from json import loads
+
+import requests
+
+from notimy.config import config
 
 
 def get_spot(token):

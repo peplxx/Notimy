@@ -1,15 +1,13 @@
 from logging import getLogger
 
-from fastapi import Depends
+from flask import Blueprint
 from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, Spot
+from notimy.data.db.models import Channel
 from notimy.middleware import spot_auth
-from flask import Blueprint
-
 from notimy.middleware.token_auth import get_token
 from notimy.schemas.channels import AddMessage
 
