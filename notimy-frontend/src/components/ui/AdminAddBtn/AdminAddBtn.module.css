@@ -1,6 +1,8 @@
 .btnWrap {
     display: flex;
     justify-content: center;
+    width: 90%;
+    margin: auto;
 }
 
 .btn {
@@ -9,7 +11,7 @@
     font-family: sans-serif;
     text-transform: uppercase;
     text-decoration: none;
-    font-size: 3rem;
+    font-size: 1em;
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,152,84,1) 0%, rgba(0,255,132,1) 100%);
     border-radius: 0 0 1em 1em;
