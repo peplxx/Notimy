@@ -30,7 +30,7 @@ help: ##@Help Show this help
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 run: ##@Run Run from dockerfile
-	docker run notimy
+	docker-compose up
 
 revision:  ##@Database Create new revision file automatically with prefix (ex. 2022_01_01_14cs34f_message.py)
 	alembic revision --autogenerate
@@ -54,9 +54,7 @@ db_startup:  ##@Database Startup database with migrations
 	make db
 
 build:
-	docker build -t notimy .
-
-
+	docker-compose build
 
 
 %::

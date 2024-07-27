@@ -55,4 +55,4 @@ if __name__ == '__main__':
     login_manager.init_app(app)
 
     # app.run(host=CONFIG.APP_HOST, port=CONFIG.APP_PORT)
-    app.run(port=config.APP_PORT, debug=True)
+    app.run(host="0.0.0.0", port=config.APP_PORT, debug=True)
