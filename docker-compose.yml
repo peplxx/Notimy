@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    container_name: 'notimy_postgres'
+    image: 'postgres:14'
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - '${POSTGRES_PORT}:5432'
+

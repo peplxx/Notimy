@@ -6,6 +6,7 @@ from notimy.endpoints import blueprints
 from notimy.middleware.login_manager import login_manager
 from flask import Flask, session, request, redirect
 from notimy.utils.json_encoder import UUIDEncoder
+
 log = getLogger("main")
 
 
@@ -26,7 +27,6 @@ def setup_logging() -> None:
     dictConfig(logging_config)
     log = getLogger("main")
 
-
 app = None
 app = get_app()
 
@@ -42,6 +42,11 @@ def track_previous_url():
 def handle_unauthorized(error):
     log.debug("Unauthorized access from user -> redirecting to /login")
     return redirect("/login")
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return {"message": "Hello, it is Notimy!"}
 
 
 if __name__ == '__main__':

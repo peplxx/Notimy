@@ -29,14 +29,8 @@ help: ##@Help Show this help
 	@echo -e "Usage: make [target] ...\n"
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
-run.win: ##@Run Run especially on Windows
-	poetry run python -m $(APP_NAME)
-
-run.linux: ##@Run Run especially on Linux
-	poetry run python3 -m $(APP_NAME)
-
-run: ##@Run Run on actual platform
-	make run.linux
+run: ##@Run Run from dockerfile
+	docker run notimy
 
 revision:  ##@Database Create new revision file automatically with prefix (ex. 2022_01_01_14cs34f_message.py)
 	alembic revision --autogenerate
@@ -49,5 +43,21 @@ test: ##@Test make testing
 
 psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
+
+db:  ##@Database Create database with docker-compose
+	docker-compose -f docker-compose.yml up -d --remove-orphans && docker-compose run db sh -c "alembic upgrade head"
+
+db_down:  ##@Database Down database in docker container
+	docker-compose -f docker-compose.yml down
+
+db_startup:  ##@Database Startup database with migrations
+	make db
+
+build:
+	docker build -t notimy .
+
+
+
+
 %::
 	echo $(MESSAGE)
