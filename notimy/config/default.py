@@ -25,7 +25,7 @@ class DefaultSettings(BaseSettings):
     DB_CONNECT_RETRY: int = environ.get("DB_CONNECT_RETRY", 20)
     DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
 
-    CHANNEL_LIFETIME: timedelta = timedelta(days=1)
+    CHANNEL_LIFETIME: timedelta = timedelta(days=7)
 
     PROVIDER_TOKEN_SIZE: int = 50
     SPOT_TOKEN_SIZE: int = 40

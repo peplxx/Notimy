@@ -38,7 +38,7 @@ revision:  ##@Database Create new revision file automatically with prefix (ex. 2
 migrate: ##@Database Migrate head to last migration
 	alembic upgrade head
 
-test: ##@Test make testing
+test: ##@Test Make testing
 	cd tests && poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
 
 psql:##@Database Connect to database via psql

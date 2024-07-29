@@ -35,6 +35,9 @@ class User(Base, UserMixin):
         channels = set(self.channels)
         channels.add(channel_id)
         self.channels = [e for e in channels]
+    def delete_channel(self, channel_id: UUID):
+        channels = set(self.channels)
+        self.channels = [e for e in channels if e != channel_id]
 
     def get_data(self):
         return json.loads(self.data)
