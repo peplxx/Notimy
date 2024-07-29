@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Channel, User
 
-log = getLogger("api.spots")
+log = getLogger("api.channels")
 
 blueprint = Blueprint(
     'user_delete_channel',

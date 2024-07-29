@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Channel, User
+from notimy.endpoints.channels.get_channel import get_channel_by_id
 
 log = getLogger("api.users")
 blueprint = Blueprint(
@@ -31,5 +32,5 @@ def login(
             # session.delete(channel)
             # session.commit()
             continue
-        response["channels"] += [channel.dict()]
+        response["channels"] += [get_channel_by_id(session, channel_id)]
     return response
