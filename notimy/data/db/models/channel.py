@@ -39,10 +39,14 @@ class Channel(Base):
     def listeners(self, new_value):
         self.users_raw = dumps(new_value, default=str, cls=UUIDEncoder)
 
-    def add_listener(self, listener_id: uuid4):
+    def add_listener(self, listener_id: UUID):
         users = set(self.listeners)
         users.add(listener_id)
         self.listeners = [e for e in users]
+
+    def delete_listener(self, listener_id: UUID):
+        users = set(self.listeners)
+        self.listeners = [e for e in users if e != listener_id]
 
     @property
     def messages(self):
