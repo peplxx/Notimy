@@ -9,8 +9,8 @@ function App() {
         <div className={styles.App}>
             <Header/>
             <OrderList orders={[]}>
-                <Order title='asd' id='asd'/>
-                {null}
+                <Order title={"asd"} id={"asd"}/>
+                {/* {null} */}
             </OrderList>
             
         </div>
