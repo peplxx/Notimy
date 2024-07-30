@@ -16,12 +16,13 @@ def get_token() -> str:
         token = request.headers['Authorization'].split(" ")[1]
     elif request.data and request.json.get('token'):
         token = request.json['token']
-    try: # Get token from user.data
-        user: User = current_user
-        user_data = user.get_data()
-        token = user_data['token']
-    except Exception:
-        pass # User is anonimous
+    else:
+        try: # Get token from user.data
+            user: User = current_user
+            user_data = user.get_data()
+            token = user_data['token']
+        except Exception:
+            pass # User is anonymous
     if not token:
         raise exceptions.BadTokenException
     return token

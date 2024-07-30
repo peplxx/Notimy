@@ -22,7 +22,6 @@ class User(Base, UserMixin):
     role = sa.Column(sa.String, nullable=False, default=Roles.default.value)
     data = sa.Column(sa.String, nullable=False, default='{}')
 
-
     @property
     def channels(self):
         return [UUID(channel_id) for channel_id in loads(self.channels_raw)]
@@ -35,14 +34,13 @@ class User(Base, UserMixin):
         channels = set(self.channels)
         channels.add(channel_id)
         self.channels = [e for e in channels]
+
     def delete_channel(self, channel_id: UUID):
         channels = set(self.channels)
         self.channels = [e for e in channels if e != channel_id]
 
     def get_data(self):
         return json.loads(self.data)
-
-
 
     def dict(self) -> dict:
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
