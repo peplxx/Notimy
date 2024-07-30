@@ -47,7 +47,7 @@ const AdminOrder: React.FC<Props> = ({title, id}) => {
             })}
             onClick={toggleOrder}
         >
-            <AdminOrderTop title={title} backgroundStyle={backgroundStyle}/>
+            <AdminOrderTop title={title} backgroundStyle={backgroundStyle} DeleteAction={()=>null}/>
             <AdminOrderFooter backgroundStyle={backgroundStyle}/>
         </div>
     );
