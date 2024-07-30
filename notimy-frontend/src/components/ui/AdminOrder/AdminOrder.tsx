@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import AdminOrderFooter from './Footer/AdminOrderFooter';
-import AdminOrderTop from './Top/AdminOrderTop';
+import AdminOrderTop from '@/components/common/OrderTop/OrderTop';
 import styles from './AdminOrder.module.css';
 import classNames from 'classnames';
 
@@ -11,7 +11,7 @@ interface Props {
     id: string;
 }
 
-const Order: React.FC<Props> = ({title, id}) => {
+const AdminOrder: React.FC<Props> = ({title, id}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleOrder = () => {
         setIsOpen(!isOpen);
@@ -53,4 +53,4 @@ const Order: React.FC<Props> = ({title, id}) => {
     );
 };
 
-export default Order;
+export default AdminOrder;

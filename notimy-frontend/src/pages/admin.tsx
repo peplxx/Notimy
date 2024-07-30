@@ -50,6 +50,7 @@ function Admin() {
             <Header/>
             <OrderList orders={orders}>
                 <AdminAddBtn onAddOrder={addOrder}/>
+                <AdminOrder title={"asd"} id={"123"} />
             </OrderList>
         </div>
     );

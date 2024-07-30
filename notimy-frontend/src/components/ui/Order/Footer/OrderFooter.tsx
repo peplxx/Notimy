@@ -15,7 +15,7 @@ const OrderFooter: React.FC<Props> = ({backgroundStyle}) =>
         <MessagesList messages={[]}>
             {null}
         </MessagesList>
-        <div className={styles.date}>08.07.2024 | 20:08</div>
+        <div className={styles.date}>02.08.2024 | 11:11</div>
         <div className={stylesFooter.toggleBtn}>...</div>
     </div>
     )

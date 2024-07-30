@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import OrderFooter from './Footer/OrderFooter';
-import OrderTop from './Top/OrderTop';
+import OrderTop from '@/components/common/OrderTop/OrderTop';
 import styles from './Order.module.css';
 import classNames from 'classnames';
 
