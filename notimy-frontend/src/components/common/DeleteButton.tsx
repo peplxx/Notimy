@@ -5,9 +5,10 @@ import styles from './OrderTop/OrderTop.module.css';
 
 interface DeleteButtonProps {
     MenuClickable: HTMLDivElement | null;
+    DeleteAction: () => Promise<Boolean>;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable, DeleteAction }) => {
     const [position, setPosition] = useState(0);
     const [finalPosition, setFinalPosition] = useState(0);
     const [movePercentage, setMovePercentage] = useState(0);
@@ -16,11 +17,18 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
     const startXRef = useRef(0);
     const DeleteBtn = useRef<HTMLDivElement>(null);
 
+    // НАЖАТИЕ
     const handleTouchStart = (e: React.TouchEvent) => {
         startXRef.current = e.touches[0].clientX;
         setIsSwiping(true);
     };
+    const handleMouseDown = (e: React.MouseEvent) => {
+        startXRef.current = e.clientX;
+        setIsSwiping(true);
+    };
 
+
+    // ДВИЖЕНИЕ
     const handleTouchMove = (e: React.TouchEvent) => {
         if (isSwiping && MenuClickable && DeleteBtn.current) {
             const deltaX = e.touches[0].clientX - startXRef.current;
@@ -29,26 +37,6 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
             }
         }
     };
-
-    const handleTouchEnd = () => {
-        setIsSwiping(false);
-        if (MenuClickable && DeleteBtn.current) {
-            const deleteThreshold = 50; // 50% threshold to trigger delete action
-
-            if (movePercentage >= deleteThreshold) {
-                console.log('Delete action triggered');
-                setFinalPosition(MenuClickable.offsetWidth - DeleteBtn.current.offsetWidth); // Move to the end position
-            } else {
-                setFinalPosition(0); // Reset position
-            }
-        }
-    };
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-        startXRef.current = e.clientX;
-        setIsSwiping(true);
-    };
-
     const handleMouseMove = (e: React.MouseEvent) => {
         if (isSwiping && MenuClickable && DeleteBtn.current) {
             const deltaX = e.clientX - startXRef.current;
@@ -58,7 +46,8 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
         }
     };
 
-    const handleMouseUp = () => {
+    // СТОП ДВИЖЕНИЫ
+    const handleEnd = () => {
         setIsSwiping(false);
         if (MenuClickable && DeleteBtn.current) {
             const deleteThreshold = 50; // 50% threshold to trigger delete action
@@ -66,6 +55,11 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
             if (movePercentage >= deleteThreshold) {
                 console.log('Delete action triggered');
                 setFinalPosition(MenuClickable.offsetWidth - DeleteBtn.current.offsetWidth); // Move to the end position
+                DeleteAction().then((done) => {
+                    if (!done) {
+                        setFinalPosition(0); // Reset position
+                    }
+                });
             } else {
                 setFinalPosition(0); // Reset position
             }
@@ -88,21 +82,21 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable }) => {
     return (
         <>
             <div className={styles.deleteBackground} style={
-                { 
+                {
                     minWidth: `10%`,
-                    width: `calc(${position}px + ${position === 0 ? 0 : DeleteBtn.current?.offsetWidth}px)`, 
-                    transition: !isSwiping ? 'width 0.3s ease' : 'none' 
+                    width: `calc(${position}px + ${position === 0 ? 0 : DeleteBtn.current?.offsetWidth}px)`,
+                    transition: !isSwiping ? 'width 0.3s ease' : 'none'
                 }
-                }></div>
+            }></div>
             <div
                 className={styles.deleteBtn}
                 style={{ transform: `translateX(${position}px)`, transition: !isSwiping ? 'transform 0.3s ease' : 'none' }}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                onTouchEnd={handleEnd}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
+                onMouseUp={handleEnd}
                 onClick={(e) => e.stopPropagation()}
                 ref={DeleteBtn}
             >
