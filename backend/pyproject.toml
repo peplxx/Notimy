@@ -20,6 +20,7 @@ pytz = "^2024.1"
 pytest = "^8.2.2"
 flask-login = "^0.6.3"
 flask-security = "^3.0.0"
+flask-cors = "^4.0.1"
 
 [build-system]
 requires = ["poetry-core"]
