@@ -17,6 +17,8 @@ def get_app() -> Flask:
         buff = Flask(__name__)
         buff.config['SECRET_KEY'] = 'abcdef'
         buff.config['JSON_AS_ASCII'] = False
+        buff.config['SESSION_COOKIE_SAMESITE'] = 'None'
+        buff.config['SESSION_COOKIE_SECURE'] = True  # Установите в True при использовании HTTPS
         for blueprint in blueprints:
             buff.register_blueprint(blueprint)
     return buff
