@@ -11,8 +11,6 @@ services:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
   backend:
     build: ./backend
-    env_file:
-      - .env
     ports:
       - "${APP_PORT}:${APP_PORT}"
     depends_on:
