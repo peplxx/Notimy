@@ -33,7 +33,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable, DeleteAction
         if (isSwiping && MenuClickable && DeleteBtn.current) {
             const deltaX = e.touches[0].clientX - startXRef.current;
             if (deltaX >= 0) { // Allow movement only to the right
-                setPosition(Math.min(deltaX, MenuClickable.offsetWidth - DeleteBtn.current.offsetWidth));
+                setPosition(Math.min(deltaX, MenuClickable.offsetWidth));
             }
         }
     };
@@ -41,7 +41,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable, DeleteAction
         if (isSwiping && MenuClickable && DeleteBtn.current) {
             const deltaX = e.clientX - startXRef.current;
             if (deltaX >= 0) { // Allow movement only to the right
-                setPosition(Math.min(deltaX, MenuClickable.offsetWidth - DeleteBtn.current.offsetWidth));
+                setPosition(Math.min(deltaX, MenuClickable.offsetWidth));
             }
         }
     };
@@ -54,7 +54,8 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable, DeleteAction
 
             if (movePercentage >= deleteThreshold) {
                 console.log('Delete action triggered');
-                setFinalPosition(MenuClickable.offsetWidth - DeleteBtn.current.offsetWidth); // Move to the end position
+                setMovePercentage(100);
+                setFinalPosition(100); // Move to the end position
                 DeleteAction().then((done) => {
                     if (!done) {
                         setFinalPosition(0); // Reset position
@@ -69,28 +70,25 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ MenuClickable, DeleteAction
     useEffect(() => {
         if (MenuClickable && DeleteBtn.current) {
             const elementWidth = MenuClickable.offsetWidth;
-            setMovePercentage(((position + DeleteBtn.current.offsetWidth) / elementWidth) * 100);
+            setMovePercentage(Math.min(14 + (position / elementWidth) * 100, 100));
         }
     }, [position, MenuClickable]);
 
     useEffect(() => {
         if (!isSwiping) {
-            setPosition(finalPosition); // Smoothly transition to final position
+            setMovePercentage(finalPosition); // Smoothly transition to final position
         }
     }, [finalPosition, isSwiping]);
 
     return (
         <>
-            <div className={styles.deleteBackground} style={
-                {
-                    minWidth: `10%`,
-                    width: `calc(${position}px + ${position === 0 ? 0 : DeleteBtn.current?.offsetWidth}px)`,
-                    transition: !isSwiping ? 'width 0.3s ease' : 'none'
-                }
-            }></div>
             <div
                 className={styles.deleteBtn}
-                style={{ transform: `translateX(${position}px)`, transition: !isSwiping ? 'transform 0.3s ease' : 'none' }}
+                style={{
+                    width: `calc(${movePercentage}%)`,
+                    // transform: `translateX(${position}px)`,
+                    transition: !isSwiping ? 'width 0.3s ease' : 'none'
+                }}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleEnd}

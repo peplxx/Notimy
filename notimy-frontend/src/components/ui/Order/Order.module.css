@@ -112,11 +112,11 @@
         opacity: 1;
     }
     to {
-        transform: translateX(100%);
+        transform: translateX(150%);
         opacity: 0;
     }
 }
 
 .orderSlidingOut {
-    animation: slideOutRight 1s forwards;
+    animation: slideOutRight 1s forwards 0.3s;
 }

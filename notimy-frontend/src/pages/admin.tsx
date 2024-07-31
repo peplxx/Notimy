@@ -29,9 +29,9 @@ function Admin() {
     // 
     useEffect(() => {
         fetchOrders();
-        // const interval = setInterval(fetchOrders, 1000);
+        const interval = setInterval(fetchOrders, 10000);
 
-        // return () => clearInterval(interval);
+        return () => clearInterval(interval);
     }, [fetchOrders]);
 
     // Add order and update list.

@@ -40,17 +40,23 @@ const Order: React.FC<OrderProps> = ({ title, id }) => {
     }
 
     async function deleteChannel() {
-        return axiosInstance.delete(`api/channel/${id}`).then(async (response) => {
-            if (response.status === 200) {
-                setIsDeleting(true);
-                await new Promise(r => setTimeout(r, 500));
-                orderRef.current.remove();
-                return true;
-            }
-            return false;
-        }).catch(async (e) => {
-            return false;
-        });
+        // Успешный сценарий, без запроса на бэк.
+        setIsDeleting(true);
+        await new Promise(r => setTimeout(r, 900));
+        orderRef.current.remove();
+        return true;
+
+        // return axiosInstance.delete(`api/channel/${id}`).then(async (response) => {
+        //     if (response.status === 200) {
+        //         setIsDeleting(true);
+        //         await new Promise(r => setTimeout(r, 500));
+        //         orderRef.current.remove();
+        //         return true;
+        //     }
+        //     return false;
+        // }).catch(async (e) => {
+        //     return false;
+        // });
     };
 
     return (

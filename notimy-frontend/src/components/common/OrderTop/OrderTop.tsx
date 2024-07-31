@@ -7,7 +7,7 @@ import DeleteButton from '@/components/common/DeleteButton';
 interface Props {
     title: string;
     backgroundStyle: React.CSSProperties;
-    DeleteAction: () => void;
+    DeleteAction: () => Promise<Boolean>;
 }
 
 const OrderTop: React.FC<Props> = ({ title, backgroundStyle, DeleteAction }) => {
