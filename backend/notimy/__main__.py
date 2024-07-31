@@ -1,6 +1,7 @@
 from json import load
 from logging import getLogger
 from logging.config import dictConfig
+from flask_cors import CORS
 
 from flask import Flask, redirect, request, session
 
@@ -21,6 +22,7 @@ def get_app() -> Flask:
         buff.config['SESSION_COOKIE_SECURE'] = True  # Установите в True при использовании HTTPS
         for blueprint in blueprints:
             buff.register_blueprint(blueprint)
+        CORS(buff, supports_credentials=True)
     return buff
 
 

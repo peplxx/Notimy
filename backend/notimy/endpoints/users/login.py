@@ -27,6 +27,7 @@ def find_token_user(session: Session, token) -> UUID | None:
             return result.account
     return None
 
+
 @blueprint.route("/login", methods=["GET", "POST"])
 def login(
 ):
@@ -44,11 +45,11 @@ def login(
             db_sess.add(user)
             db_sess.commit()
             login_user(user, remember=True)
-        previous_url = session.get('previous_url')
-        log.debug(f"Redirecting to {previous_url}")
-        return redirect(previous_url)
-    else:
-        user_instance = db_sess.scalar(select(User).where(User.id == service_user_id))
-        login_user(user_instance, remember=True)
+        if previous_url := session.get('previous_url'):
+            log.debug(f"Redirecting to {previous_url}")
+            return redirect(previous_url)
         return redirect("/me")
 
+    user_instance = db_sess.scalar(select(User).where(User.id == service_user_id))
+    login_user(user_instance, remember=True)
+    return redirect("/me")
