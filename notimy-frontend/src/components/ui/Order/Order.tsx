@@ -43,7 +43,7 @@ const Order: React.FC<OrderProps> = ({ title, id }) => {
         // Успешный сценарий, без запроса на бэк.
         setIsDeleting(true);
         await new Promise(r => setTimeout(r, 900));
-        orderRef.current.remove();
+        orderRef?.current?.remove();
         return true;
 
         // return axiosInstance.delete(`api/channel/${id}`).then(async (response) => {
