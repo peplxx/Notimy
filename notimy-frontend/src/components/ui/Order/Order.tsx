@@ -4,14 +4,16 @@ import OrderTop from '@/components/common/OrderTop/OrderTop';
 import styles from './Order.module.css';
 import classNames from 'classnames';
 import CryptoJS from 'crypto-js';
-import axiosInstance from '@/utils/axios';
+import axiosInstance from '@/utils/axiosInstance';
 
 interface OrderProps {
-    title: string;
     id: string;
+    provider_name: string;
+    code: string;
+    closed_at: string;
 }
 
-const Order: React.FC<OrderProps> = ({ title, id }) => {
+const Order: React.FC<OrderProps> = ({ provider_name, id, code, closed_at }) => {
     const orderRef = useRef<HTMLDivElement>(null); // Убедитесь, что типизация правильная
     const [isOpen, setIsOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -30,7 +32,7 @@ const Order: React.FC<OrderProps> = ({ title, id }) => {
         background: `linear-gradient(345deg, hsla(${mainHue2}, 71%, 79%, 1) 10%, hsla(${mainHue1}, 70%, 81%, 1) 60%)`
     };
 
-    if (title === 'BAZZAR') { // Используйте строгое равенство для сравнения строк
+    if (provider_name === 'BAZZAR') { // Используйте строгое равенство для сравнения строк
         const greenHue2 = (hashNumber % 40) + 100; // Диапазон 90-150
         const greenHue1 = ((hashNumber + 30) % 60) + 90;
 
@@ -72,8 +74,8 @@ const Order: React.FC<OrderProps> = ({ title, id }) => {
             )}
             onClick={toggleOrder}
         >
-            <OrderTop title={title} backgroundStyle={backgroundStyle} DeleteAction={deleteChannel} />
-            <OrderFooter backgroundStyle={backgroundStyle} />
+            <OrderTop code={code} title={provider_name} backgroundStyle={backgroundStyle} DeleteAction={deleteChannel} />
+            <OrderFooter backgroundStyle={backgroundStyle} closed_at={closed_at}/>
         </div>
     );
 };

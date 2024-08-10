@@ -5,25 +5,29 @@ import Order from '@/components/ui/Order/Order'; // using the alias for imports
 
 interface OrderData {
     id: string;
-    title: string;
+    providerName: string;
+    code: string;
+    closed_at: string;
 }
 
 interface OrderListProps {
     orders: OrderData[];
-    children: ReactNode;
+    // children: ReactNode;
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders, children }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders }) => {
+    console.log("ORDERLIST: " + orders);
     return (
         <div className={styles.order_list}>
-            {children}
             {orders.map(order => (
                 <Order
-                    key={order.id}
-                    title={order.title}
+                    closed_at={order.closed_at}
+                    code={order.code}
+                    provider_name={order.providerName}
                     id={order.id}
                 />
             ))}
+            {/*{children}*/}
         </div>
     );
 };

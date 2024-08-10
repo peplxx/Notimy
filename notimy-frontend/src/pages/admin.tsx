@@ -5,7 +5,7 @@ import AdminAddBtn from "../components/ui/AdminAddBtn/AdminAddBtn";
 import styles from '../assets/styles/global.module.css';
 import OrderList from "../components/layout/OrderList/OrderList";
 import AdminOrder from "@/components/ui/AdminOrder/AdminOrder";
-import axiosInstance from "@/utils/axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 interface OrderData {
     id: string;
@@ -19,7 +19,7 @@ function Admin() {
     // Update orders data.
     const fetchOrders = useCallback(async () => {
         try {
-            const response = await axiosInstance.get('/update_orders');
+            const response = await axiosInstance.get('/spots/me');
             setOrders(response.data);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -47,7 +47,7 @@ function Admin() {
     return (
         <div className={styles.App}>
             <div className={styles.Background}/>
-            <Header/>
+            {/*<Header/>*/}
             <OrderList orders={orders}>
                 <AdminAddBtn onAddOrder={addOrder}/>
                 <AdminOrder title={"asd"} id={"123"} />

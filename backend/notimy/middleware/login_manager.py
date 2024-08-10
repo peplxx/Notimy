@@ -4,7 +4,8 @@ from notimy.data.db.connection import get_session
 from notimy.data.db.models import User
 
 login_manager = LoginManager()
-
+login_manager.remember_cookie_samesite = 'None'  # Set SameSite attribute for remember cookies
+login_manager.remember_cookie_secure = True  # Set to True when using HTTPS
 
 @login_manager.user_loader
 def load_user(user_id):  # find user in database

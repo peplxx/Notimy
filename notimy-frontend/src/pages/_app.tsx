@@ -2,8 +2,6 @@ import React from "react";
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import Header from "../components/layout/Header/Header";
-
 // Import global styles
 import 'normalize.css';
 import '../assets/styles/global.css'; 

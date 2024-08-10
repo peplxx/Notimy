@@ -6,11 +6,12 @@ import DeleteButton from '@/components/common/DeleteButton';
 
 interface Props {
     title: string;
+    code: string;
     backgroundStyle: React.CSSProperties;
     DeleteAction: () => Promise<Boolean>;
 }
 
-const OrderTop: React.FC<Props> = ({ title, backgroundStyle, DeleteAction }) => {
+const OrderTop: React.FC<Props> = ({ title, code, backgroundStyle, DeleteAction }) => {
     const MenuClickable = useRef<HTMLDivElement>(null);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +35,7 @@ const OrderTop: React.FC<Props> = ({ title, backgroundStyle, DeleteAction }) => 
             >
                 <DeleteButton MenuClickable={MenuClickable.current} DeleteAction={DeleteAction} />
                 <div className={stylesTop.menuClickable} ref={MenuClickable}></div>
-                <span className={stylesTop.code}>BEBRA</span>
+                <span className={stylesTop.code}>{code}</span>
                 <span className={stylesTop.expandSign}>{"<"}</span>
             </div>
         </div>

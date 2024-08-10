@@ -19,9 +19,11 @@ def get_app() -> Flask:
         buff.config['SECRET_KEY'] = 'abcdef'
         buff.config['JSON_AS_ASCII'] = False
         buff.config['SESSION_COOKIE_SAMESITE'] = 'None'
-        buff.config['SESSION_COOKIE_SECURE'] = True  # Установите в True при использовании HTTPS
+        buff.config['SESSION_COOKIE_SECURE'] = True  # Set to True when using HTTPS
+        # buff.config['REMEMBER_TOKEN_COOKIE_SAMESITE'] = 'None'
+        # buff.config['REMEMBER_TOKEN_COOKIE_SECURE'] = True  # Set to True when using HTTPS
         for blueprint in blueprints:
-            buff.register_blueprint(blueprint)
+            buff.register_blueprint(blueprint, url_prefix='/api')
         CORS(buff, supports_credentials=True)
     return buff
 
@@ -35,7 +37,6 @@ def setup_logging() -> None:
 app = None
 app = get_app()
 
-
 @app.before_request
 def track_previous_url():
     session.permanent = True
@@ -46,7 +47,7 @@ def track_previous_url():
 @app.errorhandler(401)
 def handle_unauthorized(error):
     log.debug("Unauthorized access from user -> redirecting to /login")
-    return redirect("/login")
+    return redirect("/api/login")
 
 
 
@@ -62,6 +63,13 @@ if __name__ == '__main__':
     # Setting config for logger
     setup_logging()
     login_manager.init_app(app)
-
     # app.run(host=CONFIG.APP_HOST, port=CONFIG.APP_PORT)
-    app.run(host="0.0.0.0", port=config.APP_PORT, debug=True)
+    # app.config.update(
+    # SESSION_COOKIE_SAMESITE='None',  # Allow cookies to be sent cross-site
+    # SESSION_COOKIE_SECURE=True,      # Cookies are only sent over HTTPS
+    # REMEMBER_COOKIE_SAMESITE='None',
+    # REMEMBER_COOKIE_SECURE=True,
+    # )
+    # app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
+    # app.config['REMEMBER_COOKIE_SECURE'] = True  # Set to False if not using HTTPS
+    app.run(host="0.0.0.0", port=config.APP_PORT, ssl_context='adhoc')
