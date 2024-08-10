@@ -19,7 +19,7 @@ services:
     command: ["sh", "-c", "alembic upgrade head && poetry run python3 -m notimy"]
 
 #  frontend:
-#    build: ./notimy-frontend
+#    build: ./frontend
 #    depends_on:
 #      - backend
 

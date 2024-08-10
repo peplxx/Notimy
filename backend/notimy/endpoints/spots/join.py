@@ -1,7 +1,7 @@
 from logging import getLogger
 from uuid import UUID
 
-from flask import Blueprint
+from flask import Blueprint, redirect
 from flask_login import current_user, login_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -33,10 +33,9 @@ def join_channel(
         select(Channel).where(Channel.id == channel_id)
     )
     channel.add_listener(user.id)
-    # user.add_channel(channel_id)
     user_db: User = session.scalar(
         select(User).where(User.id == user.id)
     )
     user_db.add_channel(channel_id)
     session.commit()
-    return channel.dict()
+    return redirect('/')
