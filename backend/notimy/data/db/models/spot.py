@@ -21,7 +21,7 @@ class Spot(Base):
     provider = sa.Column(sa.UUID, nullable=False)
     channels_raw = sa.Column(sa.String, nullable=False, default='[]')
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
-    account = sa.Column(sa.UUID, nullable=False)
+    account = sa.Column(sa.UUID)
 
     @property
     def channels(self):

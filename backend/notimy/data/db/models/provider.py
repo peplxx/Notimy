@@ -18,7 +18,7 @@ class Provider(Base):
     last_channel = sa.Column(sa.Integer, default=-1, nullable=False)
     spots = sa.Column(sa.Integer, nullable=False, default=0)
     max_spots = sa.Column(sa.Integer, nullable=False, default=1)
-    account = sa.Column(sa.UUID, nullable=False)
+    account = sa.Column(sa.UUID)
 
     def __init__(
             self,

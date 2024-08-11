@@ -9,11 +9,13 @@ services:
       - .env
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   backend:
     build: ./backend
-#    ports:
-#      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
     depends_on:
       - database
     command: ["sh", "-c", "alembic upgrade head && poetry run python3 -m notimy"]
@@ -32,3 +34,7 @@ services:
       - /etc/ssl:/etc/ssl
     depends_on:
       - backend
+
+
+volumes:
+  postgres_data:

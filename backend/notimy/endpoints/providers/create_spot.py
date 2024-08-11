@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from notimy.config.roles import Roles
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Provider, Spot, User
+from notimy.data.db.models.alias import Alias
 from notimy.middleware.token_auth import get_token, provider_auth
 from notimy.schemas.providers import ProviderAuth
 from notimy.utils import exceptions
@@ -42,6 +43,8 @@ def create_provider(
     spot_user.data = json.dumps({
         "token": spot.token
     })
+    alias = Alias(base=spot.id)
+    session.add(alias)
     session.commit()
     return spot.dict()
 

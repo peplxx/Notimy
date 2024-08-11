@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from notimy.config import config
 from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, Spot, User
+from notimy.data.db.models import Channel, Spot, User, Alias
 from notimy.utils import exceptions
 
 log = getLogger("api.spots")
@@ -19,18 +19,24 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route("/spot/<string:spot_id>", methods=["GET", "POST"])
+@blueprint.route("/spot/<string:alias>", methods=["GET", "POST"])
 @login_required
 def join_channel(
-        spot_id: str,
+        alias: str,
         user: User = current_user,
         session: Session = get_session(),
 ):
-    spot_id = UUID(spot_id)
+    spot_id = None
+    alias = session.scalar(select(Alias).where(Alias.name == alias))
+    if not alias:
+        raise exceptions.InvalidLink()
+    spot_id = alias.base
+
     spot: Spot = session.scalar(
         select(Spot).where(Spot.id == spot_id)
     )
     if not spot: raise exceptions.InvalidLink()
+
     channel_id = spot.last_channel
     if not channel_id: raise exceptions.SpotHasNoChannels()
     channel: Channel = session.scalar(
