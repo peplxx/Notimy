@@ -1,6 +1,7 @@
 from typing import Optional
+from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class RegisterProvider(BaseModel):
@@ -17,3 +18,8 @@ class UpdateProviderData(BaseModel):
     token: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
+
+
+class MaxSpotLimit(BaseModel):
+    id: UUID
+    value: int

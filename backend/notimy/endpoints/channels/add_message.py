@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Channel
+from notimy.endpoints.channels.get_channel import get_channel_by_id
 from notimy.middleware import spot_auth
 from notimy.middleware.token_auth import get_token
 from notimy.schemas.channels import AddMessage
@@ -31,4 +32,4 @@ def add_message_to_channel(
     channel: Channel = session.scalar(select(Channel).where(Channel.id == body.channel_id))
     channel.add_message(body.message)
     session.commit()
-    return channel.dict()
+    return get_channel_by_id(session,channel.id)

@@ -1,18 +1,14 @@
-import json
 
 import pytest
-from notimy.__main__ import app  # Adjust the import to match your application entry point
 from asyncio import get_event_loop_policy
 from os import environ
 from types import SimpleNamespace
 from uuid import uuid4
 
-import pytest
 from alembic.command import upgrade
 from alembic.config import Config
 from httpx import AsyncClient
-from mock import AsyncMock
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import create_database, database_exists, drop_database
 

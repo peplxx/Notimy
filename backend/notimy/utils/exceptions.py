@@ -19,3 +19,18 @@ class ProviderAlreadyExists(HTTPException):
 class ChannelDoesntExist(HTTPException):
     code = 400
     description = "Channel id is invalid or current spot doesn't have it!"
+
+
+class InvalidLink(HTTPException):
+    code = 400
+    description = "Something is wrong with invitation link!"
+
+
+class SpotHasNoChannels(HTTPException):
+    code = 400
+    description = "This spot has no channels!"
+
+
+class ProviderDoesntExist(HTTPException):
+    code = 400
+    description = "Provider doesnt exist!"

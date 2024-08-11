@@ -6,8 +6,10 @@ from flask_login import current_user, login_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from notimy.config import config
 from notimy.data.db.connection import get_session
 from notimy.data.db.models import Channel, Spot, User
+from notimy.utils import exceptions
 
 log = getLogger("api.spots")
 
@@ -28,7 +30,9 @@ def join_channel(
     spot: Spot = session.scalar(
         select(Spot).where(Spot.id == spot_id)
     )
+    if not spot: raise exceptions.InvalidLink()
     channel_id = spot.last_channel
+    if not channel_id: raise exceptions.SpotHasNoChannels()
     channel: Channel = session.scalar(
         select(Channel).where(Channel.id == channel_id)
     )
@@ -38,4 +42,4 @@ def join_channel(
     )
     user_db.add_channel(channel_id)
     session.commit()
-    return redirect('/')
+    return redirect(config.API_PREFIX+'/me')

@@ -23,7 +23,7 @@ def get_app() -> Flask:
         # buff.config['REMEMBER_TOKEN_COOKIE_SAMESITE'] = 'None'
         # buff.config['REMEMBER_TOKEN_COOKIE_SECURE'] = True  # Set to True when using HTTPS
         for blueprint in blueprints:
-            buff.register_blueprint(blueprint, url_prefix='/api')
+            buff.register_blueprint(blueprint, url_prefix=config.API_PREFIX)
         CORS(buff, supports_credentials=True)
     return buff
 

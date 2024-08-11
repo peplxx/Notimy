@@ -17,12 +17,12 @@ def get_token() -> str:
     elif request.data and request.json.get('token'):
         token = request.json['token']
     else:
-        try: # Get token from user.data
+        try:  # Get token from user.data
             user: User = current_user
             user_data = user.get_data()
             token = user_data['token']
         except Exception:
-            pass # User is anonymous
+            pass  # User is anonymous
     if not token:
         raise exceptions.BadTokenException
     return token

@@ -2,12 +2,11 @@ from logging import getLogger
 from uuid import UUID
 
 from flask import Blueprint
-from flask_login import current_user, login_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, User, Spot, Provider
+from notimy.data.db.models import Channel, Provider
 
 log = getLogger("api.channels")
 
@@ -25,7 +24,7 @@ def get_channel_by_id(session: Session, channel_id: UUID):
     provider: Provider = session.scalar(
         select(Provider).where(Provider.id == channel.provider)
     )
-    data["provider-name"] = provider.name
+    data["provider_name"] = provider.name
     return data
 
 
