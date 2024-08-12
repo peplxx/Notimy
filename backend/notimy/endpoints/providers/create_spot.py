@@ -12,6 +12,7 @@ from notimy.data.db.models import Provider, Spot, User
 from notimy.data.db.models.alias import Alias
 from notimy.middleware.token_auth import get_token, provider_auth
 from notimy.schemas.providers import ProviderAuth
+from notimy.services.spot.logic import get_spot_by_id
 from notimy.utils import exceptions
 
 blueprint = Blueprint(
@@ -46,7 +47,7 @@ def create_provider(
     alias = Alias(base=spot.id)
     session.add(alias)
     session.commit()
-    return spot.dict()
+    return get_spot_by_id(session, spot.id)
 
 
 __all__ = [
