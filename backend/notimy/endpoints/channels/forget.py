@@ -34,6 +34,6 @@ def forget_channel(
     channel.delete_listener(user.id)
     session.commit()
     user.delete_channel(channel_id)
-    session.add(user)
+    session.merge(user)
     session.commit()
     return {"message": "You successfully unsubscribed from channel!"}
