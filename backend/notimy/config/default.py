@@ -29,6 +29,7 @@ class DefaultSettings(BaseSettings):
 
     PROVIDER_TOKEN_SIZE: int = 50
     SPOT_TOKEN_SIZE: int = 40
+    ALIAS_NAME_SIZE: int = 10
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
 

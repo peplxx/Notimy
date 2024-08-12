@@ -1,5 +1,7 @@
 from werkzeug.exceptions import HTTPException
 
+from notimy.config import config
+
 
 class BadTokenException(HTTPException):
     code = 403
@@ -34,3 +36,17 @@ class SpotHasNoChannels(HTTPException):
 class ProviderDoesntExist(HTTPException):
     code = 400
     description = "Provider doesnt exist!"
+
+
+class WrongAliasNameSize(HTTPException):
+    alias_size: int = config.ALIAS_NAME_SIZE
+    code = 400
+
+    def __init__(self):
+        super().__init__(
+            description=f"Wrong length for alias size (length = {self.alias_size})!"
+        )
+
+class AliasIsTaken(HTTPException):
+    code = 400
+    description = "This alias name is already taken!"

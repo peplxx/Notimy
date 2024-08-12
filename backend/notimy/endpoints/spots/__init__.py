@@ -2,6 +2,7 @@ from flask import Blueprint
 
 from notimy.endpoints.spots.join import blueprint as join_channel
 from notimy.endpoints.spots.me import blueprint as me
+from notimy.endpoints.spots.change_alias import blueprint as change_alias
 
 blueprint = Blueprint(
     "spots",
@@ -11,7 +12,9 @@ blueprint = Blueprint(
 
 includes = [
     join_channel,
-    me
+    me,
+    change_alias,
+
 ]
 
 for bp in includes:
