@@ -20,42 +20,12 @@ else
 MESSAGE = "Done"
 endif
 
-# Commands
-env:  ##@Environment Create .env file with variables
-	@$(eval SHELL:=/bin/bash)
-	@cp .env.example .env
-
-help: ##@Help Show this help
-	@echo -e "Usage: make [target] ...\n"
-	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
-
-run: ##@Run Run from dockerfile
-	docker-compose up
-
-revision:  ##@Database Create new revision file automatically with prefix (ex. 2022_01_01_14cs34f_message.py)
-	alembic revision --autogenerate
-
-migrate: ##@Database Migrate head to last migration
-	alembic upgrade head
-
 test: ##@Test Make testing
-	cd tests && poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
+	export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
+	poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
 
 psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
-
-db:  ##@Database Create database with docker-compose
-	docker-compose -f docker-compose.yml up -d --remove-orphans && docker-compose run db sh -c "alembic upgrade head"
-
-db_down:  ##@Database Down database in docker container
-	docker-compose -f docker-compose.yml down
-
-db_startup:  ##@Database Startup database with migrations
-	make db
-
-build:
-	docker-compose build
-
 
 %::
 	echo $(MESSAGE)
