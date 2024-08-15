@@ -40,7 +40,7 @@ async def login(
         )
         if service_user_id:
             is_service = True
-            user = await session.scalar(select(User).where(User.id == service_user_id))
+            user = await User.find_by_id(session, service_user_id)
             session_token = manager.create_access_token(
                 data={"id": str(service_user_id)},
                 expires=settings.SESSION_TOKEN_LIFETIME
@@ -129,9 +129,7 @@ async def join_channel(
     if not alias_db:
         raise exceptions.InvalidInvitationLink()
 
-    spot: Spot = await session.scalar(
-        select(Spot).where(Spot.id == alias_db.base)
-    )
+    spot: Spot = await Spot.find_by_id(session, alias_db.base)
 
     channel_id = spot.last_channel
     if not channel_id:
@@ -157,9 +155,7 @@ async def forget_channel(
 ):
     if channel_id not in user.channels:
         raise NotSubscribedOrChannelDoesntExist
-    channel: Channel = await session.scalar(
-        select(Channel).where(Channel.id == channel_id)
-    )
+    channel: Channel = await Channel.find_by_id(session, channel_id)
     user.delete_channel(channel_id)
     channel.delete_listener(user.id)
     await session.commit()

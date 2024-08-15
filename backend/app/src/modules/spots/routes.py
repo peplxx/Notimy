@@ -86,9 +86,7 @@ async def add_message_to_channel(
 ):
     if data.channel_id not in spot.channels:
         raise InvalidChannelLink
-    channel: Channel = await session.scalar(
-        select(Channel).where(Channel.id == data.channel_id)
-    )
+    channel: Channel = await Channel.find_by_id(session, data.channel_id)
     channel.add_message(data.message)
     await session.commit()
     return await ChannelData.by_model(session, channel)

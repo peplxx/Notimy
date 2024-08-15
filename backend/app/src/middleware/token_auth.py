@@ -1,5 +1,4 @@
 from fastapi import Request, Depends
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
@@ -23,9 +22,7 @@ async def get_token(
         if user:
             token = user.get_data().get('token')
     if not token:
-        raise exceptions.IncorrectCredentialsException(
-            no_credentials=True
-        )
+        raise exceptions.IncorrectCredentialsException(no_credentials=True)
     return token
 
 
@@ -43,9 +40,7 @@ async def provider_auth(
         session: AsyncSession = Depends(get_session)
 ) -> Provider:
     token = await get_token(request, session)
-    provider: Provider = await session.scalar(
-        select(Provider).where(Provider.token == token)
-    )
+    provider: Provider = await Provider.find_by_token(session, token)
     if not provider:
         raise exceptions.IncorrectCredentialsException()
     return provider
@@ -56,9 +51,7 @@ async def spot_auth(
         session: AsyncSession = Depends(get_session)
 ):
     token = await get_token(request, session)
-    spot: Spot = await session.scalar(
-        select(Spot).where(Spot.token == token)
-    )
+    spot: Spot = await Spot.find_by_token(session, token)
     if not spot:
         raise exceptions.IncorrectCredentialsException()
     return spot

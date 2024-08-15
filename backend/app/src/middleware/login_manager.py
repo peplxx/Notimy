@@ -50,7 +50,7 @@ async def load_user(
     user_id = await get_current_user_id(session_token)
     if not user_id:
         return None
-    result = await session.scalar(select(User).where(User.id == user_id))
+    result = await User.find_by_id(session,user_id)
     return result
 
 
@@ -58,22 +58,21 @@ async def current_user(
         request: Request,
         session: AsyncSession = Depends(get_session)
 ):
-    current_user = await load_user(
-        session_token=request.cookies.get("session_token"),
+    potential_user = await user_from_cookie(
+        request=request,
         session=session
     )
-    if not current_user:
-        raise NotAuthenticatedException("You must be logged in to access this")
+    if not potential_user:
+        raise NotAuthenticatedException
 
-    return current_user
+    return potential_user
 
 
 async def user_from_cookie(
         request: Request,
         session: AsyncSession
 ):
-    current_user = await load_user(
+    return await load_user(
         session_token=request.cookies.get("session_token"),
         session=session
     )
-    return current_user
