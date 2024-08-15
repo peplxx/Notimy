@@ -16,11 +16,11 @@ class Provider(Base):
 
     id = sa.Column(sa.UUID, nullable=False, primary_key=True, default=uuid4)
     token = sa.Column(sa.String, index=True, nullable=False, default=generate_provider_token)
+
     name = sa.Column(sa.String, nullable=False)
     description = sa.Column(sa.String, nullable=False)
-    registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
-    # TODO: remove last_channel field
-    last_channel = sa.Column(sa.Integer, default=-1, nullable=False)
+
+    created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     spots = sa.Column(sa.Integer, nullable=False, default=0)
     max_spots = sa.Column(sa.Integer, nullable=False, default=1)
     account = sa.Column(sa.UUID)

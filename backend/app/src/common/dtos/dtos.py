@@ -18,12 +18,12 @@ from app.data.db.models import Provider, Spot, Channel, User, Alias
 
 class ChannelData(BaseModel):
     id: UUID
-    name: str
     provider: UUID
     spot: UUID
-    closed_by: int
+    open: bool
     code: str
     created_at: datetime.datetime
+    disposed_at: datetime.datetime
     closed_at: datetime.datetime
 
     provider_name: Optional[str] = ""
@@ -149,7 +149,7 @@ class ProviderData(BaseModel):
     token: str
     name: str
     description: str
-    registered_at: datetime.datetime
+    created_at: datetime.datetime
     spots: int
     max_spots: int
     account: UUID
@@ -198,7 +198,7 @@ async def actual_channels(
         entity: Channel = await session.scalar(
             select(Channel).where(Channel.id == channel_id)
         )
-        if not entity or entity.expired:
+        if not entity or entity.disposed:
             # TODO: MAKE CHANNELS DISPOSE
             continue
         actual_ids += [channel_id]
