@@ -1,6 +1,6 @@
 __all__ = [
     "ProviderDoesntExist",
-    ""
+    "ImpossibleChange"
 ]
 
 from starlette import status

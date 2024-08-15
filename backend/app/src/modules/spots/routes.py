@@ -7,6 +7,7 @@ from app.data.db.connection import get_session
 from app.data.db.models import Spot, Channel, User, Alias
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.middleware.token_auth import spot_auth
+from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink
 from app.src.modules.spots.schemas import SpotChangeAlias, SpotAddMessage
 
 router = APIRouter(prefix="/spots", tags=["Spots"])
@@ -49,34 +50,42 @@ async def get_self(
     return response
 
 
-@router.post("/change_alias")
+@router.post(
+    "/change_alias",
+    responses={
+        **WrongAliasName.responses,
+        **AliasAlreadyExist.responses
+    }
+)
 async def change_alias_name(
         alias_data: SpotChangeAlias = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ):
     if len(alias_data.name) != settings.ALIAS_NAME_SIZE:
-        # TODO: Exception
-        return {"message": "Alias name doesnt satisfy length constraint!"}
+        raise WrongAliasName
     exist: Alias = await session.scalar(select(Alias).where(Alias.name == alias_data.name))
     if exist:
-        # TODO: Exception
-        return {"message": "Alias with such name already exist!"}
+        raise AliasAlreadyExist
     exist_alais: Alias = await session.scalar(select(Alias).where(Alias.base == spot.id))
     exist_alais.name = alias_data.name
     await session.commit()
     return await SpotData.by_model(session, spot)
 
 
-@router.post("/add_message")
+@router.post(
+    "/add_message",
+    responses={
+        **InvalidChannelLink,
+    }
+)
 async def add_message_to_channel(
         data: SpotAddMessage = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ):
     if data.channel_id not in spot.channels:
-        # TODO: Exception
-        return {"message": "Invalid channel id!"}
+        raise InvalidChannelLink
     channel: Channel = await session.scalar(
         select(Channel).where(Channel.id == data.channel_id)
     )

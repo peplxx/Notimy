@@ -14,6 +14,8 @@ from app.data.db.models import User, Alias, Spot, Channel
 from app.src.common import exceptions
 from app.src.common.dtos import UserData
 from app.src.middleware.login_manager import manager, current_user
+from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
+    SystemUsersJoinRestrict
 from app.src.modules.users.service import find_service_user
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -24,7 +26,6 @@ settings = get_settings()
 @router.post("/login")
 async def login(
         request: Request,
-        response: Response,
         next: Optional[str] = Query(None),
         token: Optional[str] = Query(None),
         session: AsyncSession = Depends(get_session),
@@ -109,7 +110,11 @@ async def logout(
 
 @router.post(
     "/join/{alias}",
-    responses={**exceptions.InvalidInvitationLink.responses}
+    responses={
+        **exceptions.InvalidInvitationLink.responses,
+        **SystemUsersJoinRestrict.responses,
+        **SpotDoestHaveChannels.responses
+    }
 )
 async def join_channel(
         alias: str,
@@ -117,8 +122,7 @@ async def join_channel(
         user: Optional[User] = Depends(current_user)
 ):
     if user.role != Roles.default.value:
-        # TODO: Exception
-        return {"message": "System users can't subscribe to channel by themselves!"}
+        raise SystemUsersJoinRestrict
     alias_db: Alias = await session.scalar(
         select(Alias).where(Alias.name == alias)
     )
@@ -131,27 +135,28 @@ async def join_channel(
 
     channel_id = spot.last_channel
     if not channel_id:
-        # TODO: Exception
-        return {"message": "Spot doesn't have any channels!"}
+        raise SpotDoestHaveChannels
     channel: Channel = await session.scalar(select(Channel).where(Channel.id == channel_id))
     channel.add_listener(user.id)
     user.add_channel(channel_id)
     await session.commit()
 
-    # TODO: Join to last channel
-
     return await UserData.by_model(session, user)
 
 
-@router.delete("/forget/{channel_id}")
+@router.delete(
+    "/forget/{channel_id}",
+    responses={
+        **NotSubscribedOrChannelDoesntExist.responses
+    }
+)
 async def forget_channel(
         channel_id: UUID,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ):
     if channel_id not in user.channels:
-        # TODO: Exception
-        return {"message": "You are not subscribed to this channel OR channel doesn't exist!"}
+        raise NotSubscribedOrChannelDoesntExist
     channel: Channel = await session.scalar(
         select(Channel).where(Channel.id == channel_id)
     )
