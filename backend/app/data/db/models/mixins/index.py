@@ -1,10 +1,8 @@
 from uuid import uuid4, UUID
 
+import sqlalchemy as sa
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.data.db import DeclarativeBase as Base
-import sqlalchemy as sa
 
 
 class IndexedObject:

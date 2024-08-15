@@ -1,24 +1,22 @@
 from datetime import datetime, timezone
 from json import dumps, loads
-from uuid import UUID, uuid4
+from uuid import UUID
 
 import sqlalchemy as sa
 
+from app.config import constants
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models import Channel
-
-from app.config import constants
-from app.data.db.models.mixins.indexedobject import IndexedObject
+from app.data.db.models.mixins.index import IndexedObject
+from app.data.db.models.mixins.token import TokenizedObject
 from app.data.db.utils.encoders import UUIDEncoder
-from app.data.db.utils.generators import generate_spot_token
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
-class Spot(Base, IndexedObject):
+class Spot(Base, IndexedObject, TokenizedObject):
     __tablename__ = 'spots'
 
-    token = sa.Column(sa.String, index=True, nullable=False, default=generate_spot_token)
     additional_info = sa.Column(sa.String, nullable=True, default=constants.NO_ADDITIONAL_INFO)
     provider = sa.Column(sa.UUID, nullable=False)
     channels_raw = sa.Column(sa.String, nullable=False, default='[]')

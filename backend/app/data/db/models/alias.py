@@ -3,7 +3,7 @@ from uuid import uuid4, UUID
 import sqlalchemy as sa
 
 from app.data.db import DeclarativeBase as Base
-from app.data.db.models.mixins.indexedobject import IndexedObject
+from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.utils.generators import generate_alias_name
 
 

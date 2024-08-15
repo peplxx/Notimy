@@ -26,8 +26,8 @@ async def create_new_spot(
         raise MaxSpotIsReached
     spot_service_user = User(
         role=Roles.spotUser.value
-
     )
+
     session.add(spot_service_user)
     await session.commit()
 

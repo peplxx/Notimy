@@ -5,7 +5,7 @@ from uuid import UUID, uuid4
 import sqlalchemy as sa
 from app.config.constants import Roles
 from app.data.db import DeclarativeBase as Base
-from app.data.db.models.mixins.indexedobject import IndexedObject
+from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.utils.encoders import UUIDEncoder
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)

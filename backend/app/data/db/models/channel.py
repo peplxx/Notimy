@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from app.config import get_settings
 from app.data.db import DeclarativeBase as Base
-from app.data.db.models.mixins.indexedobject import IndexedObject
+from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_invitation_code
 

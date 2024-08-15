@@ -1,21 +1,18 @@
 from datetime import datetime, timezone
-from uuid import uuid4, UUID
+from uuid import UUID
 
 import sqlalchemy as sa
 
 from app.config import constants
 from app.data.db import DeclarativeBase as Base
-from app.data.db.models.mixins.indexedobject import IndexedObject
-
-from app.data.db.utils.generators import generate_provider_token
+from app.data.db.models.mixins.index import IndexedObject
+from app.data.db.models.mixins.token import TokenizedObject
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
-class Provider(Base, IndexedObject):
+class Provider(Base, IndexedObject, TokenizedObject):
     __tablename__ = 'providers'
-
-    token = sa.Column(sa.String, index=True, nullable=False, default=generate_provider_token)
 
     name = sa.Column(sa.String, nullable=False)
     description = sa.Column(sa.String, nullable=False)
