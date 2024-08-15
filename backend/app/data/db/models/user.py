@@ -5,15 +5,15 @@ from uuid import UUID, uuid4
 import sqlalchemy as sa
 from app.config.constants import Roles
 from app.data.db import DeclarativeBase as Base
+from app.data.db.models.mixins.indexedobject import IndexedObject
 from app.data.db.utils.encoders import UUIDEncoder
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
-class User(Base):
+class User(Base, IndexedObject):
     __tablename__ = 'users'
 
-    id = sa.Column(sa.UUID, primary_key=True, default=uuid4)
     channels_raw = sa.Column(sa.String, nullable=False, default='[]')
     registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     role = sa.Column(sa.String, nullable=False, default=Roles.default.value)

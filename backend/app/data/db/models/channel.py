@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from app.config import get_settings
 from app.data.db import DeclarativeBase as Base
+from app.data.db.models.mixins.indexedobject import IndexedObject
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_invitation_code
 
@@ -25,10 +26,8 @@ class Message(BaseModel):
         }
 
 
-class Channel(Base):
+class Channel(Base, IndexedObject):
     __tablename__ = 'channels'
-    id = sa.Column(sa.UUID, nullable=False, primary_key=True, default=uuid4)
-
 
     provider = sa.Column(sa.UUID, index=True, nullable=False)
     spot = sa.Column(sa.UUID, index=True, nullable=False)

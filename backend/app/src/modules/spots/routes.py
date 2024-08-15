@@ -76,7 +76,7 @@ async def change_alias_name(
 @router.post(
     "/add_message",
     responses={
-        **InvalidChannelLink,
+        **InvalidChannelLink.responses
     }
 )
 async def add_message_to_channel(

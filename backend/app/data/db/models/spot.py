@@ -8,16 +8,16 @@ from app.data.db import DeclarativeBase as Base
 from app.data.db.models import Channel
 
 from app.config import constants
+from app.data.db.models.mixins.indexedobject import IndexedObject
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_spot_token
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
-class Spot(Base):
+class Spot(Base, IndexedObject):
     __tablename__ = 'spots'
 
-    id = sa.Column(sa.UUID, nullable=False, primary_key=True, default=uuid4)
     token = sa.Column(sa.String, index=True, nullable=False, default=generate_spot_token)
     additional_info = sa.Column(sa.String, nullable=True, default=constants.NO_ADDITIONAL_INFO)
     provider = sa.Column(sa.UUID, nullable=False)

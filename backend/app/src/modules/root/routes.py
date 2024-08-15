@@ -63,9 +63,7 @@ async def change_max_spots(
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
 ):
-    provider: Provider = await session.scalar(
-        select(Provider).where(Provider.id == data.id)
-    )
+    provider: Provider = await Provider.find_by_id(session, data.id)
     if not provider:
         raise ProviderDoesntExist
     if provider.max_spots + data.value < provider.spots:
