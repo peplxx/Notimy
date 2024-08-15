@@ -199,7 +199,15 @@ async def actual_channels(
             select(Channel).where(Channel.id == channel_id)
         )
         if not entity or entity.disposed:
-            # TODO: MAKE CHANNELS DISPOSE
+            if not entity:
+                pass# UNPREDICTABLE BEHAVIOR
+
+            users_to_unsubscribe = entity.listeners
+            for user_id in users_to_unsubscribe:
+                user: User = await session.scalar(select(User).where(User.id == user_id))
+                user.delete_channel(channel_id)
+                entity.delete_listener(user_id)
+                await session.commit()
             continue
         actual_ids += [channel_id]
         data += [await ChannelData.by_model(session, entity)]

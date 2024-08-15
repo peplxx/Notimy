@@ -6,19 +6,24 @@ from app.data.db.connection import get_session
 from app.data.db.models import Provider, Spot, User, Alias
 from app.src.common.dtos import SpotData, ProviderData
 from app.src.middleware.token_auth import provider_auth
+from app.src.modules.providers.exceptions import MaxSpotIsReached
 from app.src.modules.providers.schemas import ProviderUpdateData
 
 router = APIRouter(prefix="/providers", tags=["Providers"])
 
 
-@router.post("/new_spot")
+@router.post(
+    "/new_spot",
+    responses={
+        **MaxSpotIsReached.responses
+    }
+)
 async def create_new_spot(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ):
     if provider.spots + 1 > provider.max_spots:
-        # TODO: Exception
-        return {"message": "Max spot constraint is reached!"}
+        raise MaxSpotIsReached
     spot_service_user = User(
         role=Roles.spotUser.value
 

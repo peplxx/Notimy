@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "app-template"
+name = "notimy"
 version = "0.1.0"
 description = ""
 authors = ["peplxx"]

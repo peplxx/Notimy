@@ -85,7 +85,7 @@ class DefaultSettings(BaseSettings):
         path for docs
         """
         if self.ENV == "default":
-            return "/swagger"
+            return self.PATH_PREFIX+"/swagger"
         return None
 
     class Config:

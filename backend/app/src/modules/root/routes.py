@@ -9,6 +9,7 @@ from app.data.db.connection import get_session
 from app.data.db.models import Provider, User
 from app.src.common.dtos import ProviderData
 from app.src.middleware.token_auth import root_auth
+from app.src.modules.root.exceptions import ProviderDoesntExist, ImpossibleChange
 from app.src.modules.root.schemas import RootProviderCreate, RootChangeMaxSpotLimit
 
 router = APIRouter(prefix="/root", tags=["Root"])
@@ -50,7 +51,13 @@ async def create_new_provider(
     return response
 
 
-@router.post("/change_max_spots")
+@router.post(
+    "/change_max_spots",
+    responses={
+        **ProviderDoesntExist.responses,
+        **ImpossibleChange.responses
+    }
+)
 async def change_max_spots(
         data: RootChangeMaxSpotLimit,
         session: AsyncSession = Depends(get_session),
@@ -60,11 +67,9 @@ async def change_max_spots(
         select(Provider).where(Provider.id == data.id)
     )
     if not provider:
-        # TODO: Make an exception
-        return {"message": "Provider doesn't exist!"}
+        raise ProviderDoesntExist
     if provider.max_spots + data.value < provider.spots:
-        return {"message": "Can't change value!"}
+        raise ImpossibleChange
     provider.max_spots += data.value
     await session.commit()
-    # TODO: Extend Providers Data DTO
     return await ProviderData.by_model(session, provider)
