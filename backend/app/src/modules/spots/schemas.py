@@ -20,3 +20,7 @@ class SpotCreateChannel(BaseModel):
 class SpotAddMessage(BaseModel):
     channel_id: UUID
     message: Message
+
+
+class CloseChannel(BaseModel):
+    channel_id: UUID

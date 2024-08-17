@@ -7,8 +7,8 @@ from app.data.db.connection import get_session
 from app.data.db.models import Spot, Channel, User, Alias
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.middleware.token_auth import spot_auth
-from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink
-from app.src.modules.spots.schemas import SpotChangeAlias, SpotAddMessage
+from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
+from app.src.modules.spots.schemas import SpotChangeAlias, SpotAddMessage, CloseChannel
 
 router = APIRouter(prefix="/spots", tags=["Spots"])
 settings = get_settings()
@@ -89,4 +89,24 @@ async def add_message_to_channel(
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
     channel.add_message(data.message)
     await session.commit()
+    return await ChannelData.by_model(session, channel)
+
+
+@router.post(
+    "/close_channel",
+    responses={
+        **ChannelIsNotFound.responses
+    }
+)
+async def add_message_to_channel(
+        data: CloseChannel = Body(...),
+        session: AsyncSession = Depends(get_session),
+        spot: Spot = Depends(spot_auth)
+):
+    if data.channel_id not in spot.channels:
+        raise ChannelIsNotFound
+    channel: Channel = await Channel.find_by_id(session, data.channel_id)
+    if not channel.closed:
+        channel.close()
+        await session.commit()
     return await ChannelData.by_model(session, channel)

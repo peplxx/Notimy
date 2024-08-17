@@ -23,8 +23,8 @@ class ChannelData(BaseModel):
     open: bool
     code: str
     created_at: datetime.datetime
-    disposed_at: datetime.datetime
-    closed_at: datetime.datetime
+    dispose_at: datetime.datetime
+    closed_at: datetime.datetime | None
 
     provider_name: Optional[str] = ""
     users_ids: Optional[list[UUID]] = []

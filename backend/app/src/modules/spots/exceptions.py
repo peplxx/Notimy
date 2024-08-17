@@ -49,3 +49,17 @@ class InvalidChannelLink(CustomHTTPException):
         )
 
     responses = {400: {"description": "Channel id is invalid!"}}
+
+
+class ChannelIsNotFound(CustomHTTPException):
+    """
+    HTTP_404_NOT_FOUND
+    """
+
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=self.responses[404]["description"],
+        )
+
+    responses = {404: {"description": "Channel is not found!"}}

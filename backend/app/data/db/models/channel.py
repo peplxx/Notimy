@@ -81,3 +81,7 @@ class Channel(Base, IndexedObject):
     def closed(self):
         dt_now = datetime.datetime.now(datetime.UTC).astimezone(timezone.utc)
         return self.closed_at.replace(tzinfo=pytz.utc) < dt_now or not self.open
+
+    def close(self):
+        self.open = False
+        self.closed_at = now
