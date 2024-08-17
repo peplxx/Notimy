@@ -12,10 +12,11 @@ from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import User, Alias, Spot, Channel
 from app.src.common import exceptions
-from app.src.common.dtos import UserData
+from app.src.common.dtos import ChannelData
 from app.src.middleware.login_manager import manager, current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
+from app.src.modules.users.schemas import UserResponse, UserChannel
 from app.src.modules.users.service import find_service_user
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -91,15 +92,13 @@ async def login(
 async def get_self(
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-) -> UserData:
-    response: UserData = await UserData.by_model(session, user)
-    return response
+) -> UserResponse:
+    return await UserResponse.by_model(session, user)
 
 
 @router.get("/logout")
 async def logout(
-        request: Request,
-        response: Response,
+        request: Request
 ):
     if request.cookies.get("session_token"):
         response = JSONResponse(content={"message": "Logged out!"})
@@ -107,6 +106,23 @@ async def logout(
         return response
     return JSONResponse(content={"message": "You are not logged in!"})
 
+
+@router.get(
+    "/channel/{channel_id}",
+    responses={
+        **NotSubscribedOrChannelDoesntExist.responses
+    }
+)
+async def get_channel_info(
+        request: Request,
+        channel_id: UUID,
+        session: AsyncSession = Depends(get_session),
+        user: Optional[User] = Depends(current_user)
+) -> UserChannel:
+    if channel_id not in user.channels:
+        raise NotSubscribedOrChannelDoesntExist()
+    channel_data: ChannelData = await ChannelData.by_id(session, channel_id)
+    return await UserChannel.by_data(channel_data)
 
 @router.post(
     "/join/{alias}",
@@ -139,7 +155,7 @@ async def join_channel(
     user.add_channel(channel_id)
     await session.commit()
 
-    return await UserData.by_model(session, user)
+    return await UserResponse.by_model(session, user)
 
 
 @router.delete(
@@ -159,4 +175,4 @@ async def forget_channel(
     user.delete_channel(channel_id)
     channel.delete_listener(user.id)
     await session.commit()
-    return await UserData.by_model(session, user)
+    return await UserResponse.by_model(session, user)
