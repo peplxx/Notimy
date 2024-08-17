@@ -32,12 +32,12 @@ class Spot(Base, IndexedObject, TokenizedObject):
         self.channels_raw = dumps(value, default=str, cls=UUIDEncoder)
 
     def add_channel(self, channel: Channel):
-        channels = set(self.channels)
-        channels.add(channel.id)
-        self.channels = [e for e in channels]
+        if channel.id not in self.channels:
+            self.channels += [channel.id]
 
     @property
     def last_channel(self):
+
         if not self.channels:
             return None
         return self.channels[-1]
