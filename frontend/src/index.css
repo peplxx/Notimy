@@ -1,0 +1,19 @@
+:root {
+    --htmlBackground: #202123;
+    --header: #202123;
+    --headerText: white;
+    --orderBody: #afafaf;
+    --orderNotification: #8d9afa;
+    --orderHeader: #f9f9f7;
+    --messageBackground: #333;
+    --messageText: #fff;
+
+    --mainMaxWidth: 1000px;
+    --htmlMaxFontSize: 30px;
+}
+
+html {
+    font-size: min(5vw, 1000px); /* var(--html-max-font-size) */
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--htmlBackground);
+}
