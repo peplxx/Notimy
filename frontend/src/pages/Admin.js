@@ -10,7 +10,7 @@ const Home = () => {
                 <h1 style={{position: "absolute", right: "30%", top: "0.7em", color: "white", fontSize: "0.5em"}}>admin</h1>
             </Header>
             <AdminProvider>
-            <OrderList/>
+                <OrderList/>
             </AdminProvider>
         </div>
     );

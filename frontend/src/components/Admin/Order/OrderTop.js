@@ -4,9 +4,10 @@ import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
 import {Bulb} from "components/Bulb";
+import CloseChnlButton from "./CloseChnlButton";
 
 const OrderTop = () => {
-    const {order, backgroundColorStyles} = useContext(AdminOrderContext);
+    const {order, backgroundStyles, isReady} = useContext(AdminOrderContext);
 
     const MenuClickable = useRef(null);
 
@@ -15,11 +16,11 @@ const OrderTop = () => {
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
     };
-
+    console.log(isReady);
     return (
-        <div className={styles.top} style={backgroundColorStyles}>
-            <Bulb/>
-            <span className={styles.title}>{order.title}</span>
+        <div className={styles.top} style={backgroundStyles}>
+            {/*<Bulb/>*/}
+            <span className={styles.title}>{order.code}</span>
             <div
                 className={
                     classNames(
@@ -36,7 +37,10 @@ const OrderTop = () => {
                     e.stopPropagation();
                 }}
             >
-                <DeleteButton MenuClickable={MenuClickable.current}/>
+
+                {isReady ?
+                <DeleteButton MenuClickable={MenuClickable.current}/> :
+                <CloseChnlButton MenuClickable={MenuClickable.current} />}
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

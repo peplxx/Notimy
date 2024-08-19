@@ -60,22 +60,24 @@
 }
 
 
-.deleteBtn svg {
+.deleteBtn svg, img {
   position: absolute;
   fill: #FFFFFF;
   max-height: 50%;
   min-width: 1em;
   transform-origin: center;
   transition:
-    width 0.5s,
+    width 0.5s
 }
 
-.menuClosed svg {
+.menuClosed svg,img {
+  display: none;
   width: 0;
   visibility: hidden;
 }
 
-.menuOpened svg {
+.menuOpened svg, img {
+  display: table-caption;
   width: 100%;
   visibility: visible;
 }
@@ -134,6 +136,15 @@
   height: 100%;
   width: 0;
   background-color: red;
+}
+
+.acceptBackground {
+  position: absolute;
+  border-radius: inherit;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: green;
 }
 
 .animating {

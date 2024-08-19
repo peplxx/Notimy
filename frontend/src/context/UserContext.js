@@ -20,7 +20,7 @@ export const UserProvider = ({children}) => {
     // Fetch orders initially and set up polling every 10 seconds
     useEffect(() => {
         loadOrders();
-        const interval = setInterval(loadOrders, 10000);
+        const interval = setInterval(loadOrders, 1000);
         return () => clearInterval(interval);
     }, [loadOrders]);
 

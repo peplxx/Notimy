@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, {createContext, useState, useContext, useEffect} from 'react';
 import getBackground from 'utils/gradientById';
 import AdminContext from "./AdminContext";
 
@@ -10,6 +10,14 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
     const [order, setOrder] = useState(InitOrder);
     const [isOpen, setIsOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isReady, setIsReady] = useState(false);
+    const [backgroundStyles, setBackgroundStyles] = useState(null);
+
+    async function closeOrder() {
+        console.log("Channel is closed!");
+        setIsReady(true);
+        return true;
+    }
 
     async function deleteOrder() {
         setIsDeleting(true);
@@ -18,10 +26,22 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
         return result;
     }
 
-    const backgroundColorStyles = getBackground(order.id, false);
+    useEffect(() => {
+        console.log(order.status)
+        setIsReady(order.status);
+        setBackgroundStyles( getBackground(order.id, false) );
+    }, [order]);
+
+    useEffect(() => {
+        console.log(isReady)
+        if ( isReady ) {
+            console.log('change back');
+            setBackgroundStyles( {background: `gray`} );
+        }
+    }, [isReady]);
 
     return (
-        <AdminOrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting, deleteOrder, backgroundColorStyles}}>
+        <AdminOrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting, deleteOrder, isReady, closeOrder, backgroundStyles}}>
             {children}
         </AdminOrderContext.Provider>
     );
