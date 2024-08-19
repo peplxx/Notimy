@@ -5,11 +5,11 @@ from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel
-from notimy.middleware import spot_auth
-from notimy.middleware.token_auth import get_token
-from notimy.schemas.channels import AddMessage
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Channel
+from frontend.middleware import spot_auth
+from frontend.middleware.token_auth import get_token
+from frontend.schemas.channels import AddMessage
 
 log = getLogger("api.channels")
 

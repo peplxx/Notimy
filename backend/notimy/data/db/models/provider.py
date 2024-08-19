@@ -3,8 +3,8 @@ from uuid import uuid4, UUID
 
 import sqlalchemy as sa
 
-from notimy.data.db import DeclarativeBase as Base
-from notimy.utils import generate_provider_token
+from frontend.data.db import DeclarativeBase as Base
+from frontend.utils import generate_provider_token
 
 now = datetime.now(tz=timezone.utc)
 

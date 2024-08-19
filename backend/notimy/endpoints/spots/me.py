@@ -5,9 +5,9 @@ from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, Spot
-from notimy.middleware.token_auth import get_token, spot_auth
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Channel, Spot
+from frontend.middleware.token_auth import get_token, spot_auth
 
 blueprint = Blueprint(
     "get_spot",

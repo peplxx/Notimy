@@ -1,7 +1,7 @@
-from notimy.data.db.models.channel import Channel
-from notimy.data.db.models.provider import Provider
-from notimy.data.db.models.spot import Spot
-from notimy.data.db.models.user import User
+from frontend.data.db.models.channel import Channel
+from frontend.data.db.models.provider import Provider
+from frontend.data.db.models.spot import Spot
+from frontend.data.db.models.user import User
 
 __all__ = [
     "Channel",

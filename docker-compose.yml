@@ -16,12 +16,14 @@ services:
 #      - "${APP_PORT}:${APP_PORT}"
     depends_on:
       - database
-    command: ["sh", "-c", "alembic upgrade head && poetry run python3 -m notimy"]
+    command: ["sh", "-c", "alembic upgrade head && poetry run python3 -m frontend"]
 
-#  frontend:
-#    build: ./notimy-frontend
-#    depends_on:
-#      - backend
+  frontend:
+    build: frontend_old
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 
   nginx:
     image: nginx:latest

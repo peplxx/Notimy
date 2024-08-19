@@ -3,8 +3,8 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from notimy.data.db import DeclarativeBase
-from notimy.data.db.models import *  # noqua
+from frontend.data.db import DeclarativeBase
+from frontend.data.db.models import *  # noqua
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

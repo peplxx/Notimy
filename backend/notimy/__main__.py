@@ -5,9 +5,9 @@ from flask_cors import CORS
 
 from flask import Flask, redirect, request, session
 
-from notimy.config import config
-from notimy.endpoints import blueprints
-from notimy.middleware.login_manager import login_manager
+from frontend.config import config
+from frontend.endpoints import blueprints
+from frontend.middleware.login_manager import login_manager
 
 log = getLogger("main")
 

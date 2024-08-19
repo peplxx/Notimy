@@ -6,9 +6,9 @@ from uuid import UUID, uuid4
 import sqlalchemy as sa
 from flask_login import UserMixin
 
-from notimy.config.roles import Roles
-from notimy.data.db import DeclarativeBase as Base
-from notimy.utils.json_encoder import UUIDEncoder
+from frontend.config.roles import Roles
+from frontend.data.db import DeclarativeBase as Base
+from frontend.utils.json_encoder import UUIDEncoder
 
 now = datetime.now(tz=timezone.utc)
 

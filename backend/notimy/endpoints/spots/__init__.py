@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-from notimy.endpoints.spots.join import blueprint as join_channel
-from notimy.endpoints.spots.me import blueprint as me
+from frontend.endpoints.spots.join import blueprint as join_channel
+from frontend.endpoints.spots.me import blueprint as me
 
 blueprint = Blueprint(
     "spots",

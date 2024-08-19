@@ -6,10 +6,10 @@ from uuid import UUID, uuid4
 import pytz
 import sqlalchemy as sa
 
-from notimy.config import config
-from notimy.data.db import DeclarativeBase as Base
-from notimy.utils import generate_code
-from notimy.utils.json_encoder import UUIDEncoder
+from frontend.config import config
+from frontend.data.db import DeclarativeBase as Base
+from frontend.utils import generate_code
+from frontend.utils.json_encoder import UUIDEncoder
 
 now = datetime.datetime.now(tz=timezone.utc)
 

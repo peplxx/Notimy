@@ -1,9 +1,9 @@
 from flask import Blueprint
 
-from notimy.endpoints.providers.create import blueprint as create_provider
-from notimy.endpoints.providers.create_spot import blueprint as create_spot
-from notimy.endpoints.providers.me import blueprint as me_spot
-from notimy.endpoints.providers.update import blueprint as update_provider
+from frontend.endpoints.providers.create import blueprint as create_provider
+from frontend.endpoints.providers.create_spot import blueprint as create_spot
+from frontend.endpoints.providers.me import blueprint as me_spot
+from frontend.endpoints.providers.update import blueprint as update_provider
 
 blueprint = Blueprint(
     "providers",

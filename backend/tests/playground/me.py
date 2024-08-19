@@ -2,7 +2,7 @@ from json import loads
 
 import requests
 
-from notimy.config import config
+from frontend.config import config
 
 
 def get_spot(token):

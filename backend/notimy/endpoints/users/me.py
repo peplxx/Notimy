@@ -5,9 +5,9 @@ from flask_login import current_user, login_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, User
-from notimy.endpoints.channels.get_channel import get_channel_by_id
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Channel, User
+from frontend.endpoints.channels.get_channel import get_channel_by_id
 
 log = getLogger("api.users")
 blueprint = Blueprint(

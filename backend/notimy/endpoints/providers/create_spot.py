@@ -6,12 +6,12 @@ from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.config.roles import Roles
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Provider, Spot, User
-from notimy.middleware.token_auth import get_token, provider_auth
-from notimy.schemas.providers import ProviderAuth
-from notimy.utils import exceptions
+from frontend.config.roles import Roles
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Provider, Spot, User
+from frontend.middleware.token_auth import get_token, provider_auth
+from frontend.schemas.providers import ProviderAuth
+from frontend.utils import exceptions
 
 blueprint = Blueprint(
     "create_spot",

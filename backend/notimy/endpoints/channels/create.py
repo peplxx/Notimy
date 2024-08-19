@@ -5,13 +5,13 @@ from flask_pydantic import validate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from notimy.data.db.models import User
-from notimy.endpoints.channels.get_channel import get_channel_by_id
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Channel, Spot
-from notimy.middleware import spot_auth
-from notimy.middleware.token_auth import get_token
-from notimy.schemas.channels import CreateChannel
+from frontend.data.db.models import User
+from frontend.endpoints.channels.get_channel import get_channel_by_id
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Channel, Spot
+from frontend.middleware import spot_auth
+from frontend.middleware.token_auth import get_token
+from frontend.schemas.channels import CreateChannel
 
 log = getLogger("api.channels")
 

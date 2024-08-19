@@ -1,7 +1,7 @@
-from notimy.endpoints.channels import blueprint as channels_blueprint
-from notimy.endpoints.providers import blueprint as providers_blueprint
-from notimy.endpoints.spots import blueprint as spots_blueprint
-from notimy.endpoints.users import blueprint as users_blueprint
+from frontend.endpoints.channels import blueprint as channels_blueprint
+from frontend.endpoints.providers import blueprint as providers_blueprint
+from frontend.endpoints.spots import blueprint as spots_blueprint
+from frontend.endpoints.users import blueprint as users_blueprint
 
 blueprints = [
     channels_blueprint,

@@ -1,7 +1,7 @@
 from random import randint
 from string import ascii_letters, digits
 
-from notimy.config import config
+from frontend.config import config
 
 TOKEN_ALPHABET = ascii_letters + digits
 

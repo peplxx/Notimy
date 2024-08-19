@@ -1,4 +1,4 @@
-from notimy.config.default import config
+from frontend.config.default import config
 
 __all__ = [
     'config',

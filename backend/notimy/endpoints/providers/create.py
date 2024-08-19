@@ -5,11 +5,11 @@ from flask import Blueprint
 from flask_pydantic import validate
 from sqlalchemy.orm import Session
 
-from notimy.config.roles import Roles
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Provider, User
-from notimy.middleware.token_auth import root_auth
-from notimy.schemas.providers import RegisterProvider
+from frontend.config.roles import Roles
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Provider, User
+from frontend.middleware.token_auth import root_auth
+from frontend.schemas.providers import RegisterProvider
 
 blueprint = Blueprint(
     "create_provider",

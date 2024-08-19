@@ -1,7 +1,7 @@
 from flask_login import LoginManager
 
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import User
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import User
 
 login_manager = LoginManager()
 login_manager.remember_cookie_samesite = 'None'  # Set SameSite attribute for remember cookies

@@ -4,10 +4,10 @@ from flask import request
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from flask_login import current_user
-from notimy.config import config
-from notimy.data.db.connection import get_session
-from notimy.data.db.models import Provider, Spot, User
-from notimy.utils import exceptions
+from frontend.config import config
+from frontend.data.db.connection import get_session
+from frontend.data.db.models import Provider, Spot, User
+from frontend.utils import exceptions
 
 
 def get_token() -> str:

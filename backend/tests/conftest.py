@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from notimy.__main__ import app  # Adjust the import to match your application entry point
+from frontend.__main__ import app  # Adjust the import to match your application entry point
 from asyncio import get_event_loop_policy
 from os import environ
 from types import SimpleNamespace
@@ -18,9 +18,9 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from backend.tests import make_alembic_config
 
-from notimy.__main__ import get_app
-from notimy.config.default import DefaultSettings
-from notimy.data.db.connection import SessionManager
+from frontend.__main__ import get_app
+from frontend.config.default import DefaultSettings
+from frontend.data.db.connection import SessionManager
 from sqlalchemy import create_engine
 
 # Define fixtures
