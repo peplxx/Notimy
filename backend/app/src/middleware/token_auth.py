@@ -54,4 +54,16 @@ async def spot_auth(
     spot: Spot = await Spot.find_by_token(session, token)
     if not spot:
         raise exceptions.IncorrectCredentialsException()
+
+    return spot
+
+
+async def subscribed_spot(
+        request: Request,
+        session: AsyncSession = Depends(get_session)
+):
+    spot = await spot_auth(request, session)
+    has_subscription = await spot.is_subscribed(session)
+    if not has_subscription:
+        raise exceptions.NotSubscribed()
     return spot

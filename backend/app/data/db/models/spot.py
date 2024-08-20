@@ -3,6 +3,8 @@ from json import dumps, loads
 from uuid import UUID
 
 import sqlalchemy as sa
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import constants
 from app.data.db import DeclarativeBase as Base
@@ -10,6 +12,7 @@ from app.data.db.models import Channel
 from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.models.mixins.token import TokenizedObject
 from app.data.db.utils.encoders import UUIDEncoder
+from app.data.db.models import Subscription
 
 now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
@@ -48,3 +51,13 @@ class Spot(Base, IndexedObject, TokenizedObject):
             "token": self.token,
             "entity": self.id
         }
+
+    async def is_subscribed(self, session: AsyncSession) -> bool:
+        subscription = await self.get_subscription(session)
+        return subscription.is_active if subscription else False
+
+    async def get_subscription(self, session: AsyncSession) -> Subscription | None:
+        subscription = await session.scalar(select(Subscription).where(
+            Subscription.spot_id == self.id and Subscription.provider_id == self.provider
+        ))
+        return subscription

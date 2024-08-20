@@ -6,7 +6,7 @@ from app.config import get_settings
 from app.data.db.connection import get_session
 from app.data.db.models import Spot, Channel, User, Alias
 from app.src.common.dtos import SpotData, ChannelData
-from app.src.middleware.token_auth import spot_auth
+from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
 from app.src.modules.spots.schemas import SpotChangeAlias, SpotAddMessage, CloseChannel
 
@@ -17,7 +17,7 @@ settings = get_settings()
 @router.post("/new_channel")
 async def create_new_channel(
         session: AsyncSession = Depends(get_session),
-        spot: Spot = Depends(spot_auth)
+        spot: Spot = Depends(subscribed_spot)
 ):
     channel = Channel(
         provider=spot.provider,
@@ -60,7 +60,7 @@ async def get_self(
 async def change_alias_name(
         alias_data: SpotChangeAlias = Body(...),
         session: AsyncSession = Depends(get_session),
-        spot: Spot = Depends(spot_auth)
+        spot: Spot = Depends(subscribed_spot)
 ):
     if len(alias_data.name) != settings.ALIAS_NAME_SIZE:
         raise WrongAliasName
@@ -82,7 +82,7 @@ async def change_alias_name(
 async def add_message_to_channel(
         data: SpotAddMessage = Body(...),
         session: AsyncSession = Depends(get_session),
-        spot: Spot = Depends(spot_auth)
+        spot: Spot = Depends(subscribed_spot)
 ):
     if data.channel_id not in spot.channels:
         raise InvalidChannelLink
@@ -106,7 +106,7 @@ async def add_message_to_channel(
     if data.channel_id not in spot.channels:
         raise ChannelIsNotFound
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
-    if not channel.closed:
+    if channel.open:
         channel.close()
         await session.commit()
     return await ChannelData.by_model(session, channel)

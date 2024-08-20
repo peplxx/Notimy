@@ -1,4 +1,5 @@
 from app.data.db.models.channel import Channel, Message
+from app.data.db.models.subscription import Subscription
 from app.data.db.models.provider import Provider
 from app.data.db.models.spot import Spot
 from app.data.db.models.user import User
@@ -10,5 +11,7 @@ __all__ = [
     "Provider",
     "Spot",
     "Alias",
-    "Message"
+    "Message",
+    "Subscription",
+
 ]

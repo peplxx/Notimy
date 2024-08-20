@@ -41,3 +41,16 @@ class InvalidInvitationLink(CustomHTTPException):
         )
 
     responses = {400: {"description": "Something is wrong with invitation link!"}}
+
+
+class NotSubscribed(CustomHTTPException):
+    """
+    HTTP_403_FORBIDDEN
+    """
+
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=self.responses[403]["description"],
+        )
+    responses = {403: {"description": "You don't have subscription OR it is expired!"}}

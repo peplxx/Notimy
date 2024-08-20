@@ -13,3 +13,8 @@ class RootProviderCreate(BaseModel):
 class RootChangeMaxSpotLimit(BaseModel):
     id: UUID
     value: int
+
+
+class RootUpsertSubscription(BaseModel):
+    spot_id: UUID
+    days: int

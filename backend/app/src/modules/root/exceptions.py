@@ -34,3 +34,17 @@ class ImpossibleChange(CustomHTTPException):
         )
 
     responses = {403: {"description": "Can not change the value!"}}
+
+
+class SpotDoesntExist(CustomHTTPException):
+    """
+    HTTP_404_NOT_FOUND
+    """
+
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=self.responses[404]["description"],
+        )
+
+    responses = {404: {"description": "Spot with such id does not exist!"}}

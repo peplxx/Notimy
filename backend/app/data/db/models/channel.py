@@ -74,13 +74,7 @@ class Channel(Base, IndexedObject):
 
     @property
     def disposed(self):
-        dt_now = datetime.datetime.now(datetime.UTC).astimezone(timezone.utc)
-        return self.dispose_at.replace(tzinfo=pytz.utc) < dt_now
-
-    @property
-    def closed(self):
-        dt_now = datetime.datetime.now(datetime.UTC).astimezone(timezone.utc)
-        return self.closed_at.replace(tzinfo=pytz.utc) < dt_now or not self.open
+        return self.dispose_at < now
 
     def close(self):
         self.open = False

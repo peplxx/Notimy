@@ -21,8 +21,7 @@ services:
       timeout: 2s
 
   backend:
-    container_name: backend
-
+    container_name: 'notimy_backend'
     depends_on:
       database:
         condition: service_healthy
@@ -39,6 +38,7 @@ services:
 
 
   nginx:
+    container_name: 'notimy_nginx'
     image: nginx:latest
     ports:
       - "443:443"

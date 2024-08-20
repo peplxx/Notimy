@@ -1,3 +1,4 @@
+from datetime import timedelta, datetime, timezone
 from json import dumps
 
 from fastapi import APIRouter, Depends, Body
@@ -6,14 +7,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.constants import Roles
 from app.data.db.connection import get_session
-from app.data.db.models import Provider, User
-from app.src.common.dtos import ProviderData
+from app.data.db.models import Provider, User, Spot, Subscription
+from app.src.common.dtos import ProviderData, SpotData
 from app.src.middleware.token_auth import root_auth
-from app.src.modules.root.exceptions import ProviderDoesntExist, ImpossibleChange
-from app.src.modules.root.schemas import RootProviderCreate, RootChangeMaxSpotLimit
+from app.src.modules.root.exceptions import ProviderDoesntExist, ImpossibleChange, SpotDoesntExist
+from app.src.modules.root.schemas import RootProviderCreate, RootChangeMaxSpotLimit, RootUpsertSubscription
 
 router = APIRouter(prefix="/root", tags=["Root"])
 
+now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 @router.post("/new_provider")
 async def create_new_provider(
@@ -71,3 +73,35 @@ async def change_max_spots(
     provider.max_spots += data.value
     await session.commit()
     return await ProviderData.by_model(session, provider)
+
+
+@router.post(
+    "/subscription/upsert",
+    responses={
+        **SpotDoesntExist.responses
+    }
+)
+async def upsert_subscription(
+        data: RootUpsertSubscription,
+        session: AsyncSession = Depends(get_session),
+        _auth: None = Depends(root_auth)
+):
+    spot = await Spot.find_by_id(session, data.spot_id)
+    if not spot:
+        raise SpotDoesntExist
+
+    subscription = await session.scalar(select(Subscription).where(
+        Subscription.spot_id == spot.id
+    ))
+
+    if subscription and subscription.expires_at:
+        subscription.expires_at += timedelta(days=data.days)  # Extend existing subscription
+    if not subscription:
+        subscription = Subscription(
+            spot_id=spot.id,
+            provider_id=spot.provider,
+            expires_at=now + timedelta(days=data.days)
+        )
+        session.add(subscription)  # Create new subscription
+    await session.commit()
+    return await SpotData.by_model(session, spot)

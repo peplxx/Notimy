@@ -38,7 +38,7 @@ class UserResponse(BaseModel):
 
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list[UserChannel]] = []
-
+    
     @classmethod
     async def by_model(
             cls,

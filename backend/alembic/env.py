@@ -9,11 +9,6 @@ from app.data.db.models import *  # noqua
 from app.config import get_settings
 from dotenv import load_dotenv
 
-
-
-
-
-
 env_path = Path(__file__).parents[2] / '.env'
 load_dotenv(dotenv_path=env_path)
 
@@ -40,6 +35,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = DeclarativeBase.metadata
+
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")

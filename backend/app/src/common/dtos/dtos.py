@@ -105,6 +105,7 @@ class SpotData(BaseModel):
     created_at: datetime.datetime
     account: UUID
 
+    subscription: Optional[dict] = {}
     alias: Optional[dict] = {}
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list[ChannelData]] = []
@@ -131,6 +132,10 @@ class SpotData(BaseModel):
             select(Alias).where(Alias.base == spot.id)
         )
         result.alias = alias.dict()
+        subscription = await spot.get_subscription(session)
+        sub_dict = {} if not subscription else subscription.dict()
+        sub_dict["exist"] = subscription is not None
+        result.subscription = sub_dict
         return result
 
     @staticmethod
@@ -200,7 +205,7 @@ async def actual_channels(
         )
         if not entity or entity.disposed:
             if not entity:
-                pass# UNPREDICTABLE BEHAVIOR
+                pass  # UNPREDICTABLE BEHAVIOR
 
             users_to_unsubscribe = entity.listeners
             for user_id in users_to_unsubscribe:
