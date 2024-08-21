@@ -81,7 +81,8 @@ async def login(
             "session_token": session_token,
             "token_type": "bearer"
         })
-    response.set_cookie(key="session_token", value=session_token)
+    response.set_cookie(key="session_token", value=session_token,
+                        samesite="none", secure=True)
     return response
 
 
