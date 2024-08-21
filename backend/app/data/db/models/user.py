@@ -1,14 +1,14 @@
 import json
-from datetime import datetime, timezone
 from json import dumps, loads
-from uuid import UUID, uuid4
+from uuid import UUID
+
 import sqlalchemy as sa
+
 from app.config.constants import Roles
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models.mixins.index import IndexedObject
+from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
-
-now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
 class User(Base, IndexedObject):

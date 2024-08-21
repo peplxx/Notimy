@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 from json import dumps, loads
 from uuid import UUID
 
@@ -9,12 +8,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import constants
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models import Channel
+from app.data.db.models import Subscription
 from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.models.mixins.token import TokenizedObject
+from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
-from app.data.db.models import Subscription
-
-now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
 class Spot(Base, IndexedObject, TokenizedObject):

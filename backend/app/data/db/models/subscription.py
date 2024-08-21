@@ -1,11 +1,8 @@
-from datetime import datetime, timezone
-
 import sqlalchemy as sa
 
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models.mixins.index import IndexedObject
-
-now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
+from app.data.db.utils import get_now as now
 
 
 class Subscription(Base, IndexedObject):
@@ -19,4 +16,4 @@ class Subscription(Base, IndexedObject):
     @property
     def is_active(self):
         """Проверяет, активна ли подписка."""
-        return self.expires_at is None or self.expires_at > now
+        return self.expires_at is None or self.expires_at > now()

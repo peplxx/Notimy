@@ -1,20 +1,18 @@
-import datetime
-from datetime import timezone
 from json import dumps, loads
-from uuid import UUID, uuid4
+from uuid import UUID
 
-import pytz
 import sqlalchemy as sa
 from pydantic import BaseModel
 
 from app.config import get_settings
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models.mixins.index import IndexedObject
+from app.data.db.utils import get_dispose_at as dispose_at
+from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_invitation_code
 
 config = get_settings()
-now = datetime.datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 
 class Message(BaseModel):
@@ -40,7 +38,7 @@ class Channel(Base, IndexedObject):
 
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     closed_at = sa.Column(sa.TIMESTAMP, nullable=True)
-    dispose_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now + config.CHANNEL_LIFETIME)
+    dispose_at = sa.Column(sa.TIMESTAMP, nullable=False, default=dispose_at)
 
     @property
     def listeners(self):
@@ -74,7 +72,7 @@ class Channel(Base, IndexedObject):
 
     @property
     def disposed(self):
-        return self.dispose_at < now
+        return self.dispose_at < now()
 
     def close(self):
         self.open = False

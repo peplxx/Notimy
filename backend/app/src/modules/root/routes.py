@@ -1,5 +1,4 @@
-from datetime import timedelta, datetime, timezone
-from json import dumps
+from datetime import timedelta
 
 from fastapi import APIRouter, Depends, Body
 from sqlalchemy import select
@@ -8,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import Provider, User, Spot, Subscription
+from app.data.db.utils import get_now as now
 from app.src.common.dtos import ProviderData, SpotData
 from app.src.middleware.token_auth import root_auth
 from app.src.modules.root.exceptions import ProviderDoesntExist, ImpossibleChange, SpotDoesntExist
@@ -15,7 +15,6 @@ from app.src.modules.root.schemas import RootProviderCreate, RootChangeMaxSpotLi
 
 router = APIRouter(prefix="/root", tags=["Root"])
 
-now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
 
 @router.post("/new_provider")
 async def create_new_provider(
@@ -100,7 +99,7 @@ async def upsert_subscription(
         subscription = Subscription(
             spot_id=spot.id,
             provider_id=spot.provider,
-            expires_at=now + timedelta(days=data.days)
+            expires_at=now() + timedelta(days=data.days)
         )
         session.add(subscription)  # Create new subscription
     await session.commit()

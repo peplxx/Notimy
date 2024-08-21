@@ -7,9 +7,7 @@ from app.config import constants
 from app.data.db import DeclarativeBase as Base
 from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.models.mixins.token import TokenizedObject
-
-now = datetime.now(tz=timezone.utc).replace(tzinfo=None)
-
+from app.data.db.utils import get_now as now
 
 class Provider(Base, IndexedObject, TokenizedObject):
     __tablename__ = 'providers'
