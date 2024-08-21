@@ -5,11 +5,12 @@ import {AdminOrderProvider} from "context/AdminOrderContext";
 
 import styles from './OrderList.module.css';
 
-const OrderList = () => {
+const OrderList = ({ children }) => {
   const { orders } = useContext(AdminContext);
 
   return (
     <div className={styles.order_list}>
+      {children}
       {orders.map(order => (
           <AdminOrderProvider key={order.id} InitOrder={order}>
             <Order />

@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import { TrashBucketSvg } from "components/TrashBucketSvg";
-import styles from './OrderTop.module.css';
+import styles from './CloseChnlBtn.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
+import classNames from "classnames";
+import { AcceptSvg } from "components/AcceptSvg";
 
 const CloseChnlButton = ({ MenuClickable }) => {
-    const {closeOrder} = useContext(AdminOrderContext);
+    const {closeOrder, setIsSideOpen, isSideOpen} = useContext(AdminOrderContext);
 
     const [deltaX, setDeltaX] = useState(0);
     const [deltaPercentage, setDeltaPercentage] = useState(0);
@@ -42,7 +44,7 @@ const CloseChnlButton = ({ MenuClickable }) => {
                 setIsSwiping(false);
                 setDeltaPercentage(100);
                 if ( await closeOrder() ) {
-                    setDeltaPercentage(100);
+                    setIsSideOpen(false);
                 } else {
                     setDeltaPercentage(0);
                 }
@@ -62,7 +64,10 @@ const CloseChnlButton = ({ MenuClickable }) => {
 
     return (
         <div
-            className={styles.acceptBackground}
+            className={classNames(
+                isSideOpen ? styles.menuOpened: styles.menuClosed,
+                styles.acceptBackground,
+            )}
             style={{
                 width: `${deltaPercentage}%`,
                 transition: isSwiping ? 'none' : `width 0.5s`
@@ -76,7 +81,7 @@ const CloseChnlButton = ({ MenuClickable }) => {
             onClick={(e) => e.stopPropagation()}
             ref={DeleteBtn}
         >
-            <img src={'./accept.png'} />
+            <AcceptSvg />
         </div>
     );
 };

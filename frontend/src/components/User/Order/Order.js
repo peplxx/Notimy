@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import classNames from "classnames";
 
 import OrderTop from './OrderTop';
@@ -14,18 +14,19 @@ const Order = () => {
         setIsOpen(!isOpen);
     };
 
-  return (
-    <div className={
-        classNames(
-            styles.order,
-            isOpen ? styles.orderOpened : styles.orderClosed,
-            isDeleting ? styles.orderSlidingOut : null
-        )}
-         onClick={toggleOrder}>
-      <OrderTop />
-      <OrderBottom />
-    </div>
-  );
+    return (
+        <div className={
+            classNames(
+                styles.order,
+                isOpen ? styles.orderOpened : styles.orderClosed,
+                isDeleting ? styles.orderShaking : null
+            )}
+             onClick={toggleOrder}
+        >
+            <OrderTop/>
+            <OrderBottom/>
+        </div>
+    );
 };
 
 export default Order;

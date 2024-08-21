@@ -1,20 +1,29 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import classNames from "classnames";
 
 import MessagesList from "components/Admin/Order/MessagesList";
 import AdminOrderContext from "context/AdminOrderContext";
 
 import styles from './OrderBottom.module.css';
+import {InputMessage} from "./InputMessage";
 
 const OrderBottom = () => {
-    const {order, backgroundStyles}= useContext(AdminOrderContext);
+    const {order, backgroundStyles} = useContext(AdminOrderContext);
+    const [message, setMessage] = useState("");
+
+    const sendMessage = () => {
+        setMessage("");
+        return true;
+    }
 
     return (
-    <div className={classNames(styles.bottom)} style={backgroundStyles}>
-        <MessagesList messages={order.messages} />
-        <div className={styles.datetime}>{order.closed_at}</div>
-        <div className={styles.toggleBtn}>...</div>
-    </div>
+        <div className={classNames(styles.bottom)} style={backgroundStyles}>
+            <MessagesList messages={order.messages}>
+                <InputMessage message={message} setMessage={setMessage} sendMessage={sendMessage}/>
+            </MessagesList>
+            <div className={styles.datetime}>{order.closed_at}</div>
+            <div className={styles.toggleBtn}>...</div>
+        </div>
     );
 };
 

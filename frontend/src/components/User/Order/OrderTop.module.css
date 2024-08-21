@@ -66,8 +66,7 @@
   max-height: 50%;
   min-width: 1em;
   transform-origin: center;
-  transition:
-    width 0.5s,
+  transition: width 0.5s
 }
 
 .menuClosed svg {

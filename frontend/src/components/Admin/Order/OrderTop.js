@@ -7,18 +7,16 @@ import {Bulb} from "components/Bulb";
 import CloseChnlButton from "./CloseChnlButton";
 
 const OrderTop = () => {
-    const {order, backgroundStyles, isReady} = useContext(AdminOrderContext);
+        const {order, backgroundStyles, isReady, isSideOpen, setIsSideOpen, setIsOpen, isOpen} = useContext(AdminOrderContext);
 
     const MenuClickable = useRef(null);
-
-    const [isSideOpen, setIsSideOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
     };
     console.log(isReady);
     return (
-        <div className={styles.top} style={backgroundStyles}>
+        <div className={styles.top} style={backgroundStyles} onClick={() => {setIsOpen(!isOpen)}}>
             {/*<Bulb/>*/}
             <span className={styles.title}>{order.code}</span>
             <div
@@ -39,8 +37,8 @@ const OrderTop = () => {
             >
 
                 {isReady ?
-                <DeleteButton MenuClickable={MenuClickable.current}/> :
-                <CloseChnlButton MenuClickable={MenuClickable.current} />}
+                <DeleteButton MenuClickable={MenuClickable.current} isClosed={!isSideOpen} /> :
+                <CloseChnlButton MenuClickable={MenuClickable.current} isClosed={!isSideOpen} setIsSideOpen={setIsSideOpen} />}
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

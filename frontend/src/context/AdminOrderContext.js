@@ -7,14 +7,15 @@ const AdminOrderContext = createContext();
 
 export const AdminOrderProvider = ({ children, InitOrder }) => {
     const {deleteOrder: deleteOrderContext} = useContext(AdminContext);
-    const [order, setOrder] = useState(InitOrder);
-    const [isOpen, setIsOpen] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isReady, setIsReady] = useState(false);
+    const [order, setOrder] = useState(InitOrder); // Данные О Заказе
+    const [isOpen, setIsOpen] = useState(false); // Открытие/Закрытие Заказа
+    const [isDeleting, setIsDeleting] = useState(false); // Процесс Удаления
+    const [isReady, setIsReady] = useState(false); // Статус Заказа
     const [backgroundStyles, setBackgroundStyles] = useState(null);
-
+    const [isSideOpen, setIsSideOpen] = useState(false); // Открытие/Закрытие Слайдера
     async function closeOrder() {
-        console.log("Channel is closed!");
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        await sleep(1000);
         setIsReady(true);
         return true;
     }
@@ -24,6 +25,10 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
         const result = await deleteOrderContext(order.id);
         setIsDeleting(result);
         return result;
+    }
+
+    const sendMessage = async () => {
+        return true;
     }
 
     useEffect(() => {
@@ -41,7 +46,9 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
     }, [isReady]);
 
     return (
-        <AdminOrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting, deleteOrder, isReady, closeOrder, backgroundStyles}}>
+        <AdminOrderContext.Provider
+            value={{order, setOrder, isOpen, setIsOpen, isDeleting,
+                deleteOrder, isReady, closeOrder, backgroundStyles, isSideOpen, setIsSideOpen}}>
             {children}
         </AdminOrderContext.Provider>
     );

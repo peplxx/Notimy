@@ -1,29 +1,29 @@
 import React, {createContext, useState, useEffect, useCallback} from 'react';
-import {createChannelAdmin, deleteOrderApi, getMeAdmin} from 'utils/api';
+import {createChannelAdmin, deleteOrderApiAdmin, fetchOrdersAdmin} from 'utils/api';
 
 const AdminContext = createContext();
 
 export const AdminProvider = ({children}) => {
     const [orders, setOrders] = useState([]);
 
-    const getMe = useCallback(async () => {
+    const fetchOrders = useCallback(async () => {
         try {
-            const me = await getMeAdmin();
-            console.log(me);
-            setOrders(me.orders);
+            const orders = await fetchOrdersAdmin();
+            console.log(orders);
+            setOrders(orders);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
         }
     }, []);
 
     useEffect(()=>{
-        getMe();
+        fetchOrdersAdmin();
     }, []);
 
     const createChannel = async () => {
         const response = await createChannelAdmin();
         if ( response ) {
-            getMe();
+            await fetchOrders();
         } else {
             //TODO show error;
         }
@@ -31,7 +31,7 @@ export const AdminProvider = ({children}) => {
 
     const deleteOrder = async (id) => {
         const timeDeleteStart = Date.now();
-        if (await deleteOrderApi(id)) {
+        if (await deleteOrderApiAdmin(id)) {
             const timeDeleteEnd = Date.now();
             const timeToSleep = Math.max(0, 900 - (timeDeleteEnd - timeDeleteStart));
             await new Promise(resolve => setTimeout(resolve, timeToSleep));

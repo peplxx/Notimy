@@ -11,6 +11,7 @@ export const OrderProvider = ({ children, InitOrder }) => {
     const [order, setOrder] = useState(InitOrder);
     const [isOpen, setIsOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
     const [isReady, setIsReady] = useState(false);
 
     async function deleteOrder() {
@@ -27,7 +28,8 @@ export const OrderProvider = ({ children, InitOrder }) => {
     const backgroundColorStyles = getBackground(order.id, false);
 
     return (
-        <OrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting, deleteOrder, isReady, backgroundColorStyles}}>
+        <OrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting,
+            deleteOrder, isReady, backgroundColorStyles, isDeleted, setIsDeleted}}>
             {children}
         </OrderContext.Provider>
     );

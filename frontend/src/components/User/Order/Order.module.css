@@ -31,17 +31,26 @@
     font-size: 2em;
 }
 
-@keyframes slideOutRight {
-    from {
+@keyframes shaking {
+    0% {
         transform: translateX(0);
-        opacity: 1;
     }
-    to {
-        transform: translateX(150%);
-        opacity: 0;
+    25% {
+        transform: translateX(-2%);
     }
+    50% {
+        transform: translateX(0%);
+    }
+    75% {
+        transform: translateX(2%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+
 }
 
-.orderSlidingOut {
-    animation: slideOutRight 1s forwards 0.1s;
+.orderShaking {
+    animation: shaking .15s .15s;
+    animation-iteration-count: 2;
 }

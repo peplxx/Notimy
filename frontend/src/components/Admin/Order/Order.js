@@ -9,22 +9,18 @@ import styles from './Order.module.css';
 const Order = () => {
     const {setIsOpen, isOpen, isDeleting} = useContext(AdminOrderContext);
 
-    const toggleOrder = () => {
-        setIsOpen(!isOpen);
-    };
-
-  return (
-    <div className={
-        classNames(
-            styles.order,
-            isOpen ? styles.orderOpened : styles.orderClosed,
-            isDeleting ? styles.orderSlidingOut : null
-        )}
-         onClick={toggleOrder}>
-      <OrderTop />
-      <OrderBottom />
-    </div>
-  );
+    return (
+        <div className={
+            classNames(
+                styles.order,
+                isOpen ? styles.orderOpened : styles.orderClosed,
+                isDeleting ? styles.orderSlidingOut : null
+            )}
+        >
+            <OrderTop/>
+            <OrderBottom/>
+        </div>
+    );
 };
 
 export default Order;
