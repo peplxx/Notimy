@@ -18,7 +18,7 @@ settings = get_settings()
 async def create_new_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
-):
+) -> ChannelData:
     channel = Channel(
         provider=spot.provider,
         spot=spot.id
@@ -42,7 +42,7 @@ async def create_new_channel(
 async def get_self(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
-):
+) -> SpotData:
     response: SpotData = await SpotData.by_model(
         session,
         spot
@@ -61,7 +61,7 @@ async def change_alias_name(
         alias_data: SpotChangeAlias = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
-):
+) -> SpotData:
     if len(alias_data.name) != settings.ALIAS_NAME_SIZE:
         raise WrongAliasName
     exist: Alias = await session.scalar(select(Alias).where(Alias.name == alias_data.name))
@@ -83,7 +83,7 @@ async def add_message_to_channel(
         data: SpotAddMessage = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
-):
+) -> ChannelData:
     if data.channel_id not in spot.channels:
         raise InvalidChannelLink
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
@@ -102,7 +102,7 @@ async def add_message_to_channel(
         data: CloseChannel = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
-):
+) -> ChannelData:
     if data.channel_id not in spot.channels:
         raise ChannelIsNotFound
     channel: Channel = await Channel.find_by_id(session, data.channel_id)

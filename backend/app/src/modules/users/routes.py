@@ -136,7 +136,7 @@ async def join_channel(
         alias: str,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-):
+) -> UserResponse:
     if user.role != Roles.default.value:
         raise SystemUsersJoinRestrict
     alias_db: Alias = await session.scalar(
@@ -168,7 +168,7 @@ async def forget_channel(
         channel_id: UUID,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-):
+) -> UserResponse:
     if channel_id not in user.channels:
         raise NotSubscribedOrChannelDoesntExist
     channel: Channel = await Channel.find_by_id(session, channel_id)

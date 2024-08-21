@@ -5,8 +5,6 @@ services:
     container_name: 'notimy_postgres'
     image: 'postgres:14'
     restart: always
-    environment:
-      - POSTGRES_PORT=6432
     env_file:
       - .env
     ports:

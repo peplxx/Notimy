@@ -22,7 +22,7 @@ async def create_new_provider(
         provider_data: RootProviderCreate = Body(...),
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
-):
+) -> ProviderData:
     existing_provider: Provider = await session.scalar(
         select(Provider).where(Provider.name == provider_data.name)
     )
@@ -64,7 +64,7 @@ async def change_max_spots(
         data: RootChangeMaxSpotLimit,
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
-):
+) -> ProviderData:
     provider: Provider = await Provider.find_by_id(session, data.id)
     if not provider:
         raise ProviderDoesntExist
@@ -85,7 +85,7 @@ async def upsert_subscription(
         data: RootUpsertSubscription,
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
-):
+) -> SpotData:
     spot = await Spot.find_by_id(session, data.spot_id)
     if not spot:
         raise SpotDoesntExist

@@ -21,7 +21,7 @@ router = APIRouter(prefix="/providers", tags=["Providers"])
 async def create_new_spot(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
-):
+) -> SpotData:
     if provider.spots + 1 > provider.max_spots:
         raise MaxSpotIsReached
     spot_service_user = User(
@@ -53,7 +53,7 @@ async def create_new_spot(
 async def get_self(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
-):
+) -> ProviderData:
     response: ProviderData = await ProviderData.by_model(
         session,
         provider
@@ -61,12 +61,15 @@ async def get_self(
     return response
 
 
-@router.put("/update")
+@router.put(
+    "/update",
+    response_model=ProviderData,
+)
 async def update_providers_data(
         data: ProviderUpdateData = Body(...),
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
-):
+) -> ProviderData:
     provider.name = data.name if data.name else provider.name
     provider.description = data.description if data.description else provider.description
     await session.commit()
