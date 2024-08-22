@@ -7,13 +7,13 @@ import styles from './OrderList.module.css';
 
 const OrderList = ({ children }) => {
   const { orders } = useContext(AdminContext);
-
+  console.log(orders)
   return (
     <div className={styles.order_list}>
       {children}
       {orders.map(order => (
-          <AdminOrderProvider key={order.id} InitOrder={order}>
-            <Order />
+          <AdminOrderProvider key={`OrderProvider${order.id}`} InitOrder={order}>
+            <Order key={`Order${order.id}`}/>
           </AdminOrderProvider>
       ))}
     </div>

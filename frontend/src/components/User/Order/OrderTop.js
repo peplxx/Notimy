@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import DeleteButton from "./DeleteButton";
 
 import classNames from "classnames";
@@ -10,17 +10,37 @@ const OrderTop = () => {
     const {order, backgroundColorStyles} = useContext(OrderContext);
 
     const MenuClickable = useRef(null);
+    const titleRef = useRef(null); // Reference for the title element
 
     const [isSideOpen, setIsSideOpen] = useState(false);
+    useEffect(() => {
+        const resizeTextToFit = () => {
+            if (titleRef.current) {
+                let fontSize = 2; // Starting size
+                titleRef.current.style.fontSize = fontSize + "em";
+
+                while (titleRef.current.scrollWidth > titleRef.current.offsetWidth && fontSize > 0.5) {
+                    fontSize -= 0.1;
+                    titleRef.current.style.fontSize = fontSize + "em";
+                }
+            }
+        };
+
+        resizeTextToFit(); // Initial resize
+        window.addEventListener("resize", resizeTextToFit); // Resize on window resize
+
+        return () => {
+            window.removeEventListener("resize", resizeTextToFit); // Clean up the event listener
+        };
+    }, [order.provider_name]); // Dependency array includes `order.provider_name` in case it changes
 
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
     };
-    console.log(backgroundColorStyles);
     return (
         <div className={styles.top} style={backgroundColorStyles}>
-            <Bulb />
-            <span className={styles.title}>{order.title}</span>
+            <Bulb/>
+            <span className={styles.title} ref={titleRef}>{order.provider_name}</span>
             <div
                 className={
                     classNames(
@@ -29,7 +49,7 @@ const OrderTop = () => {
                             [styles.menuClosed]: !isSideOpen,
                             [styles.menuOpened]: isSideOpen,
                         }
-                        )
+                    )
                 }
                 ref={MenuClickable}
                 onClick={(e) => {
@@ -37,7 +57,7 @@ const OrderTop = () => {
                     e.stopPropagation();
                 }}
             >
-                <DeleteButton MenuClickable={MenuClickable.current} />
+                <DeleteButton MenuClickable={MenuClickable.current}/>
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

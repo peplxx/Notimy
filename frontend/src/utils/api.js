@@ -6,22 +6,36 @@ const getBaseURL = () => {
     // Get the current host (domain)
     const host = window.location.hostname;
     // Set the port you want to use
-    const port = 8000;
+    const port = 443;
 
     // Construct the base URL
-    return `${protocol}//${host}:${port}`;
+    return `https://localhost:443/api/`;
 };
 
 // Create an Axios instance with the dynamic base URL
 const api = axios.create({
     baseURL: getBaseURL(),
+    withCredentials: true
 });
 
 
 export const fetchOrders = async () => {
     try {
         const res = await api.get('/me');
-        return res.channels;
+        return [...res.data['channels_data'], {
+            "id": "b434bb9c-4501-4ad0-a43d-1ebf2df7b046",
+            "open": true,
+            "code": "4SUMKH",
+            "created_at": "2024-08-22T08:02:31.781182",
+            "provider_name": "BAZZAR",
+            "messages_data": [
+                {"text": "test"},
+                {"text": "test"},
+                {"text": "test"},
+                {"text": "test"},
+                {"text": "test"},
+            ]
+        }];
     } catch (e) {
         console.log("Error /me.");
         return [];
@@ -58,19 +72,20 @@ export const deleteOrderApiUser = async (id) => {
         const res = await api.delete(`/forget/${id}`);
         return true;
     } catch (e) {
-        console.log(`Error /forget/${id}.`);
+        console.log(`Error  /forget/${id}.`);
         return false;
     }
 }
-export const deleteOrderApiAdmin = async (id) => {
+export const closeOrderApiAdmin = async (id) => {
     try {
-        const res = await api.post(`/spots/close_channel/${id}`, {channel_id: id});
+        const res = await api.post(`/spots/close_channel`, {channel_id: id});
         return true;
     } catch (e) {
         console.log(`Error /spots/close_channel/${id}.`);
         return false;
     }
 }
+
 
 export const createChannelAdmin = async () => {
     try {
@@ -84,11 +99,12 @@ export const createChannelAdmin = async () => {
 
 export const fetchOrdersAdmin = async () => {
     try {
-        const res = await api.get(`/spots/me`);
-        return res.channels;
+        const res = await api.get(`/me`);
+        // console.log(res.data.channels_data)
+        return res.data.channels_data;
     } catch (e) {
         console.log(`Error /spots/me`);
-        return false;
+        return [];
     }
     // return {
     //     orders: [
@@ -98,4 +114,30 @@ export const fetchOrdersAdmin = async () => {
     //         }
     //     ]
     // };
+}
+
+export const adminLogin = async (token) => {
+    try {
+        const res = await api.get(`/login?token=${token}`);
+        return true;
+    } catch (e) {
+        console.log(`Error /login?token=${token}`, e);
+        return false;
+    }
+}
+
+export const sendMessageAdmin = async (id, message) => {
+    const data = {
+        "message": {
+            "text": message
+        },
+        "channel_id": id
+    }
+    try {
+        const res = await api.post(`/spots/add_message`, data);
+        return true;
+    } catch (e) {
+        console.log(`Error /spots/add_message`, data, e);
+        return false;
+    }
 }

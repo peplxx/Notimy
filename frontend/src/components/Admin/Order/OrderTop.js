@@ -4,7 +4,7 @@ import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
 import {Bulb} from "components/Bulb";
-import CloseChnlButton from "./CloseChnlButton";
+import CloseChnlBtn from "./CloseChnlBtn";
 
 const OrderTop = () => {
         const {order, backgroundStyles, isReady, isSideOpen, setIsSideOpen, setIsOpen, isOpen} = useContext(AdminOrderContext);
@@ -14,7 +14,7 @@ const OrderTop = () => {
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
     };
-    console.log(isReady);
+
     return (
         <div className={styles.top} style={backgroundStyles} onClick={() => {setIsOpen(!isOpen)}}>
             {/*<Bulb/>*/}
@@ -38,7 +38,7 @@ const OrderTop = () => {
 
                 {isReady ?
                 <DeleteButton MenuClickable={MenuClickable.current} isClosed={!isSideOpen} /> :
-                <CloseChnlButton MenuClickable={MenuClickable.current} isClosed={!isSideOpen} setIsSideOpen={setIsSideOpen} />}
+                <CloseChnlBtn MenuClickable={MenuClickable.current} isClosed={!isSideOpen} setIsSideOpen={setIsSideOpen} />}
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

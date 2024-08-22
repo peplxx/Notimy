@@ -1,6 +1,8 @@
+import CryptoJS from "crypto-js";
+
 export default function backgroundStyleByIdAndStatus(id, status) {
 
-    const hash = Number(id); // CryptoJS.MD5(id).toString(CryptoJS.enc.Hex);
+    const hash = CryptoJS.MD5(id).toString(CryptoJS.enc.Hex);
     const hashNumber = parseInt(hash, 16) % 360;
 
     let mainHue1 = ((hashNumber) % 360);

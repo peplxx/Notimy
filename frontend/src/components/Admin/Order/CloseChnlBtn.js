@@ -5,8 +5,8 @@ import AdminOrderContext from "context/AdminOrderContext";
 import classNames from "classnames";
 import { AcceptSvg } from "components/AcceptSvg";
 
-const CloseChnlButton = ({ MenuClickable }) => {
-    const {closeOrder, setIsSideOpen, isSideOpen} = useContext(AdminOrderContext);
+const CloseChnlBtn = ({ MenuClickable }) => {
+    const {closeOrder, setIsSideOpen, isSideOpen, order} = useContext(AdminOrderContext);
 
     const [deltaX, setDeltaX] = useState(0);
     const [deltaPercentage, setDeltaPercentage] = useState(0);
@@ -43,7 +43,7 @@ const CloseChnlButton = ({ MenuClickable }) => {
             if (deltaPercentage >= deleteThreshold) {
                 setIsSwiping(false);
                 setDeltaPercentage(100);
-                if ( await closeOrder() ) {
+                if ( await closeOrder(order.id) ) {
                     setIsSideOpen(false);
                 } else {
                     setDeltaPercentage(0);
@@ -86,4 +86,4 @@ const CloseChnlButton = ({ MenuClickable }) => {
     );
 };
 
-export default CloseChnlButton;
+export default CloseChnlBtn;

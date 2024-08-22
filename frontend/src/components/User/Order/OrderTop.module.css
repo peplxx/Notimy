@@ -14,13 +14,18 @@
   font-family: "Rubik", sans-serif;
   color: #202123;
   font-weight: 700;
-  max-width: 82%;
+  max-width: 78%;
   text-align: left;
   line-height: 1em;
   position: absolute;
   bottom: 5%;
   left: 5%;
   font-size: 2em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /*font-size: 2em;*/
+  user-select: none;
 }
 
 

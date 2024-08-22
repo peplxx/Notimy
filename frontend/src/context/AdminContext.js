@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect, useCallback} from 'react';
-import {createChannelAdmin, deleteOrderApiAdmin, fetchOrdersAdmin} from 'utils/api';
+import {createChannelAdmin, deleteOrderApiUser, fetchOrdersAdmin, sendMessageAdmin} from 'utils/api';
 
 const AdminContext = createContext();
 
@@ -9,7 +9,6 @@ export const AdminProvider = ({children}) => {
     const fetchOrders = useCallback(async () => {
         try {
             const orders = await fetchOrdersAdmin();
-            console.log(orders);
             setOrders(orders);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
@@ -17,7 +16,7 @@ export const AdminProvider = ({children}) => {
     }, []);
 
     useEffect(()=>{
-        fetchOrdersAdmin();
+        fetchOrders();
     }, []);
 
     const createChannel = async () => {
@@ -29,9 +28,15 @@ export const AdminProvider = ({children}) => {
         }
     }
 
+    const sendMessage = async(id, message) => {
+        if ( await sendMessageAdmin(id, message) ) {
+            await fetchOrders();
+        }
+    }
+
     const deleteOrder = async (id) => {
         const timeDeleteStart = Date.now();
-        if (await deleteOrderApiAdmin(id)) {
+        if (await deleteOrderApiUser(id)) {
             const timeDeleteEnd = Date.now();
             const timeToSleep = Math.max(0, 900 - (timeDeleteEnd - timeDeleteStart));
             await new Promise(resolve => setTimeout(resolve, timeToSleep));
@@ -42,7 +47,7 @@ export const AdminProvider = ({children}) => {
     }
 
     return (
-        <AdminContext.Provider value={{orders, createChannel, deleteOrder}}>
+        <AdminContext.Provider value={{orders, createChannel, deleteOrder, sendMessage}}>
             {children}
         </AdminContext.Provider>
     );

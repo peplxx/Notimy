@@ -1,5 +1,5 @@
 // src/components/OrderList.js
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Order from 'components/User/Order/Order';
 import UserContext from '../../context/UserContext';
 import {OrderProvider} from "context/OrderContext";
@@ -9,13 +9,17 @@ import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 const OrderList = () => {
     const {orders} = useContext(UserContext);
-
     const [parent] = useAutoAnimate()
+
+    useEffect(()=>{
+        // console.log(orders);
+    },[orders]);
+
     return (
         <div className={styles.order_list} ref={parent}>
             {orders.map(order => (
-                <OrderProvider key={order.id} InitOrder={order}>
-                    <Order/>
+                <OrderProvider key={`OrderProviderFor${order.id}`} InitOrder={order}>
+                    <Order key={`Order${order.id}`} />
                 </OrderProvider>
             ))}
         </div>

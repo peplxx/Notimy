@@ -1,6 +1,7 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
 import getBackground from 'utils/gradientById';
 import AdminContext from "./AdminContext";
+import {closeOrderApiAdmin} from "../utils/api";
 
 const AdminOrderContext = createContext();
 
@@ -13,11 +14,12 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
     const [isReady, setIsReady] = useState(false); // Статус Заказа
     const [backgroundStyles, setBackgroundStyles] = useState(null);
     const [isSideOpen, setIsSideOpen] = useState(false); // Открытие/Закрытие Слайдера
-    async function closeOrder() {
+    async function closeOrder(id) {
+        const res = await closeOrderApiAdmin(id);
         const sleep = ms => new Promise(r => setTimeout(r, ms));
-        await sleep(1000);
-        setIsReady(true);
-        return true;
+        await sleep(200);
+        setIsReady(res);
+        return res;
     }
 
     async function deleteOrder() {
@@ -27,20 +29,14 @@ export const AdminOrderProvider = ({ children, InitOrder }) => {
         return result;
     }
 
-    const sendMessage = async () => {
-        return true;
-    }
 
     useEffect(() => {
-        console.log(order.status)
         setIsReady(order.status);
         setBackgroundStyles( getBackground(order.id, false) );
     }, [order]);
 
     useEffect(() => {
-        console.log(isReady)
         if ( isReady ) {
-            console.log('change back');
             setBackgroundStyles( {background: `gray`} );
         }
     }, [isReady]);

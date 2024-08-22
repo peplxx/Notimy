@@ -11,7 +11,15 @@ export const UserProvider = ({children}) => {
     const loadOrders = useCallback(async () => {
         try {
             const fetchedOrders = await fetchOrders();
-            setOrders(fetchedOrders);
+            // console.log('====')
+            // console.log(a === b);
+            // console.log('====')
+            // console.log('before')
+            // console.log(fetchedOrders)
+            setOrders([...fetchedOrders]); //fetchedOrders.map(order => ({...order, open: order.open, messages_data: [...order.messages_data], jopa: Date.now()})));
+            // console.log('setting')
+            // console.log(fetchedOrders.map(order => ({...order, open: order.open, messages_data: [...order.messages_data], jopa: Date.now()})))
+            // console.log('after')
         } catch (error) {
             console.error("Failed to fetch orders:", error);
         }
@@ -20,7 +28,7 @@ export const UserProvider = ({children}) => {
     // Fetch orders initially and set up polling every 10 seconds
     useEffect(() => {
         loadOrders();
-        const interval = setInterval(loadOrders, 10000);
+        const interval = setInterval(loadOrders, 3000);
         return () => clearInterval(interval);
     }, [loadOrders]);
 
@@ -43,7 +51,7 @@ export const UserProvider = ({children}) => {
     }
 
     return (
-        <UserContext.Provider value={{orders, addOrder, deleteOrder}}>
+        <UserContext.Provider value={{orders, addOrder, deleteOrder, loadOrders}}>
             {children}
         </UserContext.Provider>
     );

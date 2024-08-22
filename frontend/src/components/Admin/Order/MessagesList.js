@@ -5,7 +5,7 @@ const MessagesList = ({messages, children}) => {
         <div className={styles.messages}>
             {messages.map((message) => (
                 <div className={styles.message}>
-                    {message}
+                    {message.text}
                 </div>
             ))}
             {children}

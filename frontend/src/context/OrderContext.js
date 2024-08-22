@@ -9,10 +9,17 @@ const OrderContext = createContext();
 export const OrderProvider = ({ children, InitOrder }) => {
     const {deleteOrder: deleteOrderContext} = useContext(UserContext);
     const [order, setOrder] = useState(InitOrder);
+    const [messages, setMessages] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+        if ( messages.length !== order.messages_data.length ) {
+            setMessages(order.messages_data);
+        }
+    }, [order, messages]);
 
     async function deleteOrder() {
         setIsDeleting(true);
@@ -22,14 +29,18 @@ export const OrderProvider = ({ children, InitOrder }) => {
     }
 
     useEffect(() => {
-        setIsReady(order.status);
+        setOrder(InitOrder)
+    }, [InitOrder]);
+
+    useEffect(() => {
+        setIsReady(!order.open);
     }, [order]);
 
-    const backgroundColorStyles = getBackground(order.id, false);
+    const backgroundColorStyles = getBackground(order.id, isReady);
 
     return (
         <OrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting,
-            deleteOrder, isReady, backgroundColorStyles, isDeleted, setIsDeleted}}>
+            deleteOrder, isReady, backgroundColorStyles, isDeleted, setIsDeleted, messages}}>
             {children}
         </OrderContext.Provider>
     );
