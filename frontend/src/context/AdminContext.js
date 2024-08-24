@@ -4,9 +4,10 @@ import {createChannelAdmin, deleteOrderApiUser, fetchOrdersAdmin, sendMessageAdm
 const AdminContext = createContext();
 
 export const AdminProvider = ({children}) => {
+    // Context который только взаимодействует с api и информацией о админе (список заказов)
     const [orders, setOrders] = useState([]);
 
-    const fetchOrders = useCallback(async () => {
+    const updateOrders = useCallback(async () => {
         try {
             const orders = await fetchOrdersAdmin();
             setOrders(orders);
@@ -16,25 +17,26 @@ export const AdminProvider = ({children}) => {
     }, []);
 
     useEffect(()=>{
-        fetchOrders();
+        updateOrders();
     }, []);
 
-    const createChannel = async () => {
+    const createOrder = async () => {
         const response = await createChannelAdmin();
         if ( response ) {
-            await fetchOrders();
+            await updateOrders();
         } else {
-            //TODO show error;
+            console.error("Failed to create order")
         }
     }
 
     const sendMessage = async(id, message) => {
         if ( await sendMessageAdmin(id, message) ) {
-            await fetchOrders();
+            await updateOrders();
         }
     }
 
     const deleteOrder = async (id) => {
+        // TODO убрать таймеры, только слать запрос
         const timeDeleteStart = Date.now();
         if (await deleteOrderApiUser(id)) {
             const timeDeleteEnd = Date.now();
@@ -46,8 +48,12 @@ export const AdminProvider = ({children}) => {
         return false;
     }
 
+    const closeOrder = async (id) => {
+        // TODO
+    }
+
     return (
-        <AdminContext.Provider value={{orders, createChannel, deleteOrder, sendMessage}}>
+        <AdminContext.Provider value={{orders, createOrder, deleteOrder, sendMessage, closeOrder}}>
             {children}
         </AdminContext.Provider>
     );

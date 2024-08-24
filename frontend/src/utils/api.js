@@ -98,6 +98,13 @@ export const createChannelAdmin = async () => {
 }
 
 export const fetchOrdersAdmin = async () => {
+
+    return [
+            {
+                id: 123, provider_name: "BAZZAR", code: "A1B2C3", status: false,
+                messages_data: [{text: "Hi!"}, {text: "Privet!"}, {text: "JOPA()()"}]
+            }
+        ];
     try {
         const res = await api.get(`/me`);
         // console.log(res.data.channels_data)
@@ -106,14 +113,6 @@ export const fetchOrdersAdmin = async () => {
         console.log(`Error /spots/me`);
         return [];
     }
-    // return {
-    //     orders: [
-    //         {
-    //             id: 123, title: "BAZZAR", code: "A1B2C3", status: false,
-    //             messages: ["Hi!", "Privet!", "JOPA()()"]
-    //         }
-    //     ]
-    // };
 }
 
 export const adminLogin = async (token) => {

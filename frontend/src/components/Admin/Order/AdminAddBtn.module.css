@@ -5,8 +5,12 @@
     margin: auto;
     background: linear-gradient(160deg, rgb(4, 231, 98) 0%, rgb(2, 182, 76) 100%);
     border-radius: .1em .1em 1em 1em;
-    box-shadow: 0 0 1em black;
+    box-shadow: inset .1em .1em .3em black;
     cursor: pointer;
+}
+
+.addBtn:hover {
+    background: linear-gradient(160deg, rgb(0, 189, 78) 0%, rgb(17, 190, 90) 100%);
 }
 
 .plus {
@@ -15,6 +19,7 @@
     top: 50%;
     translate: 0 -50%;
     text-align: center;
+
     svg {
         width: 1em;
         user-select: none;

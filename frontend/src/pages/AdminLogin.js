@@ -9,7 +9,6 @@ const AdminLogin = () => {
     useEffect(() => {
         const loginAdminAndRedirect = async () => {
             try {
-                console.log(token)
                 await adminLogin(token);
                 navigate('/admin');
             } catch (error) {

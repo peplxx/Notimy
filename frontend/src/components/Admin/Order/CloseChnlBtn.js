@@ -13,7 +13,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
     const [isSwiping, setIsSwiping] = useState(false);
 
     const startXRef = useRef(0);
-    const DeleteBtn = useRef(null);
+    const closeBtn = useRef(null);
 
     // Обработка Нажатий
     const handleTouchStart = (e) => {
@@ -25,38 +25,40 @@ const CloseChnlBtn = ({ MenuClickable }) => {
         setIsSwiping(true);
     };
     const handleTouchMove = (e) => {
-        if (isSwiping && MenuClickable && DeleteBtn.current) {
+        if (isSwiping && MenuClickable && closeBtn.current) {
             const deltaX = e.touches[0].clientX - startXRef.current;
             setDeltaX(Math.min(deltaX, MenuClickable.offsetWidth));
         }
     };
     const handleMouseMove = (e) => {
-        if (isSwiping && MenuClickable && DeleteBtn.current) {
+        if (isSwiping && MenuClickable && closeBtn.current) {
             const deltaX = e.clientX - startXRef.current;
             setDeltaX(Math.min(deltaX, MenuClickable.offsetWidth));
         }
     };
 
     const handleEnd = async () => {
-        if (MenuClickable && DeleteBtn.current) {
-            const deleteThreshold = 65;
-            if (deltaPercentage >= deleteThreshold) {
-                setIsSwiping(false);
-                setDeltaPercentage(100);
-                if ( await closeOrder(order.id) ) {
-                    setIsSideOpen(false);
-                } else {
-                    setDeltaPercentage(0);
-                }
-            } else {
-                setDeltaPercentage(0);
-            }
-        }
+        // Если меньше порога - двигаем в ноль
+        // Двигаем в 100
+        // Если Операция заебись - закрываем слайдер
+        // Двигаем в 0 в конце
+        const deleteThreshold = 65;
         setIsSwiping(false);
+        if (MenuClickable && closeBtn.current) {
+            if (deltaPercentage < deleteThreshold) {
+                setDeltaPercentage(0);
+                return;
+            }
+            setDeltaPercentage(100);
+            if ( await closeOrder() ) {
+                setIsSideOpen(false);
+            }
+            setDeltaPercentage(0);
+        }
     };
 
     useEffect(() => {
-        if (MenuClickable && DeleteBtn.current) {
+        if (MenuClickable && closeBtn.current) {
             const elementWidth = MenuClickable.offsetWidth;
             setDeltaPercentage(Math.min(14 + (deltaX / elementWidth) * 100, 100));
         }
@@ -79,7 +81,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
             onMouseMove={handleMouseMove}
             onMouseUp={handleEnd}
             onClick={(e) => e.stopPropagation()}
-            ref={DeleteBtn}
+            ref={closeBtn}
         >
             <AcceptSvg />
         </div>

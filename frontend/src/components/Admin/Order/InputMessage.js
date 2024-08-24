@@ -1,11 +1,19 @@
 import styles from "./OrderBottom.module.css";
-import React from "react";
+import React, {useContext} from "react";
+import AdminOrderContext from "context/AdminOrderContext";
 
-export const InputMessage = ({message, setMessage, sendMessage}) => {
+export const InputMessage = () => {
 
-     const handleKeyDown = (e) => {
+    const {newMessage, setNewMessage, sendMessage} = useContext(AdminOrderContext);
+
+    const send = () => {
+        sendMessage(newMessage);
+        setNewMessage('');
+    }
+
+    const handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            sendMessage(e);
+            send();
         }
     };
 
@@ -14,14 +22,14 @@ export const InputMessage = ({message, setMessage, sendMessage}) => {
             <input
                 className={styles.messageInput}
                 placeholder="Введите сообщение"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={handleKeyDown}
             />
             <button
                 className={styles.sendBtn}
-                onClick={(e) => {sendMessage(e)}}
+                onClick={send}
             >
                 &gt;
             </button>
