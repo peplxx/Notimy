@@ -28,12 +28,13 @@ class User(Base, IndexedObject):
         self.channels_raw = dumps(new_value, default=str, cls=UUIDEncoder)
 
     def add_channel(self, channel_id: UUID):
-        channels = set(self.channels)
-        channels.add(channel_id)
-        self.channels = [e for e in channels]
+        channels = self.channels
+        if channel_id not in channels:
+            channels += [channel_id]
+        self.channels = channels
 
     def delete_channel(self, channel_id: UUID):
-        channels = set(self.channels)
+        channels = self.channels
         self.channels = [e for e in channels if e != channel_id]
 
     def get_data(self):
