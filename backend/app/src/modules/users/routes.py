@@ -148,11 +148,12 @@ async def join_channel(
 
     spot: Spot = await Spot.find_by_id(session, alias_db.base)
 
-    channel_id = spot.last_channel
-    if not channel_id:
+    channel = await spot.last_channel
+    if not channel:
         raise SpotDoestHaveChannels
-    channel: Channel = await session.scalar(select(Channel).where(Channel.id == channel_id))
-    channel.listeners.append(user)
+
+    if user.id not in [_.id for _ in await channel.listeners_list]:
+        (await channel.listeners_list).append(user)
     await session.commit()
 
     return await UserResponse.by_model(session, user)
@@ -169,7 +170,10 @@ async def forget_channel(
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
-    if channel_id not in user.channels:
+    # TODO: refactor this stupid code
+    user_channels = await user.channels_list
+    channels_ids = [_.id for _ in user_channels]
+    if channel_id not in channels_ids:
         raise NotSubscribedOrChannelDoesntExist
     channel: Channel = await Channel.find_by_id(session, channel_id)
     user.channels.remove(channel)

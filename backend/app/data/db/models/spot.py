@@ -47,6 +47,8 @@ class Spot(Base, IndexedObject, TokenizedObject):
     async def channels_list(self):
         return await self.awaitable_attrs.channels_relation
 
+
+
     @property
     async def last_channel(self):
         channels_list = await self.channels_list

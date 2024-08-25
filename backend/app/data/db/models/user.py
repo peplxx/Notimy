@@ -24,7 +24,7 @@ class User(Base, IndexedObject):
                             cascade="all, delete")
 
     @property
-    async def channel_list(self):
+    async def channels_list(self):
         return await self.awaitable_attrs.channels
 
     def get_data(self):

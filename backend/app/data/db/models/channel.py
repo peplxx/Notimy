@@ -53,7 +53,7 @@ class Channel(Base, IndexedObject):
 
     @property
     async def spot(self):
-        return (await self.awaitable_attrs)[0]
+        return (await self.awaitable_attrs.spot_relation)[0]
 
     @property
     async def listeners_list(self):

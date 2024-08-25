@@ -7,7 +7,6 @@ __all__ = [
 
 import asyncio
 import datetime
-from logging import getLogger
 from typing import Optional
 from uuid import UUID
 
@@ -45,7 +44,7 @@ class ChannelData(BaseModel):
             select(Provider).where(Provider.id == channel.provider)
         )
         result.provider_name = provider.name
-        result.users_ids = channel.listeners_list
+        result.users_ids = [_.id for _ in await channel.listeners_list]
         result.messages_data = channel.messages
         result.spot_id = (await channel.spot).id
         return result
@@ -55,9 +54,7 @@ class ChannelData(BaseModel):
             session: AsyncSession,
             channel_id: UUID
     ):
-        channel: Channel = await session.scalar(
-            select(Channel).where(Channel.id == channel_id)
-        )
+        channel: Channel = await Channel.find_by_id(session, channel_id)
         return await ChannelData.by_model(session, channel)
 
 
@@ -67,8 +64,8 @@ class UserData(BaseModel):
     role: str
 
     channels_ids: Optional[list[UUID]] = []
-    data_json: Optional[dict] = {}
     channels_data: Optional[list[ChannelData]] = []
+    data_json: Optional[dict] = {}
 
     @staticmethod
     async def by_model(
@@ -79,26 +76,16 @@ class UserData(BaseModel):
             user,
             from_attributes=True
         )
-        userAsync = user.awaitable_attrs
-        user_channels = await userAsync.channels
+        user_channels = await user.channels_list
+        ids = [_.id for _ in user_channels]
         ids, data = await actual_channels(
             session=session,
-            channels_ids=user_channels
+            channels_ids=ids
         )
         result.data_json = user.get_data()
         result.channels_ids = ids
         result.channels_data = data
         return result
-
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            user_id: UUID
-    ):
-        user = await session.scalar(
-            select(User).where(User.id == user_id)
-        )
-        return await UserData.by_model(session, user)
 
 
 class SpotData(BaseModel):
@@ -140,16 +127,6 @@ class SpotData(BaseModel):
         result.provider_id = provider.id
         return result
 
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            spot_id: UUID
-    ):
-        spot: Spot = await session.scalar(
-            select(Spot).where(Spot.id == spot_id)
-        )
-        return await SpotData.by_model(session, spot)
-
 
 class ProviderData(BaseModel):
     id: UUID
@@ -175,17 +152,6 @@ class ProviderData(BaseModel):
         if provider.spots:
             result.spots_ids = [_.id for _ in await provider.spots_list]
         return result
-
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            provider_id: UUID
-    ):
-        provider: Provider = await session.scalar(
-            select(Provider).where(Provider.id == provider_id)
-        )
-        return await ProviderData.by_model(session, provider)
-
 
 async def actual_channels(
         session: AsyncSession,

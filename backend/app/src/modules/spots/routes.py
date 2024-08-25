@@ -19,8 +19,9 @@ async def create_new_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
+    provider_id = (await spot.provider).id
     channel = Channel(
-        provider=spot.provider,
+        provider=provider_id
     )
     session.add(channel)
     await session.commit()
@@ -31,7 +32,7 @@ async def create_new_channel(
         select(User).where(User.id == spot.account)
     )
 
-    service_account.channels.append(channel)
+    (await service_account.channels_list).append(channel)
     await session.commit()
     return await ChannelData.by_model(session, channel)
 
@@ -82,7 +83,9 @@ async def add_message_to_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
-    if data.channel_id not in await spot.channels_list:
+    # TODO: It is better to check a relation not an array
+    channels_ids = [_.id for _ in await spot.channels_list]
+    if data.channel_id not in channels_ids:
         raise InvalidChannelLink
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
     channel.add_message(data.message)
