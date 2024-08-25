@@ -2,7 +2,7 @@
     width: 100%;
     position: relative;
     display: flex;
-    height: 2em;
+    height: 3.2em;
     align-items: center;
     justify-content: center;
     color: black;
@@ -13,11 +13,12 @@
 .logo {
     position: relative;
     width: auto; /* Автоматическая ширина */
-    height: 1.6em;
+    height: 2.9em;
 }
 
 .text {
-    font-size: 2em;
+    margin-top: .1em;
+    font-size: 3em;
     font-weight: 800;
     color: white;
 }

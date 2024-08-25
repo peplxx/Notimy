@@ -1,10 +1,10 @@
 import React, {useContext} from 'react';
 import styles from './AdminAddBtn.module.css';
-import AdminContext from "../../../context/AdminContext";
+import AdminContext from "context/AdminContext";
 
 
 const AdminAddBtn = () => {
-    const { createChannel: createOrder } = useContext(AdminContext);
+    const { createOrder } = useContext(AdminContext);
     return (
         <div className={styles.addBtn} onClick={createOrder}>
             <div className={styles.plus}>

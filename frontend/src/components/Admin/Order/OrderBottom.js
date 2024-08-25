@@ -8,10 +8,11 @@ import styles from './OrderBottom.module.css';
 import {InputMessage} from "./InputMessage";
 import AdminContext from "../../../context/AdminContext";
 import {sendMessageAdmin} from "../../../utils/api";
+import {formatDate} from "../../../utils/formatDate";
 
 const OrderBottom = () => {
-    const {order, backgroundStyles} = useContext(AdminOrderContext);
-    const { sendMessage: sendMessageApi } = useContext(AdminContext);
+    const {order, backgroundStyles, isOpen} = useContext(AdminOrderContext);
+    const {sendMessage: sendMessageApi} = useContext(AdminContext);
     const [message, setMessage] = useState("");
 
     const sendMessage = () => {
@@ -21,11 +22,19 @@ const OrderBottom = () => {
     }
 
     return (
-        <div className={classNames(styles.bottom)} style={backgroundStyles}>
+        <div
+            className={classNames(styles.bottom)}
+            style={{
+                ...backgroundStyles,
+                boxShadow: !isOpen ? 'inset 0 0 10em rgba(0, 0, 0, 0.3)' : 'none',
+                transition: 'box-shadow .5s ease-in-out'
+            }}
+        >
             <MessagesList messages={order.messages_data}>
-                <InputMessage message={message} setMessage={setMessage} sendMessage={sendMessage}/>
             </MessagesList>
-            <div className={styles.datetime}>{order.created_at}</div>
+            <InputMessage message={message} setMessage={setMessage} sendMessage={sendMessage}/>
+
+            <div className={styles.datetime}>{formatDate(order.created_at)}</div>
             <div className={styles.toggleBtn}>...</div>
         </div>
     );

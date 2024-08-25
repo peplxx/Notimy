@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 const getBaseURL = () => {
     // Get the current protocol (http or https)
@@ -22,20 +23,10 @@ const api = axios.create({
 export const fetchOrders = async () => {
     try {
         const res = await api.get('/me');
-        return [...res.data['channels_data'], {
-            "id": "b434bb9c-4501-4ad0-a43d-1ebf2df7b046",
-            "open": true,
-            "code": "4SUMKH",
-            "created_at": "2024-08-22T08:02:31.781182",
-            "provider_name": "BAZZAR",
-            "messages_data": [
-                {"text": "test"},
-                {"text": "test"},
-                {"text": "test"},
-                {"text": "test"},
-                {"text": "test"},
-            ]
-        }];
+        if ( res.data.role !== 'user' ) {
+            throw new Error("You are an admin!");
+        }
+        return res.data['channels_data'];
     } catch (e) {
         console.log("Error /me.");
         return [];
@@ -98,19 +89,15 @@ export const createChannelAdmin = async () => {
 }
 
 export const fetchOrdersAdmin = async () => {
-
-    return [
-            {
-                id: 123, provider_name: "BAZZAR", code: "A1B2C3", status: false,
-                messages_data: [{text: "Hi!"}, {text: "Privet!"}, {text: "JOPA()()"}]
-            }
-        ];
     try {
         const res = await api.get(`/me`);
+        if ( res.data.role !== 'spot_user' ) {
+            throw new Error("You are not an admin!");
+        }
         // console.log(res.data.channels_data)
         return res.data.channels_data;
     } catch (e) {
-        console.log(`Error /spots/me`);
+        console.log(`Error admin /me`, e);
         return [];
     }
 }

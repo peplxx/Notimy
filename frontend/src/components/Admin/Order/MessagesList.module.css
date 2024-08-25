@@ -1,8 +1,8 @@
 
 .messages {
-    height: 51.5%;
+    height: 41.5%;
     width:100%;
-
+    bottom: 1.6em;
     border-radius: 0 0.8em 0  0.8em;
     display: flex; /* Make it a flexbox container */
     flex-direction: column; /* Arrange items in a column */

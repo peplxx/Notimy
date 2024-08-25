@@ -1,5 +1,11 @@
 import React, {createContext, useState, useEffect, useCallback} from 'react';
-import {createChannelAdmin, deleteOrderApiUser, fetchOrdersAdmin, sendMessageAdmin} from 'utils/api';
+import {
+    closeOrderApiAdmin,
+    createChannelAdmin,
+    deleteOrderApiUser,
+    fetchOrdersAdmin,
+    sendMessageAdmin
+} from 'utils/api';
 
 const AdminContext = createContext();
 
@@ -9,28 +15,29 @@ export const AdminProvider = ({children}) => {
 
     const updateOrders = useCallback(async () => {
         try {
-            const orders = await fetchOrdersAdmin();
-            setOrders(orders);
+            const fetchedOrders = await fetchOrdersAdmin();
+            console.log('update');
+            setOrders([...fetchedOrders]);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
         }
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         updateOrders();
     }, []);
 
     const createOrder = async () => {
         const response = await createChannelAdmin();
-        if ( response ) {
+        if (response) {
             await updateOrders();
         } else {
             console.error("Failed to create order")
         }
     }
 
-    const sendMessage = async(id, message) => {
-        if ( await sendMessageAdmin(id, message) ) {
+    const sendMessage = async (id, message) => {
+        if (await sendMessageAdmin(id, message)) {
             await updateOrders();
         }
     }
@@ -49,7 +56,7 @@ export const AdminProvider = ({children}) => {
     }
 
     const closeOrder = async (id) => {
-        // TODO
+        return await closeOrderApiAdmin(id);
     }
 
     return (

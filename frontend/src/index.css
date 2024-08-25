@@ -13,7 +13,15 @@
 }
 
 html {
-    font-size: min(5vw, 1000px); /* var(--html-max-font-size) */
+    font-size: min(3vw, 60px); /* var(--html-max-font-size) */
     font-family: 'Rubik', sans-serif;
     background-color: var(--htmlBackground);
+}
+
+.backLogo {
+    position: fixed;
+    width: 5em;
+    opacity: .05;
+    top: calc(50% - 2.5em);
+    left: calc(50% - 2.5em);
 }
