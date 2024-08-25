@@ -1,7 +1,7 @@
 __all__ = [
-    "user_channel_association",
-    "spot_channel_association"
+    "users_channels_association",
+    "spot_channels_association"
 ]
 
-from app.data.db.models.assotiations.user_channel import user_channel_association
-from app.data.db.models.assotiations.spot_channel import spot_channel_association
+from app.data.db.models.assotiations.users_channels import users_channels_association
+from app.data.db.models.assotiations.spot_channels import spot_channels_association

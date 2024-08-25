@@ -12,7 +12,8 @@ from app.data.db.utils import get_dispose_at as dispose_at
 from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_invitation_code
-from app.data.db.models.assotiations import user_channel_association
+from app.data.db.models.assotiations import users_channels_association, spot_channels_association
+
 config = get_settings()
 
 
@@ -28,25 +29,35 @@ class Message(BaseModel):
 class Channel(Base, IndexedObject):
     __tablename__ = 'channels'
 
-    spot = sa.Column(sa.UUID, sa.ForeignKey("spots.id"), index=True)
     provider = sa.Column(sa.UUID, sa.ForeignKey("providers.id"), index=True)
 
     code = sa.Column(sa.String, index=True, nullable=False, unique=True, default=generate_invitation_code)
 
-    listeners = relationship('User', secondary=user_channel_association, back_populates='channels', cascade="all, delete")
+    listeners = relationship('User', secondary=users_channels_association, back_populates='channels',
+                             cascade="all, delete")
 
     messages_raw = sa.Column(sa.String, nullable=False, default='[]')
 
     open = sa.Column(sa.BOOLEAN, nullable=False, default=True)
+
+    spot_relation = relationship(
+        'Spot',
+        secondary=spot_channels_association,
+        back_populates='channels_relation',
+        cascade="all, delete"
+    )
 
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     closed_at = sa.Column(sa.TIMESTAMP, nullable=True)
     dispose_at = sa.Column(sa.TIMESTAMP, nullable=False, default=dispose_at)
 
     @property
+    async def spot(self):
+        return (await self.awaitable_attrs)[0]
+
+    @property
     async def listeners_list(self):
         return await self.awaitable_attrs.listeners
-
 
     @property
     def messages(self):

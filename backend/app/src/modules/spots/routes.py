@@ -21,11 +21,10 @@ async def create_new_channel(
 ) -> ChannelData:
     channel = Channel(
         provider=spot.provider,
-        spot=spot.id
     )
     session.add(channel)
     await session.commit()
-    spot.channels.append(channel)
+    (await spot.channels_list).append(channel)
     await session.commit()
 
     service_account = await session.scalar(
@@ -83,7 +82,7 @@ async def add_message_to_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
-    if data.channel_id not in spot.channels:
+    if data.channel_id not in await spot.channels_list:
         raise InvalidChannelLink
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
     channel.add_message(data.message)
@@ -102,7 +101,7 @@ async def add_message_to_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ) -> ChannelData:
-    if data.channel_id not in spot.channels:
+    if data.channel_id not in await spot.channels_list:
         raise ChannelIsNotFound
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
     if channel.open:

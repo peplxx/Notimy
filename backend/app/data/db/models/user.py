@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 
 from app.config.constants import Roles
 from app.data.db import DeclarativeBase as Base
-from app.data.db.models.assotiations import user_channel_association
+from app.data.db.models.assotiations import users_channels_association
 from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
@@ -20,7 +20,7 @@ class User(Base, IndexedObject):
     role = sa.Column(sa.String, nullable=False, default=Roles.default.value)
     data = sa.Column(sa.String, nullable=False, default='{}')
 
-    channels = relationship('Channel', secondary=user_channel_association, back_populates='listeners',
+    channels = relationship('Channel', secondary=users_channels_association, back_populates='listeners',
                             cascade="all, delete")
 
     @property
