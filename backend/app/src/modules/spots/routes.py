@@ -25,7 +25,7 @@ async def create_new_channel(
     )
     session.add(channel)
     await session.commit()
-    spot.add_channel(channel)
+    spot.channels.append(channel)
     await session.commit()
 
     service_account = await session.scalar(

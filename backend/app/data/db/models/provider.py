@@ -9,6 +9,7 @@ from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.models.mixins.token import TokenizedObject
 from app.data.db.utils import get_now as now
 
+
 class Provider(Base, IndexedObject, TokenizedObject):
     __tablename__ = 'providers'
 
