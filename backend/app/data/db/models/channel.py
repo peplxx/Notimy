@@ -3,6 +3,7 @@ from uuid import UUID
 
 import sqlalchemy as sa
 from pydantic import BaseModel
+from sqlalchemy.orm import relationship
 
 from app.config import get_settings
 from app.data.db import DeclarativeBase as Base
@@ -11,6 +12,7 @@ from app.data.db.utils import get_dispose_at as dispose_at
 from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
 from app.data.db.utils.generators import generate_invitation_code
+from app.data.db.models.assotiations import users_channels_association, spot_channels_association
 
 config = get_settings()
 
@@ -27,35 +29,35 @@ class Message(BaseModel):
 class Channel(Base, IndexedObject):
     __tablename__ = 'channels'
 
-    provider = sa.Column(sa.UUID, index=True, nullable=False)
-    spot = sa.Column(sa.UUID, index=True, nullable=False)
+    provider = sa.Column(sa.UUID, sa.ForeignKey("providers.id"), index=True)
 
     code = sa.Column(sa.String, index=True, nullable=False, unique=True, default=generate_invitation_code)
-    users_raw = sa.Column(sa.String, nullable=False, default='[]')
+
+    listeners = relationship('User', secondary=users_channels_association, back_populates='channels',
+                             cascade="all, delete")
+
     messages_raw = sa.Column(sa.String, nullable=False, default='[]')
 
     open = sa.Column(sa.BOOLEAN, nullable=False, default=True)
+
+    spot_relation = relationship(
+        'Spot',
+        secondary=spot_channels_association,
+        back_populates='channels_relation',
+        cascade="all, delete"
+    )
 
     created_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
     closed_at = sa.Column(sa.TIMESTAMP, nullable=True)
     dispose_at = sa.Column(sa.TIMESTAMP, nullable=False, default=dispose_at)
 
     @property
-    def listeners(self):
-        return [UUID(user_id) for user_id in loads(self.users_raw)]
+    async def spot(self):
+        return (await self.awaitable_attrs.spot_relation)[0]
 
-    @listeners.setter
-    def listeners(self, new_value):
-        self.users_raw = dumps(new_value, default=str, cls=UUIDEncoder)
-
-    def add_listener(self, listener_id: UUID):
-        users = set(self.listeners)
-        users.add(listener_id)
-        self.listeners = [e for e in users]
-
-    def delete_listener(self, listener_id: UUID):
-        users = set(self.listeners)
-        self.listeners = [e for e in users if e != listener_id]
+    @property
+    async def listeners_list(self):
+        return await self.awaitable_attrs.listeners
 
     @property
     def messages(self):

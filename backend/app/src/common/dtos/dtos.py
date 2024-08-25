@@ -5,6 +5,7 @@ __all__ = [
     "SpotData"
 ]
 
+import asyncio
 import datetime
 from typing import Optional
 from uuid import UUID
@@ -19,13 +20,13 @@ from app.data.db.models import Provider, Spot, Channel, User, Alias
 class ChannelData(BaseModel):
     id: UUID
     provider: UUID
-    spot: UUID
     open: bool
     code: str
     created_at: datetime.datetime
     dispose_at: datetime.datetime
     closed_at: datetime.datetime | None
 
+    spot_id: Optional[UUID] = None
     provider_name: Optional[str] = ""
     users_ids: Optional[list[UUID]] = []
     messages_data: Optional[list[dict]] = []
@@ -43,8 +44,9 @@ class ChannelData(BaseModel):
             select(Provider).where(Provider.id == channel.provider)
         )
         result.provider_name = provider.name
-        result.users_ids = channel.listeners
+        result.users_ids = [_.id for _ in await channel.listeners_list]
         result.messages_data = channel.messages
+        result.spot_id = (await channel.spot).id
         return result
 
     @staticmethod
@@ -52,9 +54,7 @@ class ChannelData(BaseModel):
             session: AsyncSession,
             channel_id: UUID
     ):
-        channel: Channel = await session.scalar(
-            select(Channel).where(Channel.id == channel_id)
-        )
+        channel: Channel = await Channel.find_by_id(session, channel_id)
         return await ChannelData.by_model(session, channel)
 
 
@@ -64,8 +64,8 @@ class UserData(BaseModel):
     role: str
 
     channels_ids: Optional[list[UUID]] = []
-    data_json: Optional[dict] = {}
     channels_data: Optional[list[ChannelData]] = []
+    data_json: Optional[dict] = {}
 
     @staticmethod
     async def by_model(
@@ -76,36 +76,27 @@ class UserData(BaseModel):
             user,
             from_attributes=True
         )
-
+        user_channels = await user.channels_list
+        ids = [_.id for _ in user_channels]
         ids, data = await actual_channels(
             session=session,
-            channels_ids=user.channels
+            channels_ids=ids
         )
         result.data_json = user.get_data()
         result.channels_ids = ids
         result.channels_data = data
         return result
 
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            user_id: UUID
-    ):
-        user = await session.scalar(
-            select(User).where(User.id == user_id)
-        )
-        return await UserData.by_model(session, user)
-
 
 class SpotData(BaseModel):
     id: UUID
     token: str
     additional_info: str
-    provider: UUID
     created_at: datetime.datetime
     account: UUID
 
     subscription: Optional[dict] = {}
+    provider_id: Optional[UUID] = None
     alias: Optional[dict] = {}
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list[ChannelData]] = []
@@ -115,38 +106,26 @@ class SpotData(BaseModel):
             session: AsyncSession,
             spot: Spot
     ):
+        # Validate and prepare the result model
         result = SpotData.model_validate(
             spot,
             from_attributes=True
         )
 
-        ids, data = await actual_channels(
-            session=session,
-            channels_ids=spot.channels
+        # Use asyncio.gather to batch asynchronous operations
+        channels_list, alias, subscription, provider = await asyncio.gather(
+            spot.channels_list,
+            session.scalar(select(Alias).where(Alias.base == spot.id)),
+            spot.get_subscription(session),
+            spot.provider
         )
 
-        result.channels_ids = ids
-        result.channels_data = data
-
-        alias = await session.scalar(
-            select(Alias).where(Alias.base == spot.id)
-        )
-        result.alias = alias.dict()
-        subscription = await spot.get_subscription(session)
-        sub_dict = {} if not subscription else subscription.dict()
-        sub_dict["exist"] = subscription is not None
-        result.subscription = sub_dict
+        # Set values
+        result.channels_ids = [_.id for _ in channels_list]
+        result.alias = alias.dict() if alias else {}
+        result.subscription = subscription.dict() if subscription else {"exist": False}
+        result.provider_id = provider.id
         return result
-
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            spot_id: UUID
-    ):
-        spot: Spot = await session.scalar(
-            select(Spot).where(Spot.id == spot_id)
-        )
-        return await SpotData.by_model(session, spot)
 
 
 class ProviderData(BaseModel):
@@ -159,8 +138,7 @@ class ProviderData(BaseModel):
     max_spots: int
     account: UUID
 
-    spots_ids: Optional[list[UUID]] = []
-    spots_data: Optional[list[SpotData]] = []
+    spots_ids: Optional[list] = []
 
     @staticmethod
     async def by_model(
@@ -172,27 +150,8 @@ class ProviderData(BaseModel):
             from_attributes=True
         )
         if provider.spots:
-            spots: list[Spot] = list(await session.scalars(
-                select(Spot).where(Spot.provider == provider.id)
-            ))
-
-            spots_ids = [spot.id for spot in spots]
-            spots_data = [await SpotData.by_model(session, spot) for spot in spots]
-
-            result.spots_ids = spots_ids
-            result.spots_data = spots_data
+            result.spots_ids = [_.id for _ in await provider.spots_list]
         return result
-
-    @staticmethod
-    async def by_id(
-            session: AsyncSession,
-            provider_id: UUID
-    ):
-        provider: Provider = await session.scalar(
-            select(Provider).where(Provider.id == provider_id)
-        )
-        return await ProviderData.by_model(session, provider)
-
 
 async def actual_channels(
         session: AsyncSession,
@@ -207,11 +166,10 @@ async def actual_channels(
             if not entity:
                 pass  # UNPREDICTABLE BEHAVIOR
 
-            users_to_unsubscribe = entity.listeners
+            users_to_unsubscribe = entity.listeners_list
             for user_id in users_to_unsubscribe:
                 user: User = await session.scalar(select(User).where(User.id == user_id))
-                user.delete_channel(channel_id)
-                entity.delete_listener(user_id)
+                user.channels.remove(entity)
                 await session.commit()
             continue
         actual_ids += [channel_id]
