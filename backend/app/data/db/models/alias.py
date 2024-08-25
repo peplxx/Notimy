@@ -1,4 +1,4 @@
-from uuid import uuid4, UUID
+from uuid import UUID
 
 import sqlalchemy as sa
 
@@ -9,8 +9,8 @@ from app.data.db.utils.generators import generate_alias_name
 
 class Alias(Base, IndexedObject):
     __tablename__ = 'aliases'
-    base = sa.Column(sa.UUID, nullable=False, index=True)
-    name = sa.Column(sa.Text, nullable=False, index=True)
+    base = sa.Column(sa.UUID, sa.ForeignKey("spots.id"), index=True)
+    name = sa.Column(sa.String, nullable=False, index=True)
 
     def __init__(self, base: UUID):
         super().__init__()

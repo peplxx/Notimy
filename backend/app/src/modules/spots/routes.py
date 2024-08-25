@@ -25,7 +25,6 @@ async def create_new_channel(
     )
     session.add(channel)
     await session.commit()
-    channel.add_listener(spot.account)
     spot.add_channel(channel)
     await session.commit()
 
@@ -33,7 +32,7 @@ async def create_new_channel(
         select(User).where(User.id == spot.account)
     )
 
-    service_account.add_channel(channel.id)
+    service_account.channels.append(channel)
     await session.commit()
     return await ChannelData.by_model(session, channel)
 

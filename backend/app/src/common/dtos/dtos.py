@@ -43,7 +43,7 @@ class ChannelData(BaseModel):
             select(Provider).where(Provider.id == channel.provider)
         )
         result.provider_name = provider.name
-        result.users_ids = channel.listeners
+        result.users_ids = channel.listeners_list
         result.messages_data = channel.messages
         return result
 
@@ -76,10 +76,11 @@ class UserData(BaseModel):
             user,
             from_attributes=True
         )
-
+        userAsync = user.awaitable_attrs
+        user_channels = await userAsync.channels
         ids, data = await actual_channels(
             session=session,
-            channels_ids=user.channels
+            channels_ids=user_channels
         )
         result.data_json = user.get_data()
         result.channels_ids = ids
@@ -207,11 +208,10 @@ async def actual_channels(
             if not entity:
                 pass  # UNPREDICTABLE BEHAVIOR
 
-            users_to_unsubscribe = entity.listeners
+            users_to_unsubscribe = entity.listeners_list
             for user_id in users_to_unsubscribe:
                 user: User = await session.scalar(select(User).where(User.id == user_id))
-                user.delete_channel(channel_id)
-                entity.delete_listener(user_id)
+                user.channels.remove(entity)
                 await session.commit()
             continue
         actual_ids += [channel_id]

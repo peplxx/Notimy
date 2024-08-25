@@ -1,4 +1,5 @@
 from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import declarative_base
 
 convention = {
@@ -16,7 +17,7 @@ metadata = MetaData(naming_convention=convention)
 Base = declarative_base(metadata=metadata)
 
 
-class DeclarativeBase(Base):
+class DeclarativeBase(AsyncAttrs, Base):
     __abstract__ = True
 
     def dict(self) -> dict:

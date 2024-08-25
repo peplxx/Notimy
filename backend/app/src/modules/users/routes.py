@@ -152,8 +152,7 @@ async def join_channel(
     if not channel_id:
         raise SpotDoestHaveChannels
     channel: Channel = await session.scalar(select(Channel).where(Channel.id == channel_id))
-    channel.add_listener(user.id)
-    user.add_channel(channel_id)
+    channel.listeners.append(user)
     await session.commit()
 
     return await UserResponse.by_model(session, user)
@@ -173,7 +172,6 @@ async def forget_channel(
     if channel_id not in user.channels:
         raise NotSubscribedOrChannelDoesntExist
     channel: Channel = await Channel.find_by_id(session, channel_id)
-    user.delete_channel(channel_id)
-    channel.delete_listener(user.id)
+    user.channels.remove(channel)
     await session.commit()
     return await UserResponse.by_model(session, user)
