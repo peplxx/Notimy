@@ -28,8 +28,8 @@ class Message(BaseModel):
 class Channel(Base, IndexedObject):
     __tablename__ = 'channels'
 
-    provider = sa.Column(sa.UUID, index=True, nullable=False)
-    spot = sa.Column(sa.UUID, index=True, nullable=False)
+    spot = sa.Column(sa.UUID, sa.ForeignKey("spots.id"), index=True)
+    provider = sa.Column(sa.UUID, sa.ForeignKey("providers.id"), index=True)
 
     code = sa.Column(sa.String, index=True, nullable=False, unique=True, default=generate_invitation_code)
 
