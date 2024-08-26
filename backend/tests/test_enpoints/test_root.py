@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 import sqlalchemy as sa
 from app.config import get_settings
+from logging import getLogger, Logger
 
 settings = get_settings()
 def url(url):
@@ -14,6 +15,9 @@ class TestRootModule:
         assert True
 
     class TestProviderCreation:
+        logger: Logger = getLogger("[pytest] /root/new_provider")
+
+
         async def test_create_provider(self, root_header: dict, client: AsyncClient, random_string: str):
             response = await client.post(
                 url("/root/new_provider"),
@@ -24,6 +28,7 @@ class TestRootModule:
                 headers=root_header
             )
             assert response.status_code == status.HTTP_200_OK
-
-
+            response_data = response.json()
+            self.logger.debug("Data recieve: %s", response_data)
+            assert False
 

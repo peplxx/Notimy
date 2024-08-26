@@ -47,7 +47,11 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_dev(self) -> bool:
-        return self.ENV == "default" or self.ENV == 'dev'
+        return self.ENV == 'dev'
+
+    @property
+    def is_test(self) -> bool:
+        return self.ENV == 'default'
 
     @property
     def database_settings(self) -> dict:

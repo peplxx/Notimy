@@ -22,7 +22,6 @@ from tests.utils import make_alembic_config
 settings = get_settings()
 
 
-
 @pytest.fixture(scope="function")
 def postgres() -> str:
     # Create a temporary database name for testing
@@ -74,10 +73,9 @@ async def migrated_postgres(postgres, alembic_config: Config, engine_async):
 
 
 @pytest.fixture(scope="function")
-async def client(migrated_postgres, manager: SessionManager = SessionManager()) -> AsyncClient:
+async def client(manager: SessionManager = SessionManager()) -> AsyncClient:
     # Refresh the SessionManager to ensure the new database is used
     manager.refresh()
-
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
