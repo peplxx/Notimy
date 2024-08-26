@@ -51,6 +51,7 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_test(self) -> bool:
+
         return self.ENV == 'default'
 
     @property

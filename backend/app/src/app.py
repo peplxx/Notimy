@@ -63,7 +63,7 @@ if get_settings().is_test:
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
-    log_filename = os.path.join(log_dir, f"test_{datetime.now().strftime('%Y-%m-%d_%H%M%S')}.log")
+    log_filename = os.path.join(log_dir, f"test_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.log")
 
     logging.basicConfig(
         level=logging.DEBUG,  # Set the logging level

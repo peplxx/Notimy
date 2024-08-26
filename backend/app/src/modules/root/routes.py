@@ -70,6 +70,7 @@ async def change_max_spots(
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
 ) -> ProviderData:
+
     provider: Provider = await Provider.find_by_id(session, data.id)
 
     if not provider:

@@ -26,6 +26,10 @@ test: ##@Test Make testing
 psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
 
+clear-logs:
+	cd backend/logs/test && rm *.log
+	cd backend/logs && rm *.log
+
 prod:
 	docker compose -f docker-compose-prod.yml up --build
 

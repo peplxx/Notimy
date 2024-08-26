@@ -7,7 +7,7 @@ if not os.path.exists(log_dir):
     os.makedirs(log_dir)
 
 # Set log file name with current date
-log_filename = os.path.join(log_dir, f"notimy_{datetime.now().strftime('%Y-%m-%d_%H%M%S')}.log")
+log_filename = os.path.join(log_dir, f"notimy_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.log")
 
 
 # Basic configuration for logging

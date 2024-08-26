@@ -1,4 +1,6 @@
 import ssl
+
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from app.config import get_settings
@@ -9,14 +11,17 @@ settings = get_settings()
 
 class SessionManager:
     _instance = None
+    _lock = Lock()
 
     def __init__(self) -> None:
         self.refresh()
 
     def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(SessionManager, cls).__new__(cls)
-        return cls.instance  # noqa
+        with cls._lock:
+            if not cls._instance:
+                cls._instance = super(SessionManager, cls).__new__(cls)
+                cls._instance.refresh()
+            return cls._instance
 
     def get_session_maker(self) -> sessionmaker:
         if not hasattr(self, 'session_maker'):
@@ -27,14 +32,16 @@ class SessionManager:
         self.engine = create_async_engine(
             get_settings().database_uri,
             echo=settings.is_dev,  # Control echo with settings
-            future=True
+            future=True,
+            poolclass=NullPool
         )
+
 
     def ssl_engine(self):
         my_ssl_ctx = ssl.create_default_context(cafile=settings.ssl_cert_path)
         my_ssl_ctx.verify_mode = ssl.CERT_REQUIRED
         self.engine = create_async_engine(
-            settings.database_uri,
+            get_settings().database_uri,
             echo=False,
             future=True,
             connect_args={"ssl": my_ssl_ctx}
