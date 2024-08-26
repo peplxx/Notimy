@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ScanBtn.module.css';
-import {ScanSvg} from "../ScanSvg";
-
+import { ScanSvg } from "../ScanSvg";
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 const ScanBtn = () => {
-    return (
-        <div className={styles.addBtn}>
-            <div className={styles.plus}>
-                <ScanSvg/>
-            </div>
+    const [isOpen, setIsOpen] = useState(false);
 
-        </div>
+    const openModal = () => setIsOpen(true);
+    const closeModal = () => setIsOpen(false);
+
+    return (
+        <>
+            <button className={styles.addBtn} onClick={openModal}>
+                <div className={styles.plus}>
+                    <ScanSvg />
+                </div>
+            </button>
+
+            {isOpen && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <button className={styles.closeBtn} onClick={closeModal}>
+                            &times;
+                        </button>
+                        <Scanner onScan={(result) => console.log(result)} />
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
