@@ -20,14 +20,13 @@ class TestRootModule:
     class TestProviderCreation:
         url: str = url(prefix + "/new_provider")
 
-        async def test_create_provider(self, client: AsyncClient, random_string: str, root_header: dict):
-            response = await client.post(
+        async def test_create_provider(self, root_client: AsyncClient):
+            response = await root_client.post(
                 self.url,
                 json={
-                    "name": random_string,
-                    "description": random_string
-                },
-                headers=root_header
+                    "name": uuid4().hex,
+                    "description": uuid4().hex
+                }
             )
             assert response.status_code == status.HTTP_200_OK
             response_data = response.json()
@@ -38,29 +37,37 @@ class TestRootModule:
             "input_dict",
             [
                 pytest.param(
-                    {
-                        "description": uuid4().hex
-                    },
+                    {"description": uuid4().hex},
                     id='no-name-provided'
                 ),
                 pytest.param(
-                    {
-                        "description": uuid4().hex
-                    },
+                    {"description": uuid4().hex},
                     id="no-description-provided"
                 )
             ]
         )
-        async def test_create_provider_wrong_input(self, root_header: dict, client: AsyncClient, input_dict):
-            response = await client.post(
+        async def test_create_provider_wrong_input(self, root_client: AsyncClient, input_dict):
+            response = await root_client.post(
                 url("/root/new_provider"),
                 json=input_dict,
-                headers=root_header
             )
             assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     class TestChangeMaxSpotLimit:
         url: str = url(prefix + "/change_max_spots")
+
+        async def test_change_max_spot_invalid_provider_id(
+                self,
+                root_client: AsyncClient
+        ):
+            response = await root_client.post(
+                self.url,
+                json={
+                    "id": str(uuid4()),
+                    "value": 1
+                },
+            )
+            assert response.status_code == status.HTTP_400_BAD_REQUEST
 
         @pytest.mark.parametrize(
             "value, response_code", [
@@ -69,8 +76,14 @@ class TestRootModule:
                 (-1, 200),
                 (-2, 403),
             ])
-        async def test_change_max_spot(self, client: AsyncClient, has_provider: Provider,
-                                       root_header: dict, value: int, response_code: int):
+        async def test_change_max_spot(
+                self,
+                client: AsyncClient,
+                has_provider: Provider,
+                root_header: dict,
+                value: int,
+                response_code: int
+        ):
             provider = has_provider
             response = await client.post(
                 self.url,
@@ -81,3 +94,8 @@ class TestRootModule:
                 headers=root_header
             )
             assert response.status_code == response_code
+            if response_code != 200:
+                return
+            response_data = response.json()
+            changed_value = response_data['max_spots']
+            assert provider.max_spots + value == changed_value

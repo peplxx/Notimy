@@ -115,7 +115,13 @@ async def random_string() -> str:
     return uuid4().hex
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def root_header() -> dict:
     # Provide an authorization header for the root user
     return {"Authorization": f"Bearer {settings.ROOT_TOKEN}"}
+
+
+@pytest.fixture(scope="session")
+async def root_client(client: AsyncClient, root_header) -> AsyncClient:
+    client.headers.update(root_header)
+    yield client
