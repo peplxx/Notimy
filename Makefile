@@ -21,8 +21,7 @@ MESSAGE = "Done"
 endif
 
 test: ##@Test Make testing
-	export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
-	poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
+	$(MAKE) -C backend test
 
 psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)

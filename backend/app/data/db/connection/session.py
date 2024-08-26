@@ -23,14 +23,14 @@ class SessionManager:
             self.session_maker = sessionmaker(self.engine, class_=AsyncSession, expire_on_commit=False)
         return self.session_maker
 
-    def dev_engine(self):
+    def default_engine(self):
         self.engine = create_async_engine(
-            settings.database_uri,
+            get_settings().database_uri,
             echo=settings.is_dev,  # Control echo with settings
             future=True
         )
 
-    def prod_engine(self):
+    def ssl_engine(self):
         my_ssl_ctx = ssl.create_default_context(cafile=settings.ssl_cert_path)
         my_ssl_ctx.verify_mode = ssl.CERT_REQUIRED
         self.engine = create_async_engine(
@@ -41,11 +41,10 @@ class SessionManager:
         )
 
     def refresh(self) -> None:
-        if settings.is_dev:
-            self.dev_engine()
+        if not get_settings().DB_USE_SSL:
+            self.default_engine()
         else:
-            self.prod_engine()
-
+            self.ssl_engine()
 
 async def get_session() -> AsyncSession:
     session_maker = SessionManager().get_session_maker()
