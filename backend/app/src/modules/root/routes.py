@@ -100,12 +100,12 @@ async def upsert_subscription(
 
     if subscription:
         subscription.expires_at = (
-                                          subscription.expires_at or now()
-                                  ) + timedelta(days=data.days)
+          subscription.expires_at or now()
+        ) + timedelta(days=data.days)
     else:
         subscription = Subscription(
             spot_id=spot.id,
-            provider_id=(await spot.provider).id,
+            provider_id=spot.provider_id,
             expires_at=now() + timedelta(days=data.days)
         )
         session.add(subscription)

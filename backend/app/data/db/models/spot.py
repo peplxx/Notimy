@@ -32,6 +32,7 @@ class Spot(Base, IndexedObject, TokenizedObject):
         cascade="all, delete"
     )
 
+    provider_id = sa.Column(sa.UUID, sa.ForeignKey("providers.id"), index=True, nullable=False)
     provider_relation = relationship(
         'Provider',
         secondary=provider_spots_association,

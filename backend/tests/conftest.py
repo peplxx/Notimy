@@ -1,9 +1,9 @@
+from asyncio import get_event_loop_policy
 from logging import getLogger
 from os import environ
 from types import SimpleNamespace
 from uuid import uuid4
 
-from fastapi.testclient import TestClient
 import pytest
 from alembic.command import upgrade
 from alembic.config import Config
@@ -14,9 +14,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from app.config.utils import get_settings
-from app.data.db.connection import SessionManager, get_session
+from app.data.db.connection import SessionManager
 from app.src.app import app
+from app.src.common.dtos import ProviderData
 from tests.utils import make_alembic_config
+from tests.fixtures import provider_header
 
 settings = get_settings()
 logger = getLogger('[pytest] conftest')
@@ -27,17 +29,23 @@ def url(url):
 
 
 @pytest.fixture(scope="session")
+def event_loop():
+    policy = get_event_loop_policy()
+    loop = policy.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.fixture(scope="session")
 def postgres() -> str:
-    # Create a temporary database name for testing
     tmp_name = uuid4().hex
     settings.POSTGRES_DB = tmp_name
     environ["POSTGRES_DB"] = tmp_name
-
-    tmp_url = settings.database_uri_sync
+    tmp_url = get_settings().database_uri_sync
     if not database_exists(tmp_url):
         create_database(tmp_url)
     try:
-        yield settings.database_uri
+        yield get_settings().database_uri
     finally:
         drop_database(tmp_url)
 
@@ -55,73 +63,60 @@ async def run_async_upgrade(config: Config, engine_async):
 
 
 @pytest.fixture(scope="session")
-def alembic_config(postgres) -> Config:
-    # Generate the Alembic config for the temporary database
+async def async_engine(postgres):
     cmd_options = SimpleNamespace(config="", name="alembic", pg_url=postgres, raiseerr=False, x=None)
-    return make_alembic_config(cmd_options)
+    alembic_config = make_alembic_config(cmd_options)
 
-
-@pytest.fixture(scope="session")
-async def engine_async(postgres) -> AsyncEngine:
-    # Create an async engine for database operations
-    SessionManager().default_engine()
-    engine = create_async_engine(postgres, future=True, echo=True, poolclass=NullPool)
-    print("fgfd", str(engine.url))
+    engine = create_async_engine(postgres, future=True, echo=True)
+    await run_async_upgrade(alembic_config, engine)
     yield engine
     await engine.dispose()
 
 
-@pytest.fixture(scope="session", autouse=True)
-async def migrated_postgres(postgres, alembic_config: Config, engine_async):
-    # Run migrations before the tests
-    await run_async_upgrade(alembic_config, engine_async)
-    yield
+@pytest.fixture(scope='function')
+async def session(async_engine) -> AsyncSession:
+    # Create a new session for each test function
+    Session = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
+    session = Session()
+
+    try:
+        yield session
+    finally:
+        # Ensure the session is properly closed at the end of the test
+        print('!' * 100)
+        await session.close()
+        print('!' * 50)
 
 
 @pytest.fixture(scope="session")
-async def client(manager: SessionManager = SessionManager()) -> AsyncClient:
-    # Refresh the SessionManager to ensure the new database is used
+async def client(async_engine, manager: SessionManager = SessionManager()) -> AsyncClient:
+    # The client uses a new session for each test
     manager.refresh()
-    print(str(manager.engine.url))
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
 
-@pytest.fixture()
-async def session_factory_async(engine_async) -> sessionmaker:
-    # Return a session factory using the async engine
-    return sessionmaker(engine_async, class_=AsyncSession, expire_on_commit=False)
-
-
-@pytest.fixture(scope="session", autouse=True)
-async def refresh_database(manager: SessionManager = SessionManager()):
+@pytest.fixture(scope="function")
+async def root_client(async_engine, manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        client.headers.update({'Authorization': f"Bearer {get_settings().ROOT_TOKEN}"})
+        yield client
 
 
-@pytest.fixture(scope='session')
-async def session(manager: SessionManager = SessionManager()) -> AsyncSession:
-    # Provide a database session for tests
-    session_maker = manager.get_session_maker()
+@pytest.fixture(scope="function")
+async def provider_client(async_engine, provider_header: dict,
+                          manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
-    print(str(manager.engine.url))
-
-    async with session_maker() as session:
-        yield session
-
-
-@pytest.fixture
-async def random_string() -> str:
-    # Generate a random string using uuid4 for uniqueness
-    return uuid4().hex
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        client.headers.update(provider_header)
+        yield client
 
 
-@pytest.fixture(scope="session")
-async def root_header() -> dict:
-    # Provide an authorization header for the root user
-    return {"Authorization": f"Bearer {settings.ROOT_TOKEN}"}
-
-
-@pytest.fixture(scope="session")
-async def root_client(client: AsyncClient, root_header) -> AsyncClient:
-    client.headers.update(root_header)
-    yield client
+@pytest.fixture(scope="function")
+async def spot_client(async_engine, spot_header: dict,
+                      manager: SessionManager = SessionManager()) -> AsyncClient:
+    manager.refresh()
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        client.headers.update(spot_header)
+        yield client

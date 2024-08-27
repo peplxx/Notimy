@@ -22,6 +22,7 @@ class Provider(Base, IndexedObject, TokenizedObject):
     spots = sa.Column(sa.Integer, nullable=False, default=0)
     max_spots = sa.Column(sa.Integer, nullable=False, default=1)
     account = sa.Column(sa.UUID)
+
     spots_relation = relationship(
         'Spot',
         secondary=provider_spots_association,

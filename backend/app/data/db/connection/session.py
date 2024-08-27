@@ -32,8 +32,7 @@ class SessionManager:
         self.engine = create_async_engine(
             get_settings().database_uri,
             echo=settings.is_dev,  # Control echo with settings
-            future=True,
-            poolclass=NullPool
+            future=True
         )
 
 
