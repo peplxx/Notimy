@@ -1,31 +1,15 @@
 stages:
   - test
 
-validate_root:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-      changes:
-        - "*"
-  script:
-    - echo Pipeline succeeds
-
-
 variables:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_PORT: 5432
   POSTGRES_DB: postgres
-  POSTGRES_HOST: db
+  POSTGRES_HOST: localhost
 
 test_backend:
   stage: test
-  cache:
-    paths:
-      - backend/.venv
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-      changes:
-        - backend/**/*
   script:
     - cd backend
     - poetry install
