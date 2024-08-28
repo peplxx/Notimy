@@ -1,6 +1,6 @@
 __all__ = [
-    "has_provider",
     "provider_header",
+    "has_provider",
 ]
 
 from uuid import uuid4

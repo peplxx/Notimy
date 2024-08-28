@@ -35,7 +35,6 @@ class SessionManager:
             future=True
         )
 
-
     def ssl_engine(self):
         my_ssl_ctx = ssl.create_default_context(cafile=settings.ssl_cert_path)
         my_ssl_ctx.verify_mode = ssl.CERT_REQUIRED

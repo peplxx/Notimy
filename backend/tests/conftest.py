@@ -7,7 +7,7 @@ from uuid import uuid4
 import pytest
 from alembic.command import upgrade
 from alembic.config import Config
-from httpx import AsyncClient
+from httpx import AsyncClient, Cookies
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
@@ -18,7 +18,7 @@ from app.data.db.connection import SessionManager
 from app.src.app import app
 from app.src.common.dtos import ProviderData
 from tests.utils import make_alembic_config
-from tests.fixtures import provider_header
+from tests.fixtures import *
 
 settings = get_settings()
 logger = getLogger('[pytest] conftest')
@@ -27,8 +27,12 @@ logger = getLogger('[pytest] conftest')
 def url(url):
     return settings.PATH_PREFIX + url
 
+def auth(client: AsyncClient, entity):
+    client.headers.update({"Authorization": f"Bearer {entity.token}"})
+    return client
 
-@pytest.fixture(scope="session")
+
+@pytest.fixture(scope="module")
 def event_loop():
     policy = get_event_loop_policy()
     loop = policy.new_event_loop()
@@ -73,50 +77,52 @@ async def async_engine(postgres):
     await engine.dispose()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 async def session(async_engine) -> AsyncSession:
     # Create a new session for each test function
     Session = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
     session = Session()
-
     try:
         yield session
     finally:
-        # Ensure the session is properly closed at the end of the test
-        print('!' * 100)
         await session.close()
-        print('!' * 50)
 
 
-@pytest.fixture(scope="session")
+clients_params = {
+    "app": app,
+    "base_url": "http://test",
+    "follow_redirects": True,
+    "max_redirects": 3,
+    "cookies": Cookies()
+}
+
+@pytest.fixture(scope="function")
 async def client(async_engine, manager: SessionManager = SessionManager()) -> AsyncClient:
-    # The client uses a new session for each test
     manager.refresh()
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(**clients_params) as client:
         yield client
+
 
 
 @pytest.fixture(scope="function")
 async def root_client(async_engine, manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(**clients_params) as client:
         client.headers.update({'Authorization': f"Bearer {get_settings().ROOT_TOKEN}"})
         yield client
-
 
 @pytest.fixture(scope="function")
 async def provider_client(async_engine, provider_header: dict,
                           manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(**clients_params) as client:
         client.headers.update(provider_header)
         yield client
-
 
 @pytest.fixture(scope="function")
 async def spot_client(async_engine, spot_header: dict,
                       manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(**clients_params) as client:
         client.headers.update(spot_header)
         yield client

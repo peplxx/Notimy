@@ -36,6 +36,7 @@ for router in routers:
 origins = [
     "http://localhost:3000",
     "https://localhost",
+    "http://test"
 ]
 
 app.add_middleware(
