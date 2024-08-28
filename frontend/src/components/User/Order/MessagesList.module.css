@@ -1,7 +1,7 @@
 
 .messages {
     height: 51.5%;
-    width:100%;
+    width: 100%;
 
     border-radius: 0.8em 0.8em 0.8em 0.8em;
     display: flex; /* Make it a flexbox container */
@@ -10,7 +10,7 @@
     margin-bottom: 7%;
     overflow: auto;
     scrollbar-width: none;
-
+    user-select: none;
 }
 
 .message {
@@ -18,7 +18,7 @@
     padding: 0.5em 1em;
     font-family: "Rubik", sans-serif;
     text-align: left;
-    background-color:  var(--htmlBackground); /* Dark background */
+    background-color: var(--htmlBackground); /* Dark background */
     color: white; /* var(--message-text); /* White text */
     border-radius: 1em 0.2em 1em 0.2em; /* Rounded corners */
     display: inline-block;
@@ -26,4 +26,13 @@
     word-wrap: break-word; /* Ensure long words break correctly */
     margin: 0.15em 0.5em; /* Add some space between messages */
     box-shadow: .1em .1em .5em .2em rgba(99, 99, 99, 0.42);
+    transition: transform 0.5s ease-in-out, translateX 0.5s ease-in-out;
+}
+
+.appear {
+    transform: translateX(1em);
+}
+
+.disappear {
+    transform: translateX(0);
 }

@@ -48,14 +48,14 @@
     color: var(--messageText); /* Use the CSS variable */
     font-weight: 700;
     font-size: 0.7em;
-    padding: 0.5em 1em;
+    padding: 0.3em 1em;
     background-color: var(--messageBackground); /* Use the CSS variable */
     border-radius: 1em .2em 1em .2em; /* Rounded corners */
     display: inline-block;
 
     font-family: "Rubik", sans-serif;
     word-wrap: break-word; /* Ensure long words break correctly */
-    margin: 0.15em 0 0 0.6em; /* Add some space between messages */
+    margin: 0.0em 0 0 0.6em; /* Add some space between messages */
     z-index: 5;
     /*-webkit-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
     /*-moz-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
@@ -73,13 +73,12 @@
 
 .sendBtn {
     position: absolute;
-    right: 5%;
+    right: 2em;
     bottom: 1.7em;
     border: .1em solid black;
-
     /*max-width: 80%; !* Ensure the message doesn't take full width *!*/
     margin: 0; /* Add some space between messages */
-    padding: 0.5em 1em;
+    padding: 0.3em .7em;
     border-radius: 1em .2em 1em .2em; /* Rounded corners */
     /*display: inline-block;*/
     z-index: 5;

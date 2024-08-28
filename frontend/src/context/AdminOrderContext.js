@@ -40,7 +40,7 @@ export const AdminOrderProvider = ({children, InitOrder}) => {
         return res;
     }
 
-    const deleteOrder = async () => {
+    async function deleteOrder() {
         setIsDeleting(true);
         const result = await deleteOrderContext(order.id);
         setIsDeleting(result);
@@ -65,7 +65,7 @@ export const AdminOrderProvider = ({children, InitOrder}) => {
 
     useEffect(() => {
         if (isReady) {
-            setBackgroundStyles({background: `gray`});
+            setBackgroundStyles({background: `rgb(221, 221, 221)`});
         } else {
             setBackgroundStyles(getBackground(order.id, false));
         }

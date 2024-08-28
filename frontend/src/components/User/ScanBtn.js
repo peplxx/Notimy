@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from './ScanBtn.module.css';
-import { ScanSvg } from "../ScanSvg";
-import { Scanner } from '@yudiel/react-qr-scanner';
+import {ScanSvg} from "../ScanSvg";
+import {Scanner} from '@yudiel/react-qr-scanner';
 
 const ScanBtn = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,13 +9,18 @@ const ScanBtn = () => {
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
 
+    const redirect = (url) => {
+        console.log(url)
+        window.location.replace(url)
+    }
+
     return (
         <>
-            <button className={styles.addBtn} onClick={openModal}>
+            <div className={styles.addBtn} onClick={openModal}>
                 <div className={styles.plus}>
-                    <ScanSvg />
+                    <ScanSvg/>
                 </div>
-            </button>
+            </div>
 
             {isOpen && (
                 <div className={styles.modalOverlay}>
@@ -23,7 +28,7 @@ const ScanBtn = () => {
                         <button className={styles.closeBtn} onClick={closeModal}>
                             &times;
                         </button>
-                        <Scanner onScan={(result) => console.log(result)} />
+                        <Scanner onScan={(result) => redirect(result[0].rawValue)}/>
                     </div>
                 </div>
             )}

@@ -52,7 +52,6 @@ const DeleteButton = ({ MenuClickable }) => {
         }
         setIsSwiping(false);
     };
-
     useEffect(() => {
         if (MenuClickable && DeleteBtn.current) {
             const elementWidth = MenuClickable.offsetWidth;

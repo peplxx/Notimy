@@ -43,7 +43,6 @@ export const AdminProvider = ({children}) => {
     }
 
     const deleteOrder = async (id) => {
-        // TODO убрать таймеры, только слать запрос
         const timeDeleteStart = Date.now();
         if (await deleteOrderApiUser(id)) {
             const timeDeleteEnd = Date.now();

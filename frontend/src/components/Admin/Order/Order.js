@@ -14,7 +14,7 @@ const Order = () => {
             classNames(
                 styles.order,
                 isOpen ? styles.orderOpened : styles.orderClosed,
-                isDeleting ? styles.orderSlidingOut : null
+                isDeleting ? styles.orderShaking : null
             )}
         >
             <OrderTop/>

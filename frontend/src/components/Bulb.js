@@ -9,12 +9,12 @@ export const Bulb = () => {
     const {isReady} = useContext(OrderContext);
 
     return (
-        <>
+        <div className={styles.circle}>
             <div className={classNames(
                 isReady ? styles.blink : null,
                 styles.bulb)
             }
             />
-        </>
+        </div>
     );
 }

@@ -11,16 +11,16 @@ const OrderList = ({children}) => {
     const {orders} = useContext(UserContext);
     const [parent] = useAutoAnimate()
 
-    useEffect(()=>{
+    useEffect(() => {
         // console.log(orders);
-    },[orders]);
+    }, [orders]);
 
     return (
         <div className={styles.order_list} ref={parent}>
             {children}
             {orders.map(order => (
                 <OrderProvider key={`OrderProviderFor${order.id}`} InitOrder={order}>
-                    <Order key={`Order${order.id}`} />
+                    <Order key={`Order${order.id}`}/>
                 </OrderProvider>
             ))}
         </div>
@@ -28,3 +28,4 @@ const OrderList = ({children}) => {
 };
 
 export default OrderList;
+
