@@ -10,7 +10,7 @@ const ScanBtn = () => {
     const closeModal = () => setIsOpen(false);
 
     const redirect = (url) => {
-        console.log(url)
+        console.log("Redirect to url: ", url)
         window.location.replace(url)
     }
 
