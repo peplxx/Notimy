@@ -24,7 +24,7 @@ const MessagesList = ({children}) => {
                         messageElement.classList.remove(styles.disappear);
                         messageElement.classList.add(styles.appear);
                     }
-                }, 30 * (messages.size - index <= 2 ? messages.size - index : 0)); // 0.1s задержка между появлениями
+                }, 30 * (messages.size - index <= 4 ? 4 - messages.size + index : 0)); // 0.1s задержка между появлениями
             });
         } else if (!isOpen) {
             messages.forEach((message, index) => {
@@ -40,6 +40,15 @@ const MessagesList = ({children}) => {
     }, [isOpen]);
     return (
         <div className={styles.messages} ref={parent}>
+            {messages.length === 0 ? (
+                <div
+                    key="0"
+                    id={`order-${order.id}-message-default`}
+                    className={classNames(styles.message)}
+                >
+                    Ваш заказ принят в обработку
+                </div>
+            ) : null}
             {messages.map((message, index) => (
                 <div
                     key={index}

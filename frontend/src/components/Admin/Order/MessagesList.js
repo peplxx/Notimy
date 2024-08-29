@@ -24,7 +24,7 @@ const MessagesList = ({children}) => {
                         messageElement.classList.remove(styles.disappear);
                         messageElement.classList.add(styles.appear);
                     }
-                }, 30 * (messages.size - index <= 2 ? messages.size - index : 0)); // 0.1s задержка между появлениями
+                }, 50 * (messages.size - index <= 4 ? 4 - messages.size + index : 0)); // 0.1s задержка между появлениями
             });
         } else if (!isOpen) {
             messages.forEach((message, index) => {
