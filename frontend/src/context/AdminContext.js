@@ -17,7 +17,8 @@ export const AdminProvider = ({children}) => {
         try {
             const fetchedOrders = await fetchOrdersAdmin();
             console.log('update');
-            setOrders([...fetchedOrders]);
+            const sortedOrders = fetchedOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            setOrders([...sortedOrders]);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
         }
