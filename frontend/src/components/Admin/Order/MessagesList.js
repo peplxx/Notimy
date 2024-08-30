@@ -37,7 +37,7 @@ const MessagesList = ({children}) => {
                 }, 30); // 0.1s задержка между появлениями
             });
         }
-    }, [isOpen, messages, order.id]);
+    }, [isOpen]);
     return (
         <div className={styles.messages} ref={parent}>
             {messages.map((message, index) => (
