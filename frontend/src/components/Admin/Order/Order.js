@@ -7,7 +7,7 @@ import AdminOrderContext from "context/AdminOrderContext";
 import styles from './Order.module.css';
 
 const Order = () => {
-    const {setIsOpen, isOpen, isDeleting} = useContext(AdminOrderContext);
+    const {isOpen, isDeleting} = useContext(AdminOrderContext);
 
     return (
         <div className={

@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import { TrashBucketSvg } from "components/TrashBucketSvg";
 import styles from './CloseChnlBtn.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
 import classNames from "classnames";
 import { AcceptSvg } from "components/AcceptSvg";
 
 const CloseChnlBtn = ({ MenuClickable }) => {
-    const {closeOrder, setIsSideOpen, isSideOpen, order} = useContext(AdminOrderContext);
+    const {closeOrder, setIsSideOpen, isSideOpen} = useContext(AdminOrderContext);
 
     const [deltaX, setDeltaX] = useState(0);
     const [deltaPercentage, setDeltaPercentage] = useState(0);

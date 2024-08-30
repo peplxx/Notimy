@@ -1,7 +1,6 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
 import getBackground from 'utils/gradientById';
 import AdminContext from "./AdminContext";
-import {closeOrderApiAdmin, sendMessageAdmin} from "../utils/api";
 import sleep from "utils/sleep";
 
 const AdminOrderContext = createContext();

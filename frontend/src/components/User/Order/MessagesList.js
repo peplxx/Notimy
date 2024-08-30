@@ -1,5 +1,5 @@
 import styles from './MessagesList.module.css';
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef} from "react";
 import OrderContext from "../../../context/OrderContext";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import classNames from "classnames";
@@ -37,7 +37,7 @@ const MessagesList = ({children}) => {
                 }, 30); // 0.1s задержка между появлениями
             });
         }
-    }, [isOpen]);
+    }, [isOpen, messages, order.id]);
     return (
         <div className={styles.messages} ref={parent}>
             {messages.length === 0 ? (
