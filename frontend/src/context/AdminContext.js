@@ -1,4 +1,4 @@
-import React, {createContext, useState, useCallback} from 'react';
+import React, {createContext, useState, useCallback, useEffect} from 'react';
 import {
     closeOrderApiAdmin,
     createChannelAdmin,
@@ -26,7 +26,9 @@ export const AdminProvider = ({children}) => {
         }
     }, []);
 
-    updateOrders();
+    useEffect(() => {
+        updateOrders();
+    }, []);
 
     const createOrder = async () => {
         const response = await createChannelAdmin();
