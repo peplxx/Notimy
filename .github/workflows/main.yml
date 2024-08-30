@@ -1,4 +1,4 @@
-name: Testing code
+name: Backend Workflow
 
 on:
   push:
@@ -31,6 +31,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd backend
+        make env
         poetry install --with test
 
     # Run tests with coverage
