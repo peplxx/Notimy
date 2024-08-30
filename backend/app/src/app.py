@@ -1,5 +1,9 @@
 __all__ = ['app']
 
+import logging
+import os
+from datetime import datetime
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
@@ -11,7 +15,6 @@ from app.config import get_settings
 from app.src import docs
 from app.src.lifespan import lifespan
 from app.src.routers import routers
-
 
 settings = get_settings()
 
@@ -31,9 +34,10 @@ app = FastAPI(
 for router in routers:
     app.include_router(prefix=settings.PATH_PREFIX, router=router)
 origins = [
-        "http://localhost:3000",
-        "https://localhost",
-    ]
+    "http://localhost:3000",
+    "https://localhost",
+    "http://test"
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,19 +47,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.exception_handler(NotAuthenticatedException)
 async def requires_login(request: Request, _: Exception):
     return RedirectResponse(settings.PATH_PREFIX + f"/login?next={(request.url.path)}")
 
 
-if settings.is_dev:
-    # from src.logging_ import logger
-    import logging
-
-    logger = logging.getLogger("app")
+if get_settings().is_dev:
+    from app.src.logging import logger
 
     logger.warning("Enable sqlalchemy logging")
-    logging.basicConfig()
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+
+if get_settings().is_test:
+    log_dir = "logs/test"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    log_filename = os.path.join(log_dir, f"test_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.log")
+
+    logging.basicConfig(
+        level=logging.DEBUG,  # Set the logging level
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Log format
+        datefmt='%Y-%m-%d %H:%M:%S',  # Date format
+        handlers=[
+            logging.FileHandler(log_filename),  # Log to a file
+            logging.StreamHandler()  # Log to console
+        ]
+    )
+    logger = logging.getLogger("[TEST] app")
+    logger.warning("Enable sqlalchemy logging")
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
@@ -64,4 +85,3 @@ async def ping():
     return {
         "message": "Hello it's Notimy!"
     }
-

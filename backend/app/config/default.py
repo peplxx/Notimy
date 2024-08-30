@@ -20,10 +20,11 @@ class DefaultSettings(BaseSettings):
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "postgres")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
     POSTGRES_USER: str = environ.get("POSTGRES_USER", "postgres")
-    POSTGRES_PORT: int = int(environ.get("POSTGRES_PORT", "5432")[-4:])
     POSTGRES_PASSWORD: str = environ.get("POSTGRES_PASSWORD", "postgres")
+    POSTGRES_PORT: int = int(environ.get("POSTGRES_PORT", "5432")[-4:])
     DB_CONNECT_RETRY: int = environ.get("DB_CONNECT_RETRY", 20)
     DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
+    DB_USE_SSL: bool = environ.get("DB_USE_SSL", False)
 
     # to get a string like this run: "openssl rand -hex 32"
     SECRET_KEY: str = environ.get("SECRET_KEY", "")
@@ -46,7 +47,12 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_dev(self) -> bool:
-        return self.ENV == "default"
+        return self.ENV == 'dev'
+
+    @property
+    def is_test(self) -> bool:
+
+        return self.ENV == 'default'
 
     @property
     def database_settings(self) -> dict:

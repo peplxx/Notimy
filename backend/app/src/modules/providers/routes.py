@@ -32,7 +32,8 @@ async def create_new_spot(
     await session.commit()
 
     spot = Spot(
-        account=spot_service_user.id
+        account=spot_service_user.id,
+        provider_id=provider.id
     )
     session.add(spot)
     await session.commit()

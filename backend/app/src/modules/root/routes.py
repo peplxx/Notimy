@@ -70,6 +70,7 @@ async def change_max_spots(
         session: AsyncSession = Depends(get_session),
         _auth: None = Depends(root_auth)
 ) -> ProviderData:
+
     provider: Provider = await Provider.find_by_id(session, data.id)
 
     if not provider:
@@ -99,12 +100,12 @@ async def upsert_subscription(
 
     if subscription:
         subscription.expires_at = (
-                                          subscription.expires_at or now()
-                                  ) + timedelta(days=data.days)
+          subscription.expires_at or now()
+        ) + timedelta(days=data.days)
     else:
         subscription = Subscription(
             spot_id=spot.id,
-            provider_id=(await spot.provider).id,
+            provider_id=spot.provider_id,
             expires_at=now() + timedelta(days=data.days)
         )
         session.add(subscription)

@@ -21,18 +21,24 @@ MESSAGE = "Done"
 endif
 
 test: ##@Test Make testing
-	export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
-	poetry run python -m pytest --verbosity=3 --showlocals --log-level=DEBUG
+	$(MAKE) -C backend test
 
 psql:##@Database Connect to database via psql
 	psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)
 
-prod:
-	docker compose -f docker-compose-prod.yml up --build
+clear-logs:
+	cd backend/logs/test && rm *.log
+	cd backend/logs && rm *.log
+
+run:
+	docker compose up --build
 
 key:
 	openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=localhost" \
 	&& mv cert.pem certs/cert.pem && mv key.pem certs/key.pem
+
+env:
+	cp .env.example .env
 
 %::
 	echo $(MESSAGE)

@@ -123,7 +123,10 @@ class SpotData(BaseModel):
         # Set values
         result.channels_ids = [_.id for _ in channels_list]
         result.alias = alias.dict() if alias else {}
-        result.subscription = subscription.dict() if subscription else {"exist": False}
+        subscribe_existence = {"exist": subscription is not None}
+        subscription_dict: dict = subscription.dict() if subscription else {}
+        subscription_dict.update(subscribe_existence)
+        result.subscription = subscription_dict
         result.provider_id = provider.id
         return result
 

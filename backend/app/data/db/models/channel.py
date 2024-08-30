@@ -78,4 +78,4 @@ class Channel(Base, IndexedObject):
 
     def close(self):
         self.open = False
-        self.closed_at = now
+        self.closed_at = now()

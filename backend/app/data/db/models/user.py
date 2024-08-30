@@ -1,6 +1,5 @@
 import json
-from json import dumps, loads
-from uuid import UUID
+from json import dumps
 
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship

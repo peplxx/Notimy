@@ -104,7 +104,8 @@ async def add_message_to_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ) -> ChannelData:
-    if data.channel_id not in await spot.channels_list:
+    clist = [_.id for _ in await spot.channels_list]
+    if data.channel_id not in clist:
         raise ChannelIsNotFound
     channel: Channel = await Channel.find_by_id(session, data.channel_id)
     if channel.open:
