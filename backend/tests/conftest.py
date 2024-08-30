@@ -8,17 +8,15 @@ import pytest
 from alembic.command import upgrade
 from alembic.config import Config
 from httpx import AsyncClient, Cookies
-from sqlalchemy import NullPool
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from app.config.utils import get_settings
 from app.data.db.connection import SessionManager
 from app.src.app import app
-from app.src.common.dtos import ProviderData
-from tests.utils import make_alembic_config
 from tests.fixtures import *
+from tests.utils import make_alembic_config
 
 settings = get_settings()
 logger = getLogger('[pytest] conftest')
