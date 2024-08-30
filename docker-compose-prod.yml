@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: 'notimy_postgres'
+    image: 'postgres:14'
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 2s
+
+  backend:
+    container_name: 'notimy_backend'
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_HOST=database
+    build: ./backend
+    volumes:
+      - ./certs:/etc/ssl
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
+
+  
+  frontend:
+    container_name: 'notimy_frontend'
+    build: ./frontend
+
+  nginx:
+    container_name: 'notimy_nginx'
+    image: nginx:latest
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/ssl
+    depends_on:
+      - backend
+
+
+volumes:
+  data:
