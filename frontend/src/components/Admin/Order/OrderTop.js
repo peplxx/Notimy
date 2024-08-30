@@ -1,9 +1,8 @@
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useRef} from "react";
 import DeleteButton from "./DeleteButton";
 import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
-import {Bulb} from "components/Bulb";
 import CloseChnlBtn from "./CloseChnlBtn";
 
 const OrderTop = () => {

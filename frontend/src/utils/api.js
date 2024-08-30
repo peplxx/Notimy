@@ -1,16 +1,8 @@
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
-
 const getBaseURL = () => {
-    // Get the current protocol (http or https)
-    const protocol = window.location.protocol;
-    // Get the current host (domain)
     const host = window.location.hostname;
-    // Set the port you want to use
-    const port = 443;
 
-    // Construct the base URL
-    return `https://localhost:443/api/`;
+    return `https://${host}/api/`;
 };
 
 // Create an Axios instance with the dynamic base URL
@@ -31,26 +23,11 @@ export const fetchOrders = async () => {
         console.log("Error /me.");
         return [];
     }
-    //
-    // return [
-    //     {
-    //         id: 123, title: 'Bazzar', code: "BEBRA", status: true,
-    //         messages: ['Hai!', 'Test '.repeat(50), 'Jopa :)', 'a'.repeat(15), 'a'.repeat(15),]
-    //     },
-    //     {
-    //         id: 456, title: 'Pizza', code: "PENIS", status: true,
-    //         messages: ['a'.repeat(15), 'b'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15),]
-    //     },
-    //     {
-    //         id: 798, title: 'Pizza', code: "PENIS", status: true,
-    //         messages: ['a'.repeat(15), 'b'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15), 'a'.repeat(15),]
-    //     }
-    // ]
 };
 
 export const joinChannel = async (id) => {
     try {
-        const res = await api.post(`/join/${id}`);
+        await api.post(`/join/${id}`);
         return true;
     } catch (e) {
         console.log(`Error /join/${id}.`);
@@ -60,7 +37,7 @@ export const joinChannel = async (id) => {
 
 export const deleteOrderApiUser = async (id) => {
     try {
-        const res = await api.delete(`/forget/${id}`);
+        await api.delete(`/forget/${id}`);
         return true;
     } catch (e) {
         console.log(`Error  /forget/${id}.`);
@@ -69,7 +46,7 @@ export const deleteOrderApiUser = async (id) => {
 }
 export const closeOrderApiAdmin = async (id) => {
     try {
-        const res = await api.post(`/spots/close_channel`, {channel_id: id});
+        await api.post(`/spots/close_channel`, {channel_id: id});
         return true;
     } catch (e) {
         console.log(`Error /spots/close_channel/${id}.`);
@@ -80,7 +57,7 @@ export const closeOrderApiAdmin = async (id) => {
 
 export const createChannelAdmin = async () => {
     try {
-        const res = await api.post(`/spots/new_channel`);
+        await api.post(`/spots/new_channel`);
         return true;
     } catch (e) {
         console.log(`Error /spots/new_channel`);
@@ -104,7 +81,7 @@ export const fetchOrdersAdmin = async () => {
 
 export const adminLogin = async (token) => {
     try {
-        const res = await api.get(`/login?token=${token}`);
+        await api.get(`/login?token=${token}`);
         return true;
     } catch (e) {
         console.log(`Error /login?token=${token}`, e);
@@ -120,7 +97,7 @@ export const sendMessageAdmin = async (id, message) => {
         "channel_id": id
     }
     try {
-        const res = await api.post(`/spots/add_message`, data);
+        await api.post(`/spots/add_message`, data);
         return true;
     } catch (e) {
         console.log(`Error /spots/add_message`, data, e);

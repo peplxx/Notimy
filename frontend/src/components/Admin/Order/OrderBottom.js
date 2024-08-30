@@ -7,7 +7,6 @@ import AdminOrderContext from "context/AdminOrderContext";
 import styles from './OrderBottom.module.css';
 import {InputMessage} from "./InputMessage";
 import AdminContext from "../../../context/AdminContext";
-import {sendMessageAdmin} from "../../../utils/api";
 import {formatDate} from "../../../utils/formatDate";
 
 const OrderBottom = () => {
