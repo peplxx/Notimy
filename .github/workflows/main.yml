@@ -1,0 +1,39 @@
+name: Testing code
+
+on:
+  push:
+    branches: [backend]
+  pull_request:
+    branches: [backend, test, main]
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.local/bin:$PATH"
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        cd backend
+        poetry install --with test
+
+    # Run tests with coverage
+    - name: Run tests
+      run: |
+        make test
