@@ -30,8 +30,8 @@ clear-logs:
 	cd backend/logs/test && rm *.log
 	cd backend/logs && rm *.log
 
-prod:
-	docker compose -f docker-compose-prod.yml up --build
+run:
+	docker compose up --build
 
 key:
 	openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=localhost" \
