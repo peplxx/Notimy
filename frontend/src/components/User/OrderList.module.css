@@ -1,0 +1,42 @@
+.order_list {
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+    font-size: min(5vw, 50px);
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Обеспечить отображение поверх всех элементов */
+}
+
+.modalContent {
+    background: white;
+    padding: 2em;
+    border-radius: .1em;
+    max-width: 8em;
+    width: 80%;
+    position: relative;
+    z-index: 1001;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+}

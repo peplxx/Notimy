@@ -1,0 +1,93 @@
+.datetime {
+    font-family: "Rubik", sans-serif;
+    color: #202123;
+    font-weight: 700;
+    font-size: 0.6em;
+    position: absolute;
+    bottom: 2%;
+    right: 3.5%;
+}
+
+.toggleBtn {
+    user-select: none;
+    position: absolute;
+    bottom: 0;
+    color: #202123;
+    margin: auto;
+    border-radius: inherit;
+    font-size: 1.5em;
+    left: 0;
+    right: 0;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2ecc71;
+    border-radius: inherit;
+    z-index: -10;
+    display: flex; /* Make it a flexbox container */
+    flex-direction: column; /* Arrange items in a column */
+    justify-content: flex-end; /* Align items to the top */
+    align-items: flex-start; /* Align items to the start (left) */
+}
+
+
+.inputMessage {
+    width: 100%;
+}
+
+.messageInput {
+    position: absolute;
+    bottom: 1.7em;
+    left: 5%;
+    width: 68%;
+    border: .1em solid black;
+    color: var(--messageText); /* Use the CSS variable */
+    font-weight: 700;
+    font-size: 0.7em;
+    padding: 0.3em 1em;
+    background-color: var(--messageBackground); /* Use the CSS variable */
+    border-radius: 1em .2em 1em .2em; /* Rounded corners */
+    display: inline-block;
+
+    font-family: "Rubik", sans-serif;
+    word-wrap: break-word; /* Ensure long words break correctly */
+    margin: 0.0em 0 0 0.6em; /* Add some space between messages */
+    z-index: 5;
+    /*-webkit-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
+    /*-moz-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
+    /*box-shadow: 1em 1em 2em .5em rgba(99, 99, 99, 0.42);*/
+}
+
+.messageInput:hover, .sendBtn:hover {
+    background-color: #28292B; /* Use the CSS variable */
+}
+
+.messageInput:focus {
+    border-color: var(--headerText); /* Use the CSS variable */
+    background-color: #28292B; /* Use the CSS variable */
+}
+
+.sendBtn {
+    position: absolute;
+    right: 2em;
+    bottom: 1.7em;
+    border: .1em solid black;
+    /*max-width: 80%; !* Ensure the message doesn't take full width *!*/
+    margin: 0; /* Add some space between messages */
+    padding: 0.3em .7em;
+    border-radius: 1em .2em 1em .2em; /* Rounded corners */
+    /*display: inline-block;*/
+    z-index: 5;
+    background-color: var(--messageBackground); /* Dark background */
+    color: var(--messageText); /* White text */
+    font-family: "Rubik", sans-serif;
+    font-weight: 700;
+    font-size: 0.7em;
+    word-wrap: break-word; /* Ensure long words break correctly */
+    box-shadow: 1em 1em 2em .5em rgba(99, 99, 99, 0.42);
+}
+
