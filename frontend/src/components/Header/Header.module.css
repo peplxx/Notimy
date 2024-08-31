@@ -1,0 +1,26 @@
+.header {
+    width: 100%;
+    position: relative;
+    display: flex;
+    height: 2.5em;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, .6);
+    user-select: none;
+}
+
+.logo {
+    position: relative;
+    width: auto; /* Автоматическая ширина */
+    height: 2em;
+}
+
+.text {
+    margin-top: .1em;
+    font-size: 2.3em;
+    font-weight: 800;
+    color: white;
+}
+
+

@@ -1,0 +1,70 @@
+.addBtn {
+    position: relative;
+    width: 90%;
+    height: 3.5em;
+    margin: auto;
+    margin-top: .3em;
+    background: var(--htmlBackground);
+    border-radius: .5em .5em .5em .5em;
+    border: .1em #404040 solid;
+    /*box-shadow: inset .1em .1em .3em black;*/
+    cursor: pointer;
+}
+
+.addBtn:hover {
+    background: #515151FF;
+}
+
+.plus {
+    position: absolute;
+    width: 100%;
+    height: 3.5em;
+    top: 50%;
+    translate: 0 -50%;
+    text-align: center;
+
+}
+
+.plus > svg {
+    height: 100%;
+    /*position: absolute;*/
+    /*top: -50%;*/
+    width: 2.5em;
+    fill: white;
+    user-select: none;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Обеспечить отображение поверх всех элементов */
+}
+
+.modalContent {
+    background: white;
+    padding: 1.5em;
+    border-radius: .1em;
+    max-width: 14em;
+    width: 70%;
+    position: relative;
+    z-index: 1001;
+}
+
+.closeBtn {
+    position: absolute;
+    top: -.2em;
+    right: 0;
+    background: none;
+    /*border: .05em solid black;*/
+    border: none;
+    font-size: 2em;
+    font-weight: 700;
+    cursor: pointer;
+}

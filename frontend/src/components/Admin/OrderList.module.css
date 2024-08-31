@@ -1,0 +1,9 @@
+.order_list {
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: var(--mainMaxWidth);
+    /*font-size: min(5vw, 50px);*/
+}
