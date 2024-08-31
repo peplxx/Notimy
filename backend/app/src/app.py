@@ -4,16 +4,17 @@ import logging
 import os
 from datetime import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
-from app.src.middleware.login_manager import NotAuthenticatedException
-from fastapi import Depends, FastAPI, Request
-from fastapi.responses import RedirectResponse
-from urllib.parse import quote
 from app.config import get_settings
+from app.limiter import limiter, rate_limit_exceeded_handler
 from app.src import docs
 from app.src.lifespan import lifespan
+from app.src.middleware.login_manager import NotAuthenticatedException
 from app.src.routers import routers
 
 settings = get_settings()
@@ -31,20 +32,34 @@ app = FastAPI(
     redoc_url=None,
 )
 
+
+
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+
 for router in routers:
     app.include_router(prefix=settings.PATH_PREFIX, router=router)
+
+
 origins = [
     "http://localhost:3000",
     "https://localhost",
     "http://test"
+    "https://185.105.91.87"
 ]
 
+# Middlewares
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.add_middleware(
+    SlowAPIMiddleware
 )
 
 
@@ -81,7 +96,8 @@ if get_settings().is_test:
 
 
 @app.get(settings.PATH_PREFIX + '/', tags=["System"], include_in_schema=False)
-async def ping():
+@limiter.limit("2/minute")
+async def ping(request: Request):
     return {
         "message": "Hello it's Notimy!"
     }
