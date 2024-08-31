@@ -16,6 +16,7 @@ settings = get_settings()
 
 
 @router.post("/new_channel")
+@limiter.limit("2/second")
 async def create_new_channel(
         request: Request,
         session: AsyncSession = Depends(get_session),
