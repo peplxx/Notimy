@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <div>
             <Header>
-                <h1 style={{position: "absolute", right: "calc(50% - 9em)", top: "1.16em", color: "white", fontSize: "1em"}}>admin</h1>
+                <h1 style={{position: "absolute", right: "calc(50% - 7.3em)", top: ".55em", color: "white", fontSize: "1em"}}>admin</h1>
             </Header>
             <AdminProvider>
                 <OrderList>
