@@ -26,6 +26,7 @@ settings = get_settings()
 
 @router.get("/login")
 @router.post("/login")
+@limiter.limit("3/second")
 async def login(
         request: Request,
         next: Optional[str] = Query(None),
@@ -72,9 +73,7 @@ async def login(
         )
 
     login_path = '/api/login'
-    # if next:
-    #     return {"message": "REDIRECT"}
-    if next and next != login_path:
+    if next and "login" not in next:
         response = RedirectResponse(next)
     else:
         response = JSONResponse(content={
