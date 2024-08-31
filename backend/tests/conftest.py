@@ -1,3 +1,4 @@
+import os
 from asyncio import get_event_loop_policy
 from logging import getLogger
 from os import environ
@@ -14,12 +15,15 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from app.config.utils import get_settings
 from app.data.db.connection import SessionManager
+from app.limiter import NoOpLimiter
 from app.src.app import app
 from tests.fixtures import *
 from tests.utils import make_alembic_config
 
-settings = get_settings()
 logger = getLogger('[pytest] conftest')
+settings = get_settings()
+get_settings().TESTING = True
+limiter = NoOpLimiter()
 
 
 def url(url):

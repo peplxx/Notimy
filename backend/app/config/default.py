@@ -26,6 +26,8 @@ class DefaultSettings(BaseSettings):
     DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
     DB_USE_SSL: bool = environ.get("DB_USE_SSL", False)
 
+    TESTING: bool = environ.get("TESTING", False)
+
     # to get a string like this run: "openssl rand -hex 32"
     SECRET_KEY: str = environ.get("SECRET_KEY", "")
     ALGORITHM: str = environ.get("ALGORITHM", "HS256")
@@ -51,8 +53,7 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_test(self) -> bool:
-
-        return self.ENV == 'default'
+        return self.TESTING
 
     @property
     def database_settings(self) -> dict:

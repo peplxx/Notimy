@@ -11,7 +11,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.limiter import limiter, rate_limit_exceeded_handler
+from app.limiter import limiter, rate_limit_exceeded_handler, NoOpLimiter
 from app.src import docs
 from app.src.lifespan import lifespan
 from app.src.middleware.login_manager import NotAuthenticatedException
@@ -32,15 +32,8 @@ app = FastAPI(
     redoc_url=None,
 )
 
-
-
-
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
-
 for router in routers:
     app.include_router(prefix=settings.PATH_PREFIX, router=router)
-
 
 origins = [
     "http://localhost:3000",
@@ -58,9 +51,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(
-    SlowAPIMiddleware
-)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 
 @app.exception_handler(NotAuthenticatedException)
@@ -96,7 +89,7 @@ if get_settings().is_test:
 
 
 @app.get(settings.PATH_PREFIX + '/', tags=["System"], include_in_schema=False)
-@limiter.limit("2/minute")
+@limiter.limit("2/second")
 async def ping(request: Request):
     return {
         "message": "Hello it's Notimy!"

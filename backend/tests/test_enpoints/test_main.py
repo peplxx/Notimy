@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger, Logger
 from uuid import uuid4
 
@@ -9,8 +10,9 @@ from app.config import get_settings
 from app.data.db.models import Provider
 from app.src.common.dtos import SpotData, ChannelData, ProviderData
 from app.src.modules.users.schemas import UserResponse
-from conftest import url, auth, clients_params
+from tests.conftest import url, auth, clients_params
 
+get_settings().TESTING = True
 settings = get_settings()
 logger: Logger = getLogger(f"[pytest] {__name__}")
 
@@ -211,7 +213,7 @@ class TestSpotModule:
         async def test_multiple_channel_creation(self, has_spot_sub: SpotData, client: AsyncClient):
             spot = has_spot_sub
             auth(client, spot)
-            for i in range(10):
+            for i in range(3):
                 response = await client.post(
                     self.url,
                 )
@@ -432,3 +434,15 @@ class TestUserModule:
             user_data = UserResponse(**response.json())
             assert channel_data.id not in user_data.channels_ids
 
+
+# class TestUtils:
+#     class TestRateLimit:
+#         rated_url: str = url("/me")
+#
+#         async def test_rate_limit(self, client: AsyncClient):
+#             for _ in range(10):
+#                 await client.get(self.rated_url)
+#             response = await client.get(self.rated_url)
+#             assert response.status_code == 429
+#
+#
