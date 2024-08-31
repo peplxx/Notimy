@@ -14,7 +14,7 @@ from app.data.db.models import User, Alias, Spot, Channel
 from app.limiter import limiter
 from app.src.common import exceptions
 from app.src.common.dtos import ChannelData
-from app.src.middleware.login_manager import manager, current_user
+from app.src.middleware.login_manager import manager, current_user, user_from_cookie
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 from app.src.modules.users.schemas import UserResponse, UserChannel
@@ -49,7 +49,7 @@ async def login(
                 expires=settings.SESSION_TOKEN_LIFETIME
             )
     if cookie_is_set and not session_token:
-        user = await current_user(request, session)
+        user = await user_from_cookie(request, session)
         if user:
             session_token = manager.create_access_token(
                 data={"id": str(user.id)},
