@@ -28,7 +28,7 @@ const ScanBtn = () => {
                         <button className={styles.closeBtn} onClick={closeModal}>
                             &times;
                         </button>
-                        <Scanner onScan={(result) => redirect(result[0].rawValue)}/>
+                        <Scanner onScan={(result) => redirect(result[0].rawValue)} onError={(error) => {console.log(error)}}/>
                     </div>
                 </div>
             )}

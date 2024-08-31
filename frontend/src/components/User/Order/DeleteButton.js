@@ -38,7 +38,7 @@ const DeleteButton = ({ MenuClickable }) => {
 
     const handleEnd = async () => {
         if (MenuClickable && DeleteBtn.current) {
-            const deleteThreshold = 50;
+            const deleteThreshold = 75;
             if (deltaPercentage >= deleteThreshold) {
                 setIsSwiping(false);
                 setDeltaPercentage(100);

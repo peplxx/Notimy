@@ -9,11 +9,11 @@ const MessagesList = ({children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
-    useEffect(() => {
-        if (listEnd.current && isOpen) {
-            listEnd.current.scrollIntoView({behavior: "smooth"});
-        }
-    }, [messages, isOpen]);
+    // useEffect(() => {
+    //     if (listEnd.current && isOpen) {
+    //         listEnd.current.scrollIntoView({behavior: "smooth"});
+    //     }
+    // }, [messages, isOpen]);
 
     useEffect(() => {
         if (isOpen) {
@@ -24,7 +24,7 @@ const MessagesList = ({children}) => {
                         messageElement.classList.remove(styles.disappear);
                         messageElement.classList.add(styles.appear);
                     }
-                }, 50 * (messages.size - index <= 4 ? 4 - messages.size + index : 0)); // 0.1s задержка между появлениями
+                }, 50 * index); // 0.1s задержка между появлениями
             });
         } else if (!isOpen) {
             messages.forEach((message, index) => {

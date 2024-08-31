@@ -1,9 +1,9 @@
 
 .messages {
     height: 41.0%;
-    width:100%;
+    width: 100%;
     bottom: 1.3em;
-    border-radius: 0 0.8em 0  0.8em;
+    border-radius: 0 0.8em 0 0.8em;
     display: flex; /* Make it a flexbox container */
     flex-direction: column; /* Arrange items in a column */
     align-items: flex-start; /* Align items to the start (left) */
@@ -13,6 +13,7 @@
 }
 
 .message {
+    font-weight: 800;
     user-select: none;
     font-size: 0.7em;
     padding: 0.5em 1em;
