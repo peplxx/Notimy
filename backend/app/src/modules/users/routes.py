@@ -74,7 +74,8 @@ async def login(
             expires=settings.SESSION_TOKEN_LIFETIME
         )
 
-    if next:
+    login_path = get_settings().PATH_PREFIX + '/login'
+    if next and next != login_path:
         response = RedirectResponse(next)
     else:
         response = JSONResponse(content={
