@@ -18,6 +18,7 @@ alembic = "^1.13.2"
 psycopg2-binary = "^2.9.9"
 python-jose = "^3.3.0"
 configargparse = "^1.7"
+slowapi = "^0.1.9"
 
 
 [tool.poetry.group.test.dependencies]

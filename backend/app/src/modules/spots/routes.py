@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.data.db.connection import get_session
 from app.data.db.models import Spot, Channel, User, Alias
+from app.limiter import limiter
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
@@ -15,7 +16,9 @@ settings = get_settings()
 
 
 @router.post("/new_channel")
+@limiter.limit("2/second")
 async def create_new_channel(
+        request: Request,
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
@@ -38,7 +41,9 @@ async def create_new_channel(
 
 
 @router.get("/me")
+@limiter.limit("3/second")
 async def get_self(
+        request: Request,
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ) -> SpotData:
@@ -56,7 +61,9 @@ async def get_self(
         **AliasAlreadyExist.responses
     }
 )
+@limiter.limit("3/second")
 async def change_alias_name(
+        request: Request,
         alias_data: SpotChangeAlias = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
@@ -78,7 +85,9 @@ async def change_alias_name(
         **InvalidChannelLink.responses
     }
 )
+@limiter.limit("3/second")
 async def add_message_to_channel(
+        request: Request,
         data: SpotAddMessage = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
@@ -99,7 +108,9 @@ async def add_message_to_channel(
         **ChannelIsNotFound.responses
     }
 )
-async def add_message_to_channel(
+@limiter.limit("3/second")
+async def close_channel(
+        request: Request,
         data: CloseChannel = Body(...),
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)

@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import Provider, Spot, User, Alias
+from app.limiter import limiter
 from app.src.common.dtos import SpotData, ProviderData
 from app.src.middleware.token_auth import provider_auth
 from app.src.modules.providers.exceptions import MaxSpotIsReached
@@ -51,7 +52,9 @@ async def create_new_spot(
 
 
 @router.get("/me")
+@limiter.limit("3/second")
 async def get_self(
+        request: Request,
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ) -> ProviderData:
@@ -66,7 +69,9 @@ async def get_self(
     "/update",
     response_model=ProviderData,
 )
+@limiter.limit("3/second")
 async def update_providers_data(
+        request: Request,
         data: ProviderUpdateData = Body(...),
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
