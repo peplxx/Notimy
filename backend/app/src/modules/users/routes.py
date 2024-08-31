@@ -11,6 +11,7 @@ from app.config import get_settings
 from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import User, Alias, Spot, Channel
+from app.limiter import limiter
 from app.src.common import exceptions
 from app.src.common.dtos import ChannelData
 from app.src.middleware.login_manager import manager, current_user
@@ -25,6 +26,7 @@ settings = get_settings()
 
 @router.get("/login")
 @router.post("/login")
+@limiter.limit("3/second")
 async def login(
         request: Request,
         next: Optional[str] = Query(None),
@@ -90,7 +92,9 @@ async def login(
     "/me",
     responses={}
 )
+@limiter.limit("3/second")
 async def get_self(
+        request: Request,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
@@ -98,6 +102,7 @@ async def get_self(
 
 
 @router.get("/logout")
+@limiter.limit("3/second")
 async def logout(
         request: Request
 ):
@@ -114,6 +119,7 @@ async def logout(
         **NotSubscribedOrChannelDoesntExist.responses
     }
 )
+@limiter.limit("5/second")
 async def get_channel_info(
         request: Request,
         channel_id: UUID,
@@ -125,6 +131,7 @@ async def get_channel_info(
     channel_data: ChannelData = await ChannelData.by_id(session, channel_id)
     return await UserChannel.by_data(channel_data)
 
+
 @router.post(
     "/join/{alias}",
     responses={
@@ -133,7 +140,9 @@ async def get_channel_info(
         **SpotDoestHaveChannels.responses
     }
 )
+@limiter.limit("10/second")
 async def join_channel(
+        request: Request,
         alias: str,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
@@ -165,7 +174,9 @@ async def join_channel(
         **NotSubscribedOrChannelDoesntExist.responses
     }
 )
+@limiter.limit("3/second")
 async def forget_channel(
+        request: Request,
         channel_id: UUID,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)

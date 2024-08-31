@@ -43,6 +43,10 @@ key:
 env:
 	cp .env.example .env
 
+setup:
+	make key
+	make env
+
 %::
 	echo $(MESSAGE)
 

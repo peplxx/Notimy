@@ -34,7 +34,7 @@ services:
       - "${APP_PORT}:${APP_PORT}"
     command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
 
-  
+
   frontend:
     container_name: 'notimy_frontend'
     build: ./frontend
@@ -49,7 +49,7 @@ services:
       - ./certs:/etc/ssl
     depends_on:
       - backend
-
+      - frontend
 
 volumes:
   data:
