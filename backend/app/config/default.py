@@ -53,7 +53,7 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_test(self) -> bool:
-        return self.TESTING
+        return self.ENV == "default"
 
     @property
     def database_settings(self) -> dict:

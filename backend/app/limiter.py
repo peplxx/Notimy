@@ -26,7 +26,6 @@ async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
 
 
 if get_settings().is_test:
-    exit(0)
     limiter = NoOpLimiter()
 else:
     limiter = Limiter(

@@ -1,4 +1,3 @@
-import asyncio
 from logging import getLogger, Logger
 from uuid import uuid4
 
@@ -434,15 +433,3 @@ class TestUserModule:
             user_data = UserResponse(**response.json())
             assert channel_data.id not in user_data.channels_ids
 
-
-# class TestUtils:
-#     class TestRateLimit:
-#         rated_url: str = url("/me")
-#
-#         async def test_rate_limit(self, client: AsyncClient):
-#             for _ in range(10):
-#                 await client.get(self.rated_url)
-#             response = await client.get(self.rated_url)
-#             assert response.status_code == 429
-#
-#
