@@ -26,7 +26,6 @@ settings = get_settings()
 
 @router.get("/login")
 @router.post("/login")
-@limiter.limit("3/second")
 async def login(
         request: Request,
         next: Optional[str] = Query(None),
@@ -51,20 +50,18 @@ async def login(
     if cookie_is_set and not session_token:
         user = await current_user(request, session)
         if user:
-            response = JSONResponse(content={
-                "type": "existing",
-                "login_as": user.role,
-                "session_token": request.cookies.get('session_token'),
-                "token_type": "bearer"
-            })
-            return response
-        user = User()
-        session.add(user)
-        await session.commit()
-        session_token = manager.create_access_token(
-            data={"id": str(user.id)},
-            expires=settings.SESSION_TOKEN_LIFETIME
-        )
+            session_token = manager.create_access_token(
+                data={"id": str(user.id)},
+                expires=settings.SESSION_TOKEN_LIFETIME
+            )
+        else:
+            user = User()
+            session.add(user)
+            await session.commit()
+            session_token = manager.create_access_token(
+                data={"id": str(user.id)},
+                expires=settings.SESSION_TOKEN_LIFETIME
+            )
     if not session_token:  # If token is invalid and just login
         user = User()
         session.add(user)
@@ -74,7 +71,9 @@ async def login(
             expires=settings.SESSION_TOKEN_LIFETIME
         )
 
-    login_path = get_settings().PATH_PREFIX + '/login'
+    login_path = '/api/login'
+    # if next:
+    #     return {"message": "REDIRECT"}
     if next and next != login_path:
         response = RedirectResponse(next)
     else:
@@ -93,6 +92,7 @@ async def login(
     "/me",
     responses={}
 )
+@router.post('/me')
 @limiter.limit("3/second")
 async def get_self(
         request: Request,
