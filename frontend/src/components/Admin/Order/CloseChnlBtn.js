@@ -41,7 +41,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
         // Двигаем в 100
         // Если Операция заебись - закрываем слайдер
         // Двигаем в 0 в конце
-        const deleteThreshold = 65;
+        const deleteThreshold = 75;
         setIsSwiping(false);
         if (MenuClickable && closeBtn.current) {
             if (deltaPercentage < deleteThreshold) {

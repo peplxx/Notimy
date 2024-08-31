@@ -22,11 +22,12 @@
     translate: 0 -50%;
     text-align: center;
 
-    svg {
-        width: 2.5em;
-        fill: white;
-        user-select: none;
-    }
+}
+
+.plus > svg {
+    width: 2.5em;
+    fill: white;
+    user-select: none;
 }
 
 .modalOverlay {
@@ -44,20 +45,22 @@
 
 .modalContent {
     background: white;
-    padding: 2em;
+    padding: 1.5em;
     border-radius: .1em;
-    max-width: 8em;
-    width: 80%;
+    max-width: 14em;
+    width: 70%;
     position: relative;
     z-index: 1001;
 }
 
 .closeBtn {
     position: absolute;
-    top: 0;
+    top: -.2em;
     right: 0;
     background: none;
+    /*border: .05em solid black;*/
     border: none;
     font-size: 2em;
+    font-weight: 700;
     cursor: pointer;
 }

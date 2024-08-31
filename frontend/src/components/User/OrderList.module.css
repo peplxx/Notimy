@@ -4,8 +4,8 @@
     right: 0;
     margin: 0 auto;
     width: 100%;
-    max-width: 1000px;
-    font-size: min(5vw, 50px);
+    max-width: var(--mainMaxWidth);
+    /*font-size: min(5vw, 50px);*/
 }
 
 .modalOverlay {
