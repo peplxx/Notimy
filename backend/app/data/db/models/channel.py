@@ -1,8 +1,11 @@
+from datetime import datetime
 from json import dumps, loads
 from uuid import UUID
 
 import sqlalchemy as sa
 from pydantic import BaseModel
+from sqlalchemy import select, func, and_
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 
 from app.config import get_settings
@@ -39,6 +42,8 @@ class Channel(Base, IndexedObject):
     messages_raw = sa.Column(sa.String, nullable=False, default='[]')
 
     open = sa.Column(sa.BOOLEAN, nullable=False, default=True)
+
+    local_number = sa.Column(sa.INTEGER, nullable=True)
 
     spot_relation = relationship(
         'Spot',
@@ -79,3 +84,17 @@ class Channel(Base, IndexedObject):
     def close(self):
         self.open = False
         self.closed_at = now()
+
+    @staticmethod
+    async def get_next_local_number(session: AsyncSession, spot_id: UUID):
+        today = datetime.now().date()
+        result = await session.scalar(
+            select(func.count(Channel.id))
+            .where(
+                and_(
+                    Channel.spot_relation.any(id=spot_id),
+                    func.date(Channel.created_at) == today
+                )
+            )
+        )
+        return (result or 0) + 1

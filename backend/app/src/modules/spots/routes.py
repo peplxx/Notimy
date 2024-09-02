@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Body, Request
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
@@ -23,8 +23,10 @@ async def create_new_channel(
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
     provider_id = (await spot.provider).id
+
     channel = Channel(
-        provider=provider_id
+        provider=provider_id,
+        local_number=await Channel.get_next_local_number(session, spot.id)
     )
     session.add(channel)
     await session.commit()
