@@ -33,9 +33,19 @@ clear-logs:
 run:
 	docker compose up --build
 
+run-prod:
+	docker compose -f docker-compose-prod.yml up --build
+
 key:
 	openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=localhost" \
 	&& mv cert.pem certs/cert.pem && mv key.pem certs/key.pem
+
+env:
+	cp .env.example .env
+
+setup:
+	make key
+	make env
 
 %::
 	echo $(MESSAGE)
