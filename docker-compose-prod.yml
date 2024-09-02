@@ -7,8 +7,6 @@ services:
     restart: always
     env_file:
       - .env
-    ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - data:/var/lib/postgresql/data
     healthcheck:
@@ -30,8 +28,6 @@ services:
     build: ./backend
     volumes:
       - ./certs:/etc/ssl
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
     command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
 
 
