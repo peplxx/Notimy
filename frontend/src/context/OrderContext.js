@@ -10,7 +10,7 @@ export const OrderProvider = ({ children, InitOrder }) => {
     const {deleteOrder: deleteOrderContext} = useContext(UserContext);
     const [order, setOrder] = useState(InitOrder);
     const [messages, setMessages] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [isReady, setIsReady] = useState(false);

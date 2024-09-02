@@ -106,7 +106,7 @@
 .menuOpened {
     transition: padding 0.5s;
     margin-left: 0.25rem;
-    padding-left: 84%;
+    padding-left: 84.1%;
 }
 
 .menuClosed {

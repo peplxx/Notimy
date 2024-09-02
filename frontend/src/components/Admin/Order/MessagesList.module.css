@@ -1,13 +1,13 @@
 
 .messages {
-    height: 43.7%;
+    height: 49%;
     width: 100%;
-    bottom: 1.3em;
+    bottom: 1.1em;
     border-radius: 0 0.8em 0 0.8em;
     display: flex; /* Make it a flexbox container */
     flex-direction: column; /* Arrange items in a column */
     align-items: flex-start; /* Align items to the start (left) */
-    margin-bottom: 7%;
+    margin-bottom: 1.5em;
     overflow: auto;
     scrollbar-width: none;
 }
@@ -23,18 +23,10 @@
     display: inline-block;
     max-width: 80%; /* Ensure the message doesn't take full width */
     word-wrap: break-word; /* Ensure long words break correctly */
-    margin: 0.15em 0.5em; /* Add some space between messages */
-
-    -webkit-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
-    -moz-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
-    box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);
+    margin: 0.15em 2em; /* Add some space between messages */
     transition: transform 0.5s ease-in-out, translateX 0.5s ease-in-out;
 }
 
-.appear {
-    transform: translateX(1em);
-}
-
 .disappear {
-    transform: translateX(0);
+    transform: translateX(-2em);
 }

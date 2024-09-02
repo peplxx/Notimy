@@ -34,6 +34,7 @@ const OrderBottom = () => {
             <InputMessage message={message} setMessage={setMessage} sendMessage={sendMessage}/>
 
             <div className={styles.datetime}>{formatDate(order.created_at)}</div>
+            <div className={styles.code}>код заказа: {order.code}</div>
             <div className={styles.toggleBtn}>...</div>
         </div>
     );

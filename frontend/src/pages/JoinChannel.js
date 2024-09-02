@@ -9,7 +9,7 @@ const OrderDetails = () => {
         const joinAndNavigate = async () => {
             try {
                 await joinChannel(id);
-                navigate('/'); // Redirect after joining the channel
+                navigate('/app'); // Redirect after joining the channel
             } catch (error) {
                 console.error("Failed to join channel", error);
                 // Handle error as needed
