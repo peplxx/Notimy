@@ -14,6 +14,7 @@ class UserChannel(BaseModel):
     open: bool
     code: str
     created_at: datetime
+    local_number: int
 
     provider_name: Optional[str] = ""
     messages_data: Optional[list[dict]] = []
@@ -24,6 +25,7 @@ class UserChannel(BaseModel):
                 id=channel_data.id,
                 open=channel_data.open,
                 code=channel_data.code,
+                local_number= channel_data.local_number,
                 created_at=channel_data.created_at,
                 provider_name=channel_data.provider_name,
                 messages_data=[i.__dict__ for i in channel_data.messages_data]
