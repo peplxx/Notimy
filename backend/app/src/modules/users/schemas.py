@@ -5,6 +5,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config.constants import Roles
 from app.data.db.models import User
 from app.src.common.dtos import UserData, ChannelData
 
@@ -37,7 +38,7 @@ class UserResponse(BaseModel):
     role: str
 
     channels_ids: Optional[list[UUID]] = []
-    channels_data: Optional[list[UserChannel]] = []
+    channels_data: Optional[list] = []
     
     @classmethod
     async def by_model(
@@ -55,6 +56,9 @@ class UserResponse(BaseModel):
         )
         channels_data = []
         for channel_data in user_data.channels_data:
-            channels_data += [await UserChannel.by_data(channel_data)]
+            if user.role == Roles.default.value:
+                channels_data += [await UserChannel.by_data(channel_data)]
+            else:
+                channels_data += [channel_data]
         result.channels_data = channels_data
         return result
