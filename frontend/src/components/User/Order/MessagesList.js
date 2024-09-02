@@ -21,8 +21,8 @@ const MessagesList = ({children}) => {
                 setTimeout(() => {
                     const messageElement = document.getElementById(`order-${order.id}-message-${index}`);
                     if (messageElement) {
-                        messageElement.classList.remove(styles.disappear);
                         messageElement.classList.add(styles.appear);
+                        messageElement.classList.remove(styles.disappear);
                     }
                 }, 30 * index); // 0.1s задержка между появлениями
             });
@@ -53,7 +53,7 @@ const MessagesList = ({children}) => {
                 <div
                     key={index}
                     id={`order-${order.id}-message-${index}`}
-                    className={classNames(styles.message, styles.disappear)}
+                    className={classNames(styles.message)}
                 >
                     {message.text}
                 </div>

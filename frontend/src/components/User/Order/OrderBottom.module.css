@@ -35,3 +35,11 @@
     align-items: flex-start; /* Align items to the start (left) */
 }
 
+
+.code {
+    font-weight: 700;
+    font-size: 0.6em;
+    position: absolute;
+    bottom: 2%;
+    left: 4%;
+}

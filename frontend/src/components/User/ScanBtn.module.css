@@ -7,7 +7,7 @@
     background: var(--htmlBackground);
     border-radius: .5em .5em .5em .5em;
     border: .1em #404040 solid;
-    /*box-shadow: inset .1em .1em .3em black;*/
+    box-shadow: 0 .3em .9em black;
     cursor: pointer;
 }
 
