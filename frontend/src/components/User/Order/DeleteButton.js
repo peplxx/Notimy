@@ -36,10 +36,11 @@ const DeleteButton = ({ MenuClickable }) => {
         }
     };
 
-    const handleEnd = async () => {
+    const handleEnd = async (done = false) => {
+        console.log('delta percentage: ', deltaPercentage);
         if (MenuClickable && DeleteBtn.current) {
             const deleteThreshold = 75;
-            if (deltaPercentage >= deleteThreshold) {
+            if (deltaPercentage >= deleteThreshold || done) {
                 setIsSwiping(false);
                 setDeltaPercentage(100);
                 if ( await deleteOrder() ) {
@@ -71,9 +72,12 @@ const DeleteButton = ({ MenuClickable }) => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleEnd}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleEnd}
+            onMouseDown={async (e)=>{
+                await handleEnd(true);
+                e.stopPropagation();
+            }}
+            onMouseMove={null}
+            onMouseUp={null}
             onClick={(e) => e.stopPropagation()}
             ref={DeleteBtn}
         >

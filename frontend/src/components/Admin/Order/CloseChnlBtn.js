@@ -36,7 +36,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
         }
     };
 
-    const handleEnd = async () => {
+    const handleEnd = async (done = false) => {
         // Если меньше порога - двигаем в ноль
         // Двигаем в 100
         // Если Операция заебись - закрываем слайдер
@@ -44,7 +44,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
         const deleteThreshold = 75;
         setIsSwiping(false);
         if (MenuClickable && closeBtn.current) {
-            if (deltaPercentage < deleteThreshold) {
+            if (deltaPercentage < deleteThreshold && !done) {
                 setDeltaPercentage(0);
                 return;
             }
@@ -76,7 +76,10 @@ const CloseChnlBtn = ({ MenuClickable }) => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleEnd}
-            onMouseDown={handleMouseDown}
+            onMouseDown={async (e)=>{
+                await handleEnd(true);
+                e.stopPropagation();
+            }}
             onMouseMove={handleMouseMove}
             onMouseUp={handleEnd}
             onClick={(e) => e.stopPropagation()}

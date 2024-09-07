@@ -1,6 +1,7 @@
 // src/context/UserContext.js
 import React, {createContext, useState, useEffect, useCallback} from 'react';
 import {deleteOrderApiUser, fetchOrders, joinChannel} from 'utils/api';
+import sleep from "../utils/sleep";
 
 const UserContext = createContext();
 
