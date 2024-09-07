@@ -13,8 +13,8 @@ function App() {
                 <Route path="/" element={<Landing/>}/>
                 <Route path="/app" element={<Index/>}/>
                 <Route path="/j/:id" element={<JoinChannel/>}/>
-                <Route path="app/admin/login/:token" element={<AdminLogin/>}/>
-                <Route path="app/admin" element={<Admin/>}/>
+                <Route path="/app/admin/login/:token" element={<AdminLogin/>}/>
+                <Route path="/app/admin" element={<Admin/>}/>
                 <Route path="*" element={<Navigate to="/"/>}/>
             </Routes>
         </Router>

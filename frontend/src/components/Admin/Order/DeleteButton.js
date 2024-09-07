@@ -73,8 +73,8 @@ const DeleteButton = ({ MenuClickable }) => {
                 await handleEnd(true);
                 e.stopPropagation();
             }}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleEnd}
+            onMouseMove={null}
+            onMouseUp={null}
             onClick={(e) => e.stopPropagation()}
             ref={DeleteBtn}
         >

@@ -80,8 +80,8 @@ const CloseChnlBtn = ({ MenuClickable }) => {
                 await handleEnd(true);
                 e.stopPropagation();
             }}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleEnd}
+            // onMouseMove={handleMouseMove}
+            // onMouseUp={handleEnd}
             onClick={(e) => e.stopPropagation()}
             ref={closeBtn}
         >
