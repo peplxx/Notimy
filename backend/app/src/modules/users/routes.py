@@ -51,7 +51,6 @@ async def login(
             )
     if cookie_is_set and not session_token:
         user = await user_from_cookie(request, session)
-        return {"message": "COOKIE IS SET"}
         if user:
             login_type = "existing"
             session_token = manager.create_access_token(
@@ -79,7 +78,7 @@ async def login(
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True, domain="notimy.ru", expires=settings.SESSION_TOKEN_LIFETIME)
+                        samesite="none", secure=True, domain="notimy.ru", max_age=settings.SESSION_TOKEN_LIFETIME.total_seconds())
     return response
 
 
