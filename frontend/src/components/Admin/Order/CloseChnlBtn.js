@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import styles from './CloseChnlBtn.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
 import classNames from "classnames";
-import { AcceptSvg } from "components/AcceptSvg";
+import {AcceptSvg} from "components/AcceptSvg";
 
-const CloseChnlBtn = ({ MenuClickable }) => {
-    const { closeOrder, setIsSideOpen, isSideOpen } = useContext(AdminOrderContext);
+const CloseChnlBtn = ({MenuClickable}) => {
+    const {closeOrder, setIsSideOpen, isSideOpen} = useContext(AdminOrderContext);
 
     const [deltaX, setDeltaX] = useState(0);
     const [deltaPercentage, setDeltaPercentage] = useState(0);
@@ -32,7 +32,7 @@ const CloseChnlBtn = ({ MenuClickable }) => {
     // Обработка касаний (мобильные устройства)
     const handleTouchStart = (e) => {
         if (isMobile) {
-            e.preventDefault(); // Предотвращение конфликтов с кликами
+            // e.preventDefault(); // Предотвращение конфликтов с кликами
             startXRef.current = e.touches[0].clientX;
             setIsSwiping(true);
         }
@@ -40,7 +40,6 @@ const CloseChnlBtn = ({ MenuClickable }) => {
 
     const handleTouchMove = (e) => {
         if (isSwiping && isMobile && MenuClickable && closeBtn.current) {
-            e.preventDefault(); // Предотвращение конфликтов с кликами
             const deltaX = e.touches[0].clientX - startXRef.current;
             setDeltaX(Math.min(deltaX, MenuClickable.offsetWidth));
         }
@@ -48,18 +47,16 @@ const CloseChnlBtn = ({ MenuClickable }) => {
 
     const handleTouchEnd = async (e) => {
         if (isMobile) {
-            e.preventDefault(); // Предотвращение конфликтов с кликами
             await handleEnd();
         }
     };
 
     // Обработка кликов (ПК)
-    const handleMouseDown = (e) => {
+    const handleMouseDown = async (e) => {
         if (!isMobile) {
             e.stopPropagation();
             e.preventDefault(); // Предотвращение конфликтов с касаниями
-            setIsSwiping(true);
-            startXRef.current = e.clientX;
+            await handleEnd(true);
         }
     };
 
@@ -113,12 +110,12 @@ const CloseChnlBtn = ({ MenuClickable }) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
+            onMouseMove={null}
+            onMouseUp={null}
             onClick={(e) => e.stopPropagation()}
             ref={closeBtn}
         >
-            <AcceptSvg />
+            <AcceptSvg/>
         </div>
     );
 };
