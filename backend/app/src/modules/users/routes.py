@@ -51,6 +51,7 @@ async def login(
             )
     if cookie_is_set and not session_token:
         user = await user_from_cookie(request, session)
+        return {"message": "COOKIE IS SET"}
         if user:
             login_type = "existing"
             session_token = manager.create_access_token(
