@@ -25,6 +25,7 @@ class ChannelData(BaseModel):
     created_at: datetime.datetime
     dispose_at: datetime.datetime
     closed_at: datetime.datetime | None
+    local_number: int | None
 
     spot_id: Optional[UUID] = None
     provider_name: Optional[str] = ""

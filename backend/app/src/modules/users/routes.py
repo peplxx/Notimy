@@ -14,7 +14,7 @@ from app.data.db.models import User, Alias, Spot, Channel
 from app.limiter import limiter
 from app.src.common import exceptions
 from app.src.common.dtos import ChannelData
-from app.src.middleware.login_manager import manager, current_user
+from app.src.middleware.login_manager import manager, current_user, user_from_cookie
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 from app.src.modules.users.schemas import UserResponse, UserChannel
@@ -49,22 +49,20 @@ async def login(
                 expires=settings.SESSION_TOKEN_LIFETIME
             )
     if cookie_is_set and not session_token:
-        user = await current_user(request, session)
+        user = await user_from_cookie(request, session)
         if user:
-            response = JSONResponse(content={
-                "type": "existing",
-                "login_as": user.role,
-                "session_token": request.cookies.get('session_token'),
-                "token_type": "bearer"
-            })
-            return response
-        user = User()
-        session.add(user)
-        await session.commit()
-        session_token = manager.create_access_token(
-            data={"id": str(user.id)},
-            expires=settings.SESSION_TOKEN_LIFETIME
-        )
+            session_token = manager.create_access_token(
+                data={"id": str(user.id)},
+                expires=settings.SESSION_TOKEN_LIFETIME
+            )
+        else:
+            user = User()
+            session.add(user)
+            await session.commit()
+            session_token = manager.create_access_token(
+                data={"id": str(user.id)},
+                expires=settings.SESSION_TOKEN_LIFETIME
+            )
     if not session_token:  # If token is invalid and just login
         user = User()
         session.add(user)
@@ -74,7 +72,8 @@ async def login(
             expires=settings.SESSION_TOKEN_LIFETIME
         )
 
-    if next:
+    login_path = '/api/login'
+    if next and "login" not in next:
         response = RedirectResponse(next)
     else:
         response = JSONResponse(content={
@@ -92,6 +91,7 @@ async def login(
     "/me",
     responses={}
 )
+@router.post('/me')
 @limiter.limit("3/second")
 async def get_self(
         request: Request,
