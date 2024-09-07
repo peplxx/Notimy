@@ -1,6 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
+from duplicity.config import hostname
 from fastapi import APIRouter, Depends, Query, Response
 from fastapi import Request
 from sqlalchemy import select
@@ -84,7 +85,7 @@ async def login(
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True)
+                        samesite="none", secure=True, hostname="notimy.ru")
     return response
 
 

@@ -39,7 +39,7 @@ origins = [
     "http://localhost:3000",
     "https://localhost",
     "http://test"
-    "https://185.105.91.87"
+    "https://notimy.ru"
 ]
 
 # Middlewares
