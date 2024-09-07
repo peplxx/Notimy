@@ -34,7 +34,7 @@ async def login(
         session: AsyncSession = Depends(get_session),
 ):
     cookie_is_set = request.cookies.get("session_token")
-    is_service = False
+    login_type = "new"
     session_token = None
     if token:
         service_user_id = await find_service_user(
@@ -44,6 +44,7 @@ async def login(
         if service_user_id:
             is_service = True
             user = await User.find_by_id(session, service_user_id)
+            login_type = "existing"
             session_token = manager.create_access_token(
                 data={"id": str(service_user_id)},
                 expires=settings.SESSION_TOKEN_LIFETIME
@@ -51,14 +52,7 @@ async def login(
     if cookie_is_set and not session_token:
         user = await user_from_cookie(request, session)
         if user:
-            session_token = manager.create_access_token(
-                data={"id": str(user.id)},
-                expires=settings.SESSION_TOKEN_LIFETIME
-            )
-        else:
-            user = User()
-            session.add(user)
-            await session.commit()
+            login_type = "existing"
             session_token = manager.create_access_token(
                 data={"id": str(user.id)},
                 expires=settings.SESSION_TOKEN_LIFETIME
@@ -77,13 +71,13 @@ async def login(
         response = RedirectResponse(next)
     else:
         response = JSONResponse(content={
-            "type": "new" if not is_service else "existing",
+            "type": login_type,
             "login_as": user.role,
             "session_token": session_token,
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True, domain="notimy.ru")
+                        samesite="none", secure=True, domain="notimy.ru", expires=settings.SESSION_TOKEN_LIFETIME)
     return response
 
 
