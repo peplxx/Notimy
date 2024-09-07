@@ -73,6 +73,7 @@ async def login(
         response = JSONResponse(content={
             "type": login_type,
             "login_as": user.role,
+            "user_id": str(user.id),
             "session_token": session_token,
             "token_type": "bearer"
         })
