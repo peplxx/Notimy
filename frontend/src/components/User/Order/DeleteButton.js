@@ -1,49 +1,87 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TrashBucketSvg } from "components/TrashBucketSvg";
 import styles from './OrderTop.module.css';
 import OrderContext from "context/OrderContext";
 
-
 const DeleteButton = ({ MenuClickable }) => {
-    const {deleteOrder} = useContext(OrderContext);
+    const { deleteOrder } = useContext(OrderContext);
 
     const [deltaX, setDeltaX] = useState(0);
     const [deltaPercentage, setDeltaPercentage] = useState(0);
     const [isSwiping, setIsSwiping] = useState(false);
+    const [isMobile, setIsMobile] = useState(false); // New state to check for mobile
 
     const startXRef = useRef(0);
     const DeleteBtn = useRef(null);
 
-    // Обработка Нажатий
+    // Определение, является ли устройство мобильным
+    useEffect(() => {
+        const checkIfMobile = () => {
+            setIsMobile(window.innerWidth <= 800 || 'ontouchstart' in window);
+        };
+
+        window.addEventListener('resize', checkIfMobile);
+        checkIfMobile(); // Initial check
+
+        return () => {
+            window.removeEventListener('resize', checkIfMobile);
+        };
+    }, []);
+
+    // Обработка свайпов (мобильные устройства)
     const handleTouchStart = (e) => {
-        startXRef.current = e.touches[0].clientX;
-        setIsSwiping(true);
+        if (isMobile) {
+            e.preventDefault(); // Prevent default touch actions
+            startXRef.current = e.touches[0].clientX;
+            setIsSwiping(true);
+        }
     };
-    const handleMouseDown = (e) => {
-        startXRef.current = e.clientX;
-        setIsSwiping(true);
-    };
+
     const handleTouchMove = (e) => {
-        if (isSwiping && MenuClickable && DeleteBtn.current) {
+        if (isSwiping && isMobile && MenuClickable && DeleteBtn.current) {
+            e.preventDefault(); // Prevent default touch actions
             const deltaX = e.touches[0].clientX - startXRef.current;
             setDeltaX(Math.min(deltaX, MenuClickable.offsetWidth));
         }
     };
+
+    const handleTouchEnd = async (e) => {
+        if (isMobile) {
+            e.preventDefault(); // Prevent default touch actions
+            await handleEnd();
+        }
+    };
+
+    // Обработка кликов (ПК)
+    const handleMouseDown = async (e) => {
+        if (!isMobile) {
+            e.stopPropagation();
+            e.preventDefault(); // Prevent default mouse actions
+            startXRef.current = e.clientX;
+            setIsSwiping(true);
+        }
+    };
+
     const handleMouseMove = (e) => {
-        if (isSwiping && MenuClickable && DeleteBtn.current) {
+        if (isSwiping && !isMobile && MenuClickable && DeleteBtn.current) {
             const deltaX = e.clientX - startXRef.current;
             setDeltaX(Math.min(deltaX, MenuClickable.offsetWidth));
         }
     };
 
+    const handleMouseUp = async () => {
+        if (!isMobile) {
+            await handleEnd(true);
+        }
+    };
+
     const handleEnd = async (done = false) => {
-        console.log('delta percentage: ', deltaPercentage);
         if (MenuClickable && DeleteBtn.current) {
             const deleteThreshold = 75;
             if (deltaPercentage >= deleteThreshold || done) {
                 setIsSwiping(false);
                 setDeltaPercentage(100);
-                if ( await deleteOrder() ) {
+                if (await deleteOrder()) {
                     setDeltaPercentage(100);
                 } else {
                     setDeltaPercentage(0);
@@ -71,13 +109,10 @@ const DeleteButton = ({ MenuClickable }) => {
             }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
-            onTouchEnd={handleEnd}
-            onMouseDown={async (e)=>{
-                await handleEnd(true);
-                e.stopPropagation();
-            }}
-            onMouseMove={null}
-            onMouseUp={null}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
             onClick={(e) => e.stopPropagation()}
             ref={DeleteBtn}
         >
