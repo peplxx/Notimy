@@ -52,7 +52,7 @@ class Spot(Base, IndexedObject, TokenizedObject):
 
     @property
     async def last_channel(self):
-        channels_list = await self.channels_list
+        channels_list = sorted(await self.channels_list, key=lambda x: x.created_at)
         if not channels_list or len(channels_list) == 0:
             return None
         return channels_list[-1]
