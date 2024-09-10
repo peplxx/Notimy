@@ -1,4 +1,4 @@
-__all__ = ["limiter", "NoOpLimiter"]
+__all__ = ["limiter", "NoOpLimiter", "rate_limit_exceeded_handler"]
 
 from fastapi import Request
 from slowapi import Limiter

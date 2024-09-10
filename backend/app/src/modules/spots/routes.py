@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Body, Request
-from sqlalchemy import select, and_
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.data.db.connection import get_session
 from app.data.db.models import Spot, Channel, User, Alias
-from app.limiter import limiter
+from app.src.limiter import limiter
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound

@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, Query
 from fastapi import Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,7 +11,7 @@ from app.config import get_settings
 from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import User, Alias, Spot, Channel
-from app.limiter import limiter
+from app.src.limiter import limiter
 from app.src.common import exceptions
 from app.src.common.dtos import ChannelData
 from app.src.middleware.login_manager import manager, current_user, user_from_cookie

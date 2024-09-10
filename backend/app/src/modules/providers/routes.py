@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config.constants import Roles
 from app.data.db.connection import get_session
 from app.data.db.models import Provider, Spot, User, Alias
-from app.limiter import limiter
+from app.src.limiter import limiter
 from app.src.common.dtos import SpotData, ProviderData
 from app.src.middleware.token_auth import provider_auth
 from app.src.modules.providers.exceptions import MaxSpotIsReached
