@@ -78,7 +78,8 @@ async def login(
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True, domain="notimy.ru", max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
+                        samesite="none", secure=True,
+                        domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
     return response
 
 

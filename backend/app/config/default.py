@@ -14,8 +14,9 @@ class DefaultSettings(BaseSettings):
 
     ENV: str = environ.get("ENV", "default")
     PATH_PREFIX: str = environ.get("PATH_PREFIX", "/api")
-    APP_HOST: str = environ.get("APP_HOST", "127.0.0.1")
+    APP_HOST: str = environ.get("APP_HOST", "0.0.0.0")
     APP_PORT: int = int(environ.get("APP_PORT", 5000))
+    APP_HOSTNAME: str = environ.get("APP_HOSTNAME", "notimy.ru")
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "postgres")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
@@ -43,8 +44,6 @@ class DefaultSettings(BaseSettings):
     CHANNEL_LIFETIME: timedelta = timedelta(days=7)
     SESSION_TOKEN_LIFETIME: timedelta = timedelta(weeks=3600)
 
-
-
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
 
     @property
@@ -54,6 +53,12 @@ class DefaultSettings(BaseSettings):
     @property
     def is_test(self) -> bool:
         return self.ENV == "default"
+
+    @property
+    def cookie_domain(self):
+        if self.is_test or self.is_dev:
+            return "localhost"
+        return self.APP_HOSTNAME
 
     @property
     def database_settings(self) -> dict:
@@ -75,7 +80,7 @@ class DefaultSettings(BaseSettings):
         """
         return "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}".format(
             **self.database_settings,
-        )
+        ) + "?sslmode=disable" if self.is_test else ""
 
     @property
     def database_uri_sync(self) -> str:
@@ -84,7 +89,7 @@ class DefaultSettings(BaseSettings):
         """
         return "postgresql://{user}:{password}@{host}:{port}/{database}".format(
             **self.database_settings,
-        )
+        ) + "?sslmode=disable" if self.is_test else ""
 
     @property
     def docs_path(self) -> str | None:
