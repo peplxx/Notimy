@@ -1,4 +1,4 @@
-.acceptBackground {
+.background {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -13,18 +13,18 @@
     align-items: center;
 }
 
-.menuOpened.acceptBackground {
+.menuOpened.background {
     visibility: visible;
 }
 
-.menuClosed.acceptBackground {
+.menuClosed.background {
     min-width: 0;
     max-width: 0;
     width: 0;
     visibility: hidden;
 }
 
-.acceptBackground svg {
+.background svg {
   position: absolute;
   fill: #FFFFFF;
   max-height: 50%;
@@ -43,4 +43,9 @@
   visibility: visible;
 }
 
-
+.hint svg {
+    position: absolute;
+    right: calc(50% - 0.8em);
+    bottom: 0.2em;
+    height: 1em;
+}

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from './ScanBtn.module.css';
-import {ScanSvg} from "../ScanSvg";
+import {ScanSvg} from "components/svg/ScanSvg";
 import {Scanner} from '@yudiel/react-qr-scanner';
 
 const ScanBtn = () => {
