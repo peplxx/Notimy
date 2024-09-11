@@ -1,13 +1,11 @@
 __all__ = ['UserRepository']
 
 from app.config.constants import Roles
-from app.data.db.models import User
+from app.data.db.models import User, Channel
+from app.data.db.repositories.base import BaseRepository
 
 
-class UserRepository:
-
-    def __init__(self, session):
-        self._session = session
+class UserRepository(BaseRepository):
 
     async def create(self, role: Roles = Roles.default) -> User:
         user = User(role=role.value)
@@ -17,4 +15,8 @@ class UserRepository:
 
     async def set_data(self, user: User, data: dict) -> None:
         user.set_data(data)
+        await self._session.commit()
+
+    async def add_channel(self, user: User, channel: Channel) -> None:
+        (await user.channels_list).append(channel)
         await self._session.commit()
