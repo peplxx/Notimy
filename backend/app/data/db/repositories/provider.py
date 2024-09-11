@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.data.db.models import Provider
+from app.data.db.models import Provider, Spot
 
 
 class ProviderRepository:
@@ -21,6 +21,18 @@ class ProviderRepository:
 
     async def change_spot_limit(self, provider: Provider, delta: int) -> None:
         await self.set_spot_limit(provider, provider.max_spots + delta)
+
+    async def add_spot(self, provider: Provider, spot: Spot) -> None:
+        provider.spots += 1
+        (await provider.spots_list).append(spot)
+        await self._session.commit()
+
+    async def update(self, provider: Provider, name: str = None, description: str = None) -> Provider:
+        provider.name = name if name else provider.name
+        provider.description = description if description else provider.description
+        await self._session.commit()
+        return provider
+
     async def create(self, name: str, description: str, account_id: UUID) -> Provider:
         new_provider = Provider(
             name=name,
