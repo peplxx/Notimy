@@ -1,15 +1,13 @@
 __all__ = ['SpotRepository']
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from uuid import UUID
 
-from sqlalchemy import select, and_, Alias
+from sqlalchemy import select, Alias
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.data.db.repositories import UserRepository
-from app.data.db.utils import get_now as now
-
 from app.data.db.models import Spot, Subscription, User
+from app.data.db.utils import get_now as now
 
 
 class SpotRepository:
@@ -17,8 +15,6 @@ class SpotRepository:
         self._session = session
 
     async def create(self, account: User, provider_id: UUID) -> Spot:
-        user_repo = UserRepository(self._session)
-
         spot = Spot(
             account=account,
             provider_id=provider_id
@@ -27,7 +23,6 @@ class SpotRepository:
         alias = Alias(base=spot.id)
         self._session.add(alias)
         await self._session.commit()
-        await user_repo.set_data(account, spot.service_user_data)
         return spot
 
     async def force_subscription(self, spot: Spot) -> Subscription:

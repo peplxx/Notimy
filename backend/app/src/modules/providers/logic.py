@@ -1,10 +1,12 @@
 __all__ = ["create_spot"]
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.constants import Roles
 from app.data.db.models import Provider, Spot
 from app.data.db.repositories import ProviderRepository, UserRepository, SpotRepository
 from app.src.modules.providers.exceptions import MaxSpotIsReached
+
 
 async def create_spot(session: AsyncSession, provider: Provider) -> Spot:
     provider_repo = ProviderRepository(session)
@@ -17,4 +19,5 @@ async def create_spot(session: AsyncSession, provider: Provider) -> Spot:
     spot_service_user = await user_repo.create(Roles.spotUser)
     spot = await spot_repo.create(account=spot_service_user, provider_id=provider.id)
     await provider_repo.add_spot(provider, spot)
+    await user_repo.set_data(spot_service_user, spot.service_user_data)
     return spot
