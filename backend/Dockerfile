@@ -8,11 +8,9 @@ WORKDIR /workdir/
 COPY ./poetry.lock .
 COPY ./pyproject.toml .
 
-<<<<<<< HEAD
-RUN poetry config virtualenvs.create false && poetry install --no-dev --without test
-=======
+
 RUN poetry config virtualenvs.create false && poetry install --no-dev --without test, linter
->>>>>>> origin/backend
+
 
 RUN poetry add pyopenssl
 

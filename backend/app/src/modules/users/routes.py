@@ -31,44 +31,7 @@ async def login(
         token: Optional[str] = Query(None),
         session: AsyncSession = Depends(get_session),
 ):
-<<<<<<< HEAD
-    cookie_is_set = request.cookies.get("session_token")
-    login_type = "new"
-    session_token = None
-    if token:
-        service_user_id = await find_service_user(
-            session=session,
-            token=token
-        )
-        if service_user_id:
-            is_service = True
-            user = await User.find_by_id(session, service_user_id)
-            login_type = "existing"
-            session_token = manager.create_access_token(
-                data={"id": str(service_user_id)},
-                expires=settings.SESSION_TOKEN_LIFETIME
-            )
-    if cookie_is_set and not session_token:
-        user = await user_from_cookie(request, session)
-        if user:
-            login_type = "existing"
-            session_token = manager.create_access_token(
-                data={"id": str(user.id)},
-                expires=settings.SESSION_TOKEN_LIFETIME
-            )
-    if not session_token:  # If token is invalid and just login
-        user = User()
-        session.add(user)
-        await session.commit()
-        session_token = manager.create_access_token(
-            data={"id": str(user.id)},
-            expires=settings.SESSION_TOKEN_LIFETIME
-        )
-
-    login_path = '/api/login'
-=======
     session_token, login_type, user = await login_user(session, request, token)
->>>>>>> origin/backend
     if next and "login" not in next:
         response = RedirectResponse(next)
     else:
@@ -80,12 +43,8 @@ async def login(
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
-<<<<<<< HEAD
-                        samesite="none", secure=True, domain="notimy.ru", max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
-=======
                         samesite="none", secure=True,
                         domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
->>>>>>> origin/backend
     return response
 
 
