@@ -55,3 +55,6 @@ class SpotRepository(BaseRepository):
 
     async def get_channel_ids(self, spot: Spot) -> list[UUID]:
         return [_.id for _ in await spot.channels_list]
+
+    async def get_alias(self, alias_name: str) -> Alias:
+        return await self._session.scalar(select(Alias).where(Alias.name == alias_name))

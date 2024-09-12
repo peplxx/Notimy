@@ -2,7 +2,7 @@ __all__ = ['ChannelRepository']
 
 from uuid import UUID
 
-from app.data.db.models import Spot, Channel, Message
+from app.data.db.models import Spot, Channel, Message, User
 from app.data.db.repositories.base import BaseRepository
 
 
@@ -27,3 +27,11 @@ class ChannelRepository(BaseRepository):
         if channel.open:
             channel.close()
             await self._session.commit()
+
+    async def listeners_ids(self, channel: Channel):
+        return [_.id for _ in await channel.listeners_list]
+
+    async def add_listener(self, channel: Channel, user: User):
+        if user.id not in await self.listeners_ids(channel):
+            (await channel.listeners_list).append(user)
+        await self._session.commit()
