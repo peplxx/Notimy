@@ -45,7 +45,7 @@ const Slider =
             }
         };
         const handleTouchMove = (e) => {
-            if (isSwiping && isMobile) {
+            if (isSwiping && isMobile && parentRef) {
                 const delta = e.touches[0].clientX - startXRef.current;
                 setDeltaX(Math.min(delta, parentRef.current.offsetWidth));
             }
@@ -80,9 +80,10 @@ const Slider =
         };
 
         useEffect(() => {
-            const elementWidth = parentRef.current.offsetWidth;
-            setDeltaPercentage(Math.min(14 + (deltaX / elementWidth) * 100, 100));
-
+            if (parentRef) {
+                const elementWidth = parentRef.current.offsetWidth;
+                setDeltaPercentage(Math.min(14 + (deltaX / elementWidth) * 100, 100));
+            }
         }, [deltaX]);
 
         return (
