@@ -1,29 +1,68 @@
+@import "index.css";
+
 .presentation {
     display: block; /* Ensures image behaves like a block element */
     margin: auto; /* Centers the image horizontally */
-    margin-top: 1em;
+    margin-top: 2em;
     width: 80%; /* Image takes up 100% of the container's width */
-    max-width: max(1000px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
+    max-width: max(600px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
     border-radius: 1em;
     box-shadow: 0 0 .6em white;
 }
 
 .main {
     border-radius: 1em;
-    background-color: #dfdfdf;
+    background-color: #efefef;
     position: relative;
     display: block;
-    box-shadow: 0 0 .6em white;
+    box-shadow: 0 0 .6em #cfcfcf;
     margin: auto;
-    margin-top: 3em;
+    margin-top: 2em;
     width: 80%;
-    max-width: max(1000px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
-    height: 4em;
+    max-width: max(600px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
+    height: 4.5em;
     color: white;
 }
 
+.center {
+    position: fixed; /* Ensures it's relative to the viewport */
+    top: 50%; /* Centers it vertically */
+    left: 50%; /* Centers it horizontally */
+    width: 100%;
+    transform: translate(-50%, -50%); /* Offsets by half the element's width and height */
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    justify-content: center;
+    /*align-items: center;*/
+    color: white;
+    text-align: center;
+}
+
+.icons {
+    position: fixed; /* Ensures it's relative to the viewport */
+    bottom: 10%; /* Centers it vertically */
+    left: 50%; /* Centers it horizontally */
+    width: 100%;
+    transform: translate(-50%, -50%); /* Offsets by half the element's width and height */
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    justify-content: center;
+    /*align-items: center;*/
+    color: white;
+    text-align: center;
+}
+
+.icon {
+    margin: 1em;
+    width: 4em;
+    height: 4em;
+    border-radius: 25%;
+    background-color: white;
+    box-shadow: 0 0 1em white;
+}
+
 .btn_text {
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: 700;
     font-family: Rubik, sans-serif;
     color: black;
