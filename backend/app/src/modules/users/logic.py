@@ -6,6 +6,7 @@ from fastapi import Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import get_settings
 from app.data.db.models import Provider
 from app.data.db.models import User, Spot, Channel
 from app.data.db.repositories import RepositoriesManager
@@ -13,6 +14,7 @@ from app.src.common.exceptions import InvalidInvitationLink
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 
+settings = get_settings()
 
 async def find_service_user(
         session: AsyncSession,
