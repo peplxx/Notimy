@@ -43,7 +43,7 @@
     bottom: 10%; /* Centers it vertically */
     left: 50%; /* Centers it horizontally */
     width: 100%;
-    transform: translate(-50%, -50%); /* Offsets by half the element's width and height */
+    transform: translate(-50%, -10%); /* Offsets by half the element's width and height */
     /*display: flex;*/
     /*flex-direction: column;*/
     justify-content: center;
@@ -53,12 +53,13 @@
 }
 
 .icon {
-    margin: 1em;
+    /*margin: 1em;*/
     width: 4em;
     height: 4em;
-    border-radius: 25%;
+    border-radius: 50%;
+    border: .1em solid #303030;
     background-color: white;
-    box-shadow: 0 0 1em white;
+    box-shadow: 0 0 .5em black;
 }
 
 .btn_text {
