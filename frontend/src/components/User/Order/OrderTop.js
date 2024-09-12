@@ -58,11 +58,15 @@ const OrderTop = () => {
                     e.stopPropagation();
                 }}
             >
-                <Slider onDone={deleteOrder}
-                        sliderColor={'red'}
-                        SliderIcon={TrashBucketSvg}
-                        parentRef={MenuClickable.current}
-                />
+                {
+                    isSideOpen ?
+                        <Slider onDone={deleteOrder}
+                                sliderColor={'red'}
+                                SliderIcon={TrashBucketSvg}
+                                parentRef={MenuClickable}
+                        />
+                        : null
+                }
                 {/*<DeleteButton MenuClickable={MenuClickable.current}/>*/}
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
