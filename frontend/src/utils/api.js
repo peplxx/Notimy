@@ -90,7 +90,6 @@ export const adminLogin = async (token) => {
 }
 
 export const getMe = async () => {
-    return {'role': 'spot_user1'}
     try {
         const res = await api.get(`/me`);
         return res.data;
