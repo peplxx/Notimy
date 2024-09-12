@@ -25,27 +25,33 @@
 }
 
 .background svg {
-  position: absolute;
-  fill: #FFFFFF;
-  max-height: 50%;
-  max-width: 1.6em;
-  transform-origin: center;
-  transition: width 0.5s
-}
-
-.menuClosed svg {
-  width: 0;
-  visibility: hidden;
-}
-
-.menuOpened svg {
-  width: 100%;
-  visibility: visible;
+    position: absolute;
+    fill: #FFFFFF;
+    max-height: 50%;
+    max-width: 1.6em;
+    transform-origin: center;
+    transition: width 0.5s
 }
 
 .hint svg {
     position: absolute;
-    right: calc(50% - 0.8em);
+    fill: #FFFFFF;
+    width: 100%;
+    max-height: 50%;
+    max-width: 1.6em;
+    transform-origin: center;
+    transition: width 0.5s;
+    left: calc(50% - 0.8em);
     bottom: 0.2em;
     height: 1em;
+}
+
+.menuClosed svg {
+    width: 0;
+    visibility: hidden;
+}
+
+.menuOpened svg {
+    width: 100%;
+    visibility: visible;
 }
