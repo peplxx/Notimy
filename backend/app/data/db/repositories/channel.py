@@ -17,9 +17,11 @@ class ChannelRepository(BaseRepository):
         (await spot.channels_list).append(channel)
         await self._session.commit()
 
-    async def get_channel_ids(self, spot: Spot) -> list[UUID]:
-        return [_.id for _ in await spot.channels_list]
-
     async def add_message(self, channel: Channel, message: Message):
         channel.add_message(message)
         await self._session.commit()
+
+    async def close(self, channel: Channel):
+        if channel.open:
+            channel.close()
+            await self._session.commit()

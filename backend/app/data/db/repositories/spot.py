@@ -51,3 +51,6 @@ class SpotRepository(BaseRepository):
         alias_db.name = alias_name
         await self._session.commit()
         return alias_db
+
+    async def get_channel_ids(self, spot: Spot) -> list[UUID]:
+        return [_.id for _ in await spot.channels_list]
