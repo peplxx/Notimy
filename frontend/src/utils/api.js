@@ -13,6 +13,7 @@ const api = axios.create({
 
 
 export const fetchOrders = async () => {
+    return [{id: '123', open: false, messages_data: []}]
     try {
         const res = await api.get('/me');
         if ( res.data.role !== 'user' ) {
