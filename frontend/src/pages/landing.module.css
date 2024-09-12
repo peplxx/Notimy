@@ -1,0 +1,35 @@
+.presentation {
+    display: block; /* Ensures image behaves like a block element */
+    margin: auto; /* Centers the image horizontally */
+    margin-top: 1em;
+    width: 80%; /* Image takes up 100% of the container's width */
+    max-width: max(1000px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
+    border-radius: 1em;
+    box-shadow: 0 0 .6em white;
+}
+
+.main {
+    border-radius: 1em;
+    background-color: #dfdfdf;
+    position: relative;
+    display: block;
+    box-shadow: 0 0 .6em white;
+    margin: auto;
+    margin-top: 3em;
+    width: 80%;
+    max-width: max(1000px, 5vw); /* Restricts the max width to either 1000px or 5% of the viewport width */
+    height: 4em;
+    color: white;
+}
+
+.btn_text {
+    font-size: 1.5em;
+    font-weight: 700;
+    font-family: Rubik, sans-serif;
+    color: black;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+    height: 100%;
+    left: 20%;
+}
