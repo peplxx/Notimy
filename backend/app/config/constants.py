@@ -7,6 +7,5 @@ class Roles(Enum):
     default = "user"
 
 
-
 NO_DESCRIPTION = "NO_DESCRIPTION"
 NO_ADDITIONAL_INFO = "NO_ADDITIONAL_INFO"

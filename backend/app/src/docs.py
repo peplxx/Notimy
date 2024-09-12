@@ -13,7 +13,7 @@ DESCRIPTION = """
 
 CONTACT_INFO = {
     "name": "Notimy",
-    "url": "https://t.me/notimy_app",
+    "url": "https://notimy.ru",
     "email": "notimy.official@gmail.com",
 }
 LICENSE_INFO = {

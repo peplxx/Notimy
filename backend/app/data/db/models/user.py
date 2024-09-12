@@ -26,6 +26,10 @@ class User(Base, IndexedObject):
     async def channels_list(self):
         return await self.awaitable_attrs.channels
 
+    @property
+    def is_default(self):
+        return self.role == Roles.default.value
+
     def get_data(self):
         return json.loads(self.data)
 
