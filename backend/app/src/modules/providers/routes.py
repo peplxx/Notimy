@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.db.connection import get_session
 from app.data.db.models import Provider
-from app.data.db.repositories import ProviderRepository
+from app.data.db.repositories import RepositoriesManager
 from app.src.common.dtos import SpotData, ProviderData
 from app.src.limiter import limiter
 from app.src.middleware.token_auth import provider_auth
@@ -49,6 +49,6 @@ async def update_providers_data(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ) -> ProviderData:
-    provider_repo = ProviderRepository(session)
-    await provider_repo.update(provider=provider, name=data.name, description=data.description)
+    manager = RepositoriesManager(session)
+    await manager.P.update(provider=provider, name=data.name, description=data.description)
     return await ProviderData.by_model(session, provider)

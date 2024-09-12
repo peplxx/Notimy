@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.constants import Roles
 from app.data.db.models import Provider, Spot
-from app.data.db.repositories import ProviderRepository, UserRepository, SpotRepository
+from app.data.db.repositories import RepositoriesManager
 from app.src.modules.root.exceptions import (
     ProviderDoesntExist,
     ImpossibleChange,
@@ -32,21 +32,20 @@ async def get_or_create_provider(session: AsyncSession, provider_data: RootProvi
     Raises:
         Exception: Raises an exception if the provider cannot be created due to a database error.
     """
-    provider_repo = ProviderRepository(session)
-    user_repo = UserRepository(session)
+    manager = RepositoriesManager(session)
 
-    if result := await provider_repo.get_by_name(provider_data.name):
+    if result := await manager.P.get_by_name(provider_data.name):
         return result
 
-    service_user = await user_repo.create(Roles.providerUser)
+    service_user = await manager.U.create(Roles.providerUser)
 
-    provider = await provider_repo.create(
+    provider = await manager.P.create(
         name=provider_data.name,
         description=provider_data.description,
         account_id=service_user.id,
     )
 
-    await user_repo.set_data(service_user, provider.service_user_data)
+    await manager.U.set_data(service_user, provider.service_user_data)
     return provider
 
 
@@ -65,7 +64,7 @@ async def change_provider_spot_limit(session: AsyncSession, data: RootChangeMaxS
         ProviderDoesntExist: If the provider with the specified ID does not exist.
         ImpossibleChange: If the new limit would result in an invalid state (e.g., less than current spots).
     """
-    provider_repo = ProviderRepository(session)
+    manager = RepositoriesManager(session)
 
     provider: Provider = await Provider.find_by_id(session, data.id)
     if not provider:
@@ -74,7 +73,7 @@ async def change_provider_spot_limit(session: AsyncSession, data: RootChangeMaxS
     if provider.max_spots + data.value < provider.spots:
         raise ImpossibleChange
 
-    await provider_repo.change_spot_limit(provider, data.value)
+    await manager.P.change_spot_limit(provider, data.value)
     return provider
 
 
@@ -92,10 +91,11 @@ async def upsert_subscription_by_data(session: AsyncSession, data: RootUpsertSub
     Raises:
         SpotDoesntExist: If the spot with the specified ID does not exist.
     """
-    spot_repo = SpotRepository(session)
+    manager = RepositoriesManager(session)
+
     spot = await Spot.find_by_id(session, data.spot_id)
     if not spot:
         raise SpotDoesntExist
-    subscription = await spot_repo.force_subscription(spot)
-    await spot_repo.change_subscription_ends(subscription, timedelta(days=data.days))
+    subscription = await manager.S.force_subscription(spot)
+    await manager.S.change_subscription_ends(subscription, timedelta(days=data.days))
     return spot

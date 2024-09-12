@@ -1,6 +1,3 @@
-__all__ = ["ProviderRepository", "UserRepository", "SpotRepository", "ChannelRepository"]
+__all__ = ["RepositoriesManager"]
 
-from app.data.db.repositories.channel import ChannelRepository
-from app.data.db.repositories.provider import ProviderRepository
-from app.data.db.repositories.spot import SpotRepository
-from app.data.db.repositories.user import UserRepository
+from app.data.db.repositories.manager import RepositoriesManager
