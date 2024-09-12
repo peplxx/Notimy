@@ -18,7 +18,7 @@ from app.src.middleware.login_manager import manager, current_user, user_from_co
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 from app.src.modules.users.schemas import UserResponse, UserChannel
-from app.src.modules.users.service import find_service_user
+from app.src.modules.users.logic import find_service_user
 
 router = APIRouter(prefix='', tags=['Users'])
 settings = get_settings()

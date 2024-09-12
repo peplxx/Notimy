@@ -17,6 +17,7 @@ class UserRepository(BaseRepository):
         user.set_data(data)
         await self._session.commit()
 
-    async def add_channel(self, user: User, channel: Channel) -> None:
+    async def add_channel(self, user: User, channel: Channel) -> Channel:
         (await user.channels_list).append(channel)
         await self._session.commit()
+        return channel

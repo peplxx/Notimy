@@ -74,7 +74,7 @@ async def change_provider_spot_limit(session: AsyncSession, data: RootChangeMaxS
     if provider.max_spots + data.value < provider.spots:
         raise ImpossibleChange
 
-    await provider_repo.change_spot_limit(provider.id, data.value)
+    await provider_repo.change_spot_limit(provider, data.value)
     return provider
 
 
@@ -93,7 +93,7 @@ async def upsert_subscription_by_data(session: AsyncSession, data: RootUpsertSub
         SpotDoesntExist: If the spot with the specified ID does not exist.
     """
     spot_repo = SpotRepository(session)
-    spot = await Spot.find_by_id(session, data.id)
+    spot = await Spot.find_by_id(session, data.spot_id)
     if not spot:
         raise SpotDoesntExist
     subscription = await spot_repo.force_subscription(spot)

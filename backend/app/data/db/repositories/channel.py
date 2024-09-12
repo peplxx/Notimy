@@ -14,8 +14,10 @@ class ChannelRepository(BaseRepository):
             local_number=await Channel.get_next_local_number(self._session, spot.id)
         )
         self._session.add(channel)
+        await self._session.commit()
         (await spot.channels_list).append(channel)
         await self._session.commit()
+        return channel
 
     async def add_message(self, channel: Channel, message: Message):
         channel.add_message(message)

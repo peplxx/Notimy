@@ -14,10 +14,11 @@ class SpotRepository(BaseRepository):
 
     async def create(self, account: User, provider_id: UUID) -> Spot:
         spot = Spot(
-            account=account,
+            account=account.id,
             provider_id=provider_id
         )
         self._session.add(spot)
+        await self._session.commit()
         alias = Alias(base=spot.id)
         self._session.add(alias)
         await self._session.commit()
@@ -29,7 +30,7 @@ class SpotRepository(BaseRepository):
         return await self.create_subscription(spot)
 
     async def get_subscription(self, spot: Spot) -> Subscription:
-        return await self._session.scalar(select(Subscription).where(Subscription.spot_id.is_(spot.id)))
+        return await self._session.scalar(select(Subscription).where(Subscription.spot_id == spot.id))
 
     async def create_subscription(self, spot: Spot) -> Subscription:
         subscription = Subscription(
@@ -47,7 +48,7 @@ class SpotRepository(BaseRepository):
         await self._session.commit()
 
     async def change_alias(self, spot: Spot, alias_name) -> Alias:
-        alias_db: Alias = await self._session.scalar(select(Alias).where(Alias.base.is_(spot.id)))
+        alias_db: Alias = await self._session.scalar(select(Alias).where(Alias.base == spot.id))
         alias_db.name = alias_name
         await self._session.commit()
         return alias_db

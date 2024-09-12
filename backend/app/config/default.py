@@ -1,7 +1,12 @@
 from datetime import timedelta
 from os import environ
+from pathlib import Path
 
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
+
+env_path = Path(__file__).parents[3] / '.env'
+load_dotenv(dotenv_path=env_path)
 
 
 class DefaultSettings(BaseSettings):
@@ -57,7 +62,7 @@ class DefaultSettings(BaseSettings):
     @property
     def cookie_domain(self):
         if self.is_test or self.is_dev:
-            return "localhost"
+            return None
         return self.APP_HOSTNAME
 
     @property
@@ -80,7 +85,7 @@ class DefaultSettings(BaseSettings):
         """
         return "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}".format(
             **self.database_settings,
-        ) + "?sslmode=disable" if self.is_test else ""
+        )
 
     @property
     def database_uri_sync(self) -> str:
@@ -89,7 +94,7 @@ class DefaultSettings(BaseSettings):
         """
         return "postgresql://{user}:{password}@{host}:{port}/{database}".format(
             **self.database_settings,
-        ) + "?sslmode=disable" if self.is_test else ""
+        )
 
     @property
     def docs_path(self) -> str | None:

@@ -11,4 +11,4 @@ class IndexedObject:
 
     @classmethod
     async def find_by_id(cls, session: AsyncSession, entity_id: UUID):
-        return await session.scalar(select(cls).where(cls.id.is_(entity_id)))
+        return await session.scalar(select(cls).where(cls.id == entity_id))

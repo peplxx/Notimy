@@ -10,10 +10,10 @@ from app.data.db.repositories.base import BaseRepository
 
 class ProviderRepository(BaseRepository):
     async def get_by_name(self, name: str) -> Provider:
-        return await self._session.scalar(select(Provider).where(Provider.name.is_(name)))
+        return await self._session.scalar(select(Provider).where(Provider.name == name))
 
     async def set_spot_limit(self, provider: Provider, spot_limit: int) -> None:
-        provider.max_spot_limit = spot_limit
+        provider.max_spots = spot_limit
         await self._session.commit()
 
     async def change_spot_limit(self, provider: Provider, delta: int) -> None:

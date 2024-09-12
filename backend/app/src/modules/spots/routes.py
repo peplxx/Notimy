@@ -8,7 +8,7 @@ from app.src.common.dtos import SpotData, ChannelData
 from app.src.limiter import limiter
 from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
-from app.src.modules.spots.logic import create_channel, close_channel, change_alias, add_message
+from app.src.modules.spots.logic import create_channel, change_alias, add_message, close_channel_by_id
 from app.src.modules.spots.schemas import SpotChangeAlias, SpotAddMessage, CloseChannel
 
 router = APIRouter(prefix="/spots", tags=["Spots"])
@@ -84,5 +84,5 @@ async def close_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ) -> ChannelData:
-    channel = await close_channel(session, spot, channel_id=data.channel_id)
+    channel = await close_channel_by_id(session, spot, channel_id=data.channel_id)
     return await ChannelData.by_model(session, channel)

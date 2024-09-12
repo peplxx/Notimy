@@ -186,7 +186,6 @@ class TestSpotModule:
         async with AsyncClient(**clients_params) as client:
             client.headers.update({"Authorization": f"Bearer {spot_data.token}"})
             response = await client.post(get_settings().PATH_PREFIX + "/spots/new_channel")
-            print(response.text)
             assert response.status_code == status.HTTP_200_OK
             return spot_data.alias['name'], ChannelData(**response.json())
 
