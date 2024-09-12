@@ -26,6 +26,11 @@ pytest-asyncio = "^0.24.0"
 httpx = "^0.27.2"
 sqlalchemy-utils = "^0.41.2"
 
+
+[tool.poetry.group.linter.dependencies]
+isort = "^5.13.2"
+ruff = "^0.6.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

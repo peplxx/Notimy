@@ -40,7 +40,10 @@ export const AdminProvider = ({children}) => {
     }
 
     const sendMessage = async (id, message) => {
-        if (await sendMessageAdmin(id, message)) {
+        if ( message === '' ) {
+            return;
+        }
+        if (  await sendMessageAdmin(id, message)) {
             await updateOrders();
         }
     }

@@ -1,6 +1,7 @@
 __all__ = [
     "SystemUsersJoinRestrict",
     "SpotDoestHaveChannels",
+    "NotSubscribedOrChannelDoesntExist"
 ]
 
 from starlette import status

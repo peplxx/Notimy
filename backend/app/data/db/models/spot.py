@@ -52,7 +52,7 @@ class Spot(Base, IndexedObject, TokenizedObject):
 
     @property
     async def last_channel(self):
-        channels_list = await self.channels_list
+        channels_list = sorted(await self.channels_list, key=lambda x: x.created_at)
         if not channels_list or len(channels_list) == 0:
             return None
         return channels_list[-1]
@@ -69,6 +69,7 @@ class Spot(Base, IndexedObject, TokenizedObject):
         return subscription.is_active if subscription else False
 
     async def get_subscription(self, session: AsyncSession) -> Subscription | None:
+        # TODO: delete method
         subscription = await session.scalar(select(Subscription).where(
             Subscription.spot_id == self.id and Subscription.provider_id == self.provider
         ))

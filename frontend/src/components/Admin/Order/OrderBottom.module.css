@@ -41,10 +41,10 @@
 
 .messageInput {
     position: absolute;
-    bottom: 1.7em;
-    left: 5%;
+    bottom: 1.8em;
+    left: 3%;
     width: 68%;
-    border: .1em solid black;
+    border: .1em solid #404040;
     color: var(--messageText); /* Use the CSS variable */
     font-weight: 700;
     font-size: 0.7em;
@@ -73,9 +73,9 @@
 
 .sendBtn {
     position: absolute;
-    right: 2em;
-    bottom: 1.7em;
-    border: .1em solid black;
+    right: 2.5em;
+    bottom: 1.8em;
+    border: .1em solid #404040;
     /*max-width: 80%; !* Ensure the message doesn't take full width *!*/
     margin: 0; /* Add some space between messages */
     padding: 0.3em .7em;
@@ -89,5 +89,13 @@
     font-size: 0.7em;
     word-wrap: break-word; /* Ensure long words break correctly */
     box-shadow: 1em 1em 2em .5em rgba(99, 99, 99, 0.42);
+}
+
+.code {
+    font-weight: 700;
+    font-size: 0.6em;
+    position: absolute;
+    bottom: 2%;
+    left: 4%;
 }
 

@@ -17,7 +17,7 @@ const OrderTop = () => {
     return (
         <div className={styles.top} style={backgroundStyles} onClick={() => {setIsOpen(!isOpen)}}>
             {/*<Bulb/>*/}
-            <span className={styles.title}>{order.code}</span>
+            <span className={styles.title}>#{order.local_number}</span>
             <div
                 className={
                     classNames(

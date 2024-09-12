@@ -6,7 +6,8 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Копируем package.json и package-lock.json в контейнер
-COPY package*.json ./
+COPY package-lock.json .
+COPY package.json .
 
 # Устанавливаем зависимости
 RUN npm install
@@ -29,9 +30,11 @@ RUN npm run build
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/package*.json ./
 
+RUN npm install -g serve
+
 # Указываем порт, который будет прослушиваться приложением
 EXPOSE 3000
 
 # Запускаем приложение
 #ARG HTTPS=true
-CMD ["npm", "run", "start"]
+CMD ["serve", "-s", "build"]

@@ -8,12 +8,12 @@
     --messageBackground: #333;
     --messageText: #fff;
 
-    --mainMaxWidth: 800px;
+    --mainMaxWidth: 600px;
     --htmlMaxFontSize: 30px;
 }
 
 html {
-    font-size: min(5vw, 30px); /* var(--html-max-font-size) */
+    font-size: min(5vw, var(--htmlMaxFontSize)); /* var(--html-max-font-size) */
     font-family: 'Rubik', sans-serif;
     background-color: var(--htmlBackground);
 }

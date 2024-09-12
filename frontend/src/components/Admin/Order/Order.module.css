@@ -11,7 +11,7 @@
 
 .orderOpened {
     transition: padding 0.5s;
-    padding-top: 60%;
+    padding-top: 70%;
 }
 
 .orderClosed {
