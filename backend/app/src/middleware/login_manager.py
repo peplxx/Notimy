@@ -4,7 +4,6 @@ from fastapi import Depends
 from fastapi import Request
 from fastapi_login import LoginManager
 from jose import JWTError, jwt
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings

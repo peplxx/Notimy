@@ -69,6 +69,7 @@ class Spot(Base, IndexedObject, TokenizedObject):
         return subscription.is_active if subscription else False
 
     async def get_subscription(self, session: AsyncSession) -> Subscription | None:
+        # TODO: delete method
         subscription = await session.scalar(select(Subscription).where(
             Subscription.spot_id == self.id and Subscription.provider_id == self.provider
         ))

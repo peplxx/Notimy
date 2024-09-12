@@ -1,24 +1,22 @@
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, Query
 from fastapi import Request
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse, RedirectResponse
 
 from app.config import get_settings
-from app.config.constants import Roles
 from app.data.db.connection import get_session
-from app.data.db.models import User, Alias, Spot, Channel
-from app.limiter import limiter
+from app.data.db.models import User
 from app.src.common import exceptions
 from app.src.common.dtos import ChannelData
-from app.src.middleware.login_manager import manager, current_user, user_from_cookie
+from app.src.limiter import limiter
+from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
+from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user
 from app.src.modules.users.schemas import UserResponse, UserChannel
-from app.src.modules.users.service import find_service_user
 
 router = APIRouter(prefix='', tags=['Users'])
 settings = get_settings()
@@ -33,6 +31,7 @@ async def login(
         token: Optional[str] = Query(None),
         session: AsyncSession = Depends(get_session),
 ):
+<<<<<<< HEAD
     cookie_is_set = request.cookies.get("session_token")
     login_type = "new"
     session_token = None
@@ -67,6 +66,9 @@ async def login(
         )
 
     login_path = '/api/login'
+=======
+    session_token, login_type, user = await login_user(session, request, token)
+>>>>>>> origin/backend
     if next and "login" not in next:
         response = RedirectResponse(next)
     else:
@@ -78,7 +80,12 @@ async def login(
             "token_type": "bearer"
         })
     response.set_cookie(key="session_token", value=session_token,
+<<<<<<< HEAD
                         samesite="none", secure=True, domain="notimy.ru", max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
+=======
+                        samesite="none", secure=True,
+                        domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
+>>>>>>> origin/backend
     return response
 
 
@@ -102,10 +109,10 @@ async def logout(
         request: Request
 ):
     if request.cookies.get("session_token"):
-        response = JSONResponse(content={"message": "Logged out!"})
+        response = JSONResponse(content={"message": "Session is cleared!"})
         response.delete_cookie("session_token")
         return response
-    return JSONResponse(content={"message": "You are not logged in!"})
+    return JSONResponse(content={"message": "You do not have session!"})
 
 
 @router.get(
@@ -142,24 +149,7 @@ async def join_channel(
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
-    if user.role != Roles.default.value:
-        raise SystemUsersJoinRestrict
-    alias_db: Alias = await session.scalar(
-        select(Alias).where(Alias.name == alias)
-    )
-    if not alias_db:
-        raise exceptions.InvalidInvitationLink()
-
-    spot: Spot = await Spot.find_by_id(session, alias_db.base)
-
-    channel = await spot.last_channel
-    if not channel:
-        raise SpotDoestHaveChannels
-
-    if user.id not in [_.id for _ in await channel.listeners_list]:
-        (await channel.listeners_list).append(user)
-    await session.commit()
-
+    await join_channel_by_alias(session, user, alias)
     return await UserResponse.by_model(session, user)
 
 
@@ -176,12 +166,5 @@ async def forget_channel(
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
-    # TODO: refactor this stupid code
-    user_channels = await user.channels_list
-    channels_ids = [_.id for _ in user_channels]
-    if channel_id not in channels_ids:
-        raise NotSubscribedOrChannelDoesntExist
-    channel: Channel = await Channel.find_by_id(session, channel_id)
-    user.channels.remove(channel)
-    await session.commit()
+    await forget_channel_by_id(session, user, channel_id)
     return await UserResponse.by_model(session, user)

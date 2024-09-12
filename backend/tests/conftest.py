@@ -1,4 +1,3 @@
-import os
 from asyncio import get_event_loop_policy
 from logging import getLogger
 from os import environ
@@ -15,7 +14,7 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from app.config.utils import get_settings
 from app.data.db.connection import SessionManager
-from app.limiter import NoOpLimiter
+from app.src.limiter import NoOpLimiter
 from app.src.app import app
 from tests.fixtures import *
 from tests.utils import make_alembic_config
@@ -28,6 +27,7 @@ limiter = NoOpLimiter()
 
 def url(url):
     return settings.PATH_PREFIX + url
+
 
 def auth(client: AsyncClient, entity):
     client.headers.update({"Authorization": f"Bearer {entity.token}"})
@@ -98,12 +98,12 @@ clients_params = {
     "cookies": Cookies()
 }
 
+
 @pytest.fixture(scope="function")
 async def client(async_engine, manager: SessionManager = SessionManager()) -> AsyncClient:
     manager.refresh()
     async with AsyncClient(**clients_params) as client:
         yield client
-
 
 
 @pytest.fixture(scope="function")
@@ -113,6 +113,7 @@ async def root_client(async_engine, manager: SessionManager = SessionManager()) 
         client.headers.update({'Authorization': f"Bearer {get_settings().ROOT_TOKEN}"})
         yield client
 
+
 @pytest.fixture(scope="function")
 async def provider_client(async_engine, provider_header: dict,
                           manager: SessionManager = SessionManager()) -> AsyncClient:
@@ -120,6 +121,7 @@ async def provider_client(async_engine, provider_header: dict,
     async with AsyncClient(**clients_params) as client:
         client.headers.update(provider_header)
         yield client
+
 
 @pytest.fixture(scope="function")
 async def spot_client(async_engine, spot_header: dict,

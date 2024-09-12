@@ -1,7 +1,12 @@
 from datetime import timedelta
 from os import environ
+from pathlib import Path
 
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
+
+env_path = Path(__file__).parents[3] / '.env'
+load_dotenv(dotenv_path=env_path)
 
 
 class DefaultSettings(BaseSettings):
@@ -14,8 +19,9 @@ class DefaultSettings(BaseSettings):
 
     ENV: str = environ.get("ENV", "default")
     PATH_PREFIX: str = environ.get("PATH_PREFIX", "/api")
-    APP_HOST: str = environ.get("APP_HOST", "127.0.0.1")
+    APP_HOST: str = environ.get("APP_HOST", "0.0.0.0")
     APP_PORT: int = int(environ.get("APP_PORT", 5000))
+    APP_HOSTNAME: str = environ.get("APP_HOSTNAME", "notimy.ru")
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "postgres")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
@@ -43,8 +49,6 @@ class DefaultSettings(BaseSettings):
     CHANNEL_LIFETIME: timedelta = timedelta(days=7)
     SESSION_TOKEN_LIFETIME: timedelta = timedelta(weeks=3600)
 
-
-
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
 
     @property
@@ -54,6 +58,12 @@ class DefaultSettings(BaseSettings):
     @property
     def is_test(self) -> bool:
         return self.ENV == "default"
+
+    @property
+    def cookie_domain(self):
+        if self.is_test or self.is_dev:
+            return None
+        return self.APP_HOSTNAME
 
     @property
     def database_settings(self) -> dict:

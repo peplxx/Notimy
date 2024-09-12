@@ -1,5 +1,5 @@
 from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncSession
 from sqlalchemy.orm import declarative_base
 
 convention = {
@@ -22,6 +22,10 @@ class DeclarativeBase(AsyncAttrs, Base):
 
     def dict(self) -> dict:
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+    async def register(self, session: AsyncSession) -> None:
+        session.add(self)
+        await session.commit()
 
 
 __all__ = [
