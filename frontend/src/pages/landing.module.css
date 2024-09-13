@@ -60,6 +60,9 @@
     border: .1em solid #303030;
     background-color: white;
     box-shadow: 0 0 .5em black;
+    -moz-box-shadow: 0 0 .5em black;
+    -o-box-shadow: 0 0 .5em black;
+    -webkit-box-shadow: 0 0 .5em black;
 }
 
 .btn_text {
