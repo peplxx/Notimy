@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config.constants import Roles
 from app.data.db.connection import get_session
-from app.data.db.models import Provider, Spot, User, Alias
-from app.limiter import limiter
+from app.data.db.models import Provider
+from app.data.db.repositories import RepositoriesManager
 from app.src.common.dtos import SpotData, ProviderData
+from app.src.limiter import limiter
 from app.src.middleware.token_auth import provider_auth
 from app.src.modules.providers.exceptions import MaxSpotIsReached
+from app.src.modules.providers.logic import create_spot
 from app.src.modules.providers.schemas import ProviderUpdateData
 
 router = APIRouter(prefix="/providers", tags=["Providers"])
@@ -23,31 +24,7 @@ async def create_new_spot(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ) -> SpotData:
-    if provider.spots + 1 > provider.max_spots:
-        raise MaxSpotIsReached
-    spot_service_user = User(
-        role=Roles.spotUser.value
-    )
-
-    session.add(spot_service_user)
-    await session.commit()
-
-    spot = Spot(
-        account=spot_service_user.id,
-        provider_id=provider.id
-    )
-    session.add(spot)
-    await session.commit()
-    alias = Alias(base=spot.id)
-    session.add(alias)
-
-    spot_service_user.set_data(
-        spot.service_user_data
-    )
-    session.add(spot_service_user)
-    provider.spots += 1
-    (await provider.spots_list).append(spot)
-    await session.commit()
+    spot = await create_spot(session, provider)
     return await SpotData.by_model(session, spot)
 
 
@@ -58,11 +35,7 @@ async def get_self(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ) -> ProviderData:
-    response: ProviderData = await ProviderData.by_model(
-        session,
-        provider
-    )
-    return response
+    return await ProviderData.by_model(session, provider)
 
 
 @router.put(
@@ -76,11 +49,6 @@ async def update_providers_data(
         session: AsyncSession = Depends(get_session),
         provider: Provider = Depends(provider_auth)
 ) -> ProviderData:
-    provider.name = data.name if data.name else provider.name
-    provider.description = data.description if data.description else provider.description
-    await session.commit()
-    response: ProviderData = await ProviderData.by_model(
-        session,
-        provider
-    )
-    return response
+    manager = RepositoriesManager(session)
+    await manager.P.update(provider=provider, name=data.name, description=data.description)
+    return await ProviderData.by_model(session, provider)

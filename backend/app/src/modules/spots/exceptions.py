@@ -1,7 +1,8 @@
 __all__ = [
     "WrongAliasName",
     "AliasAlreadyExist",
-    "InvalidChannelLink"
+    "InvalidChannelLink",
+    "ChannelIsNotFound"
 ]
 
 from starlette import status

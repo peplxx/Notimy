@@ -11,7 +11,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.limiter import limiter, rate_limit_exceeded_handler, NoOpLimiter
+from app.src.limiter import limiter, rate_limit_exceeded_handler
 from app.src import docs
 from app.src.lifespan import lifespan
 from app.src.middleware.login_manager import NotAuthenticatedException
@@ -39,7 +39,7 @@ origins = [
     "http://localhost:3000",
     "https://localhost",
     "http://test"
-    "https://185.105.91.87"
+    "https://notimy.ru"
 ]
 
 # Middlewares
