@@ -48,10 +48,10 @@ const OrderTop = () => {
             >
                 {isSideOpen ?
                     isReady ?
-                    <Slider parentRef={MenuClickable.current} SliderIcon={TrashBucketSvg} sliderColor={'red'}
+                    <Slider parentRef={MenuClickable} SliderIcon={TrashBucketSvg} sliderColor={'red'}
                             onDone={deleteOrder}/>
                     :
-                    <Slider parentRef={MenuClickable.current} SliderIcon={AcceptSvg} sliderColor={'green'}
+                    <Slider parentRef={MenuClickable} SliderIcon={AcceptSvg} sliderColor={'green'}
                             onDone={closeOrder}/>
                     :
                     null
