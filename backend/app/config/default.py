@@ -46,7 +46,7 @@ class DefaultSettings(BaseSettings):
     SPOT_TOKEN_SIZE: int = 40
     ALIAS_NAME_SIZE: int = 10
     INVITATION_CODE_SIZE: int = 6
-    CHANNEL_LIFETIME: timedelta = timedelta(days=7)
+    CHANNEL_LIFETIME: timedelta = timedelta(days=1)
     SESSION_TOKEN_LIFETIME: timedelta = timedelta(weeks=3600)
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
