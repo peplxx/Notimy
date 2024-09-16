@@ -170,7 +170,7 @@ async def actual_channels(
             if not entity:
                 pass  # UNPREDICTABLE BEHAVIOR
 
-            users_to_unsubscribe = entity.listeners_list
+            users_to_unsubscribe = await entity.listeners_list
             for user_id in users_to_unsubscribe:
                 user: User = await session.scalar(select(User).where(User.id == user_id))
                 user.channels.remove(entity)
