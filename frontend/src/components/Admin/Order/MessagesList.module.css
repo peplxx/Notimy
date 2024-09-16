@@ -14,16 +14,18 @@
 
 .message {
     font-weight: 800;
-    user-select: none;
     font-size: 0.7em;
     padding: 0.5em 1em;
-    background-color: #202123; /* var(--message-background); /* Dark background */
+    font-family: "Rubik", sans-serif;
+    text-align: left;
+    background-color: var(--htmlBackground); /* Dark background */
     color: white; /* var(--message-text); /* White text */
     border-radius: 1em 0.2em 1em 0.2em; /* Rounded corners */
     display: inline-block;
     max-width: 80%; /* Ensure the message doesn't take full width */
     word-wrap: break-word; /* Ensure long words break correctly */
     margin: 0.15em 2em; /* Add some space between messages */
+    box-shadow: .1em .1em .5em .2em rgba(99, 99, 99, 0.42);
     transition: transform 0.5s ease-in-out, translateX 0.5s ease-in-out;
 }
 
