@@ -9,11 +9,6 @@ const MessagesList = ({children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
-    // useEffect(() => {
-    //     if (listEnd.current && isOpen) {
-    //         listEnd.current.scrollIntoView({behavior: "smooth"});
-    //     }
-    // }, [messages, isOpen]);
 
     useEffect(() => {
         if (isOpen) {
