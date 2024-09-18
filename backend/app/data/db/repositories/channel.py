@@ -9,10 +9,20 @@ from app.data.db.repositories.base import BaseRepository
 class ChannelRepository(BaseRepository):
 
     async def create(self, spot: Spot, provider_id: UUID) -> Channel:
-        channel = Channel(
-            provider=provider_id,
-            local_number=await Channel.get_next_local_number(self._session, spot.id)
-        )
+        created = False
+        max_tries = 5
+        while not created:
+            try:
+                channel = Channel(
+                    provider=provider_id,
+                    local_number=await Channel.get_next_local_number(self._session, spot.id)
+                )
+                created = True
+            except Exception as e:
+                max_tries -= 1
+                if max_tries == 0:
+                    raise e
+
         self._session.add(channel)
         await self._session.commit()
         (await spot.channels_list).append(channel)
