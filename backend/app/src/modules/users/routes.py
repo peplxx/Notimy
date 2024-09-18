@@ -10,7 +10,7 @@ from app.config import get_settings
 from app.data.db.connection import get_session
 from app.data.db.models import User
 from app.src.common import exceptions
-from app.src.common.dtos import ChannelData
+from app.src.common.dtos import ChannelData, UserData
 from app.src.limiter import limiter
 from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
@@ -58,9 +58,10 @@ async def get_self(
         request: Request,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-) -> UserResponse:
-    return await UserResponse.by_model(session, user)
-
+) :
+    if user.is_default:
+        return await UserResponse.by_model(session, user)
+    return await UserData.by_model(session, user)
 
 @router.get("/logout")
 @limiter.limit("3/second")
