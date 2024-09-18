@@ -1,0 +1,57 @@
+.background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: 4;
+    min-width: 14%;
+    border-radius: inherit;
+    box-shadow: inset 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.2);
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menuOpened.background {
+    visibility: visible;
+}
+
+.menuClosed.background {
+    min-width: 0;
+    max-width: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.background svg {
+    position: absolute;
+    fill: #FFFFFF;
+    max-height: 50%;
+    max-width: 1.6em;
+    transform-origin: center;
+    transition: width 0.5s
+}
+
+.hint svg {
+    position: absolute;
+    fill: #FFFFFF;
+    width: 100%;
+    max-height: 50%;
+    max-width: 1.6em;
+    transform-origin: center;
+    transition: width 0.5s;
+    left: calc(50% - 0.8em);
+    bottom: 0.2em;
+    height: 1em;
+}
+
+.menuClosed svg {
+    width: 0;
+    visibility: hidden;
+}
+
+.menuOpened svg {
+    width: 100%;
+    visibility: visible;
+}

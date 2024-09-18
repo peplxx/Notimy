@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config.constants import Roles
 from app.data.db.models import Provider, Spot, Channel, User, Alias
 
 
@@ -64,6 +65,7 @@ class UserData(BaseModel):
     registered_at: datetime.datetime
     role: str
 
+    provider_name: Optional[str] = ''
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list[ChannelData]] = []
     data_json: Optional[dict] = {}
@@ -84,6 +86,10 @@ class UserData(BaseModel):
             channels_ids=ids
         )
         result.data_json = user.get_data()
+        if user.role == Roles.spotUser.value:
+            spot: Spot = await session.scalar(select(Spot).where(Spot.token == user.get_data()['token']))
+            provider: Provider = (await spot.provider)
+            result.provider_name = provider.name
         result.channels_ids = ids
         result.channels_data = data
         return result
@@ -170,9 +176,8 @@ async def actual_channels(
             if not entity:
                 pass  # UNPREDICTABLE BEHAVIOR
 
-            users_to_unsubscribe = entity.listeners_list
-            for user_id in users_to_unsubscribe:
-                user: User = await session.scalar(select(User).where(User.id == user_id))
+            users_to_unsubscribe = await entity.listeners_list
+            for user in users_to_unsubscribe:
                 user.channels.remove(entity)
                 await session.commit()
             continue

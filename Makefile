@@ -47,6 +47,13 @@ setup:
 	make key
 	make env
 
+off-postgres:
+	sudo systemctl stop postgresql
+
+on-postgres:
+	sudo systemctl stop postgresql
+
+
 %::
 	echo $(MESSAGE)
 

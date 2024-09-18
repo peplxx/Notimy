@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from './ScanBtn.module.css';
-import {ScanSvg} from "../ScanSvg";
+import {ScanSvg} from "components/svg/ScanSvg";
 import {Scanner} from '@yudiel/react-qr-scanner';
 
 const ScanBtn = () => {
@@ -28,7 +28,12 @@ const ScanBtn = () => {
                         <button className={styles.closeBtn} onClick={closeModal}>
                             &times;
                         </button>
-                        <Scanner onScan={(result) => redirect(result[0].rawValue)} onError={(error) => {console.log(error)}}/>
+                        <Scanner
+                            onScan={(result) => redirect(result[0].rawValue)} onError={(error) => {
+                            console.log(error)
+                        }}
+                            components={{audio: false}}
+                        />
                     </div>
                 </div>
             )}

@@ -389,6 +389,13 @@ class TestUserModule:
             assert response.status_code == status.HTTP_200_OK
             assert response.json()['role'] == "provider_user"
 
+        async def test_provider_name_in_spot_user(self, client: AsyncClient, has_spot: SpotData):
+            await TestUserModule.login_client(client, has_spot.token)
+            response = await client.get(self.me)
+            assert response.status_code == status.HTTP_200_OK
+            assert response.json()['role'] == "spot_user"
+            assert response.json()['provider_name']
+
     class TestJoinChannel:
         join_url = lambda _, alias: url("/join/" + alias)
 
@@ -431,4 +438,3 @@ class TestUserModule:
             assert response.status_code == status.HTTP_200_OK
             user_data = UserResponse(**response.json())
             assert channel_data.id not in user_data.channels_ids
-

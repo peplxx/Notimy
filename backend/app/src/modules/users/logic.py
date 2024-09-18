@@ -26,7 +26,7 @@ async def find_service_user(
     for table in tables:
         result = await session.scalar(select(table).where(table.token == token))
         if result:
-            return await User.find_by_id(session, table.account)
+            return await User.find_by_id(session, result.account)
     return None
 
 

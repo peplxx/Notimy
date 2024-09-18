@@ -9,7 +9,7 @@ COPY ./poetry.lock .
 COPY ./pyproject.toml .
 
 
-RUN poetry config virtualenvs.create false && poetry install --no-dev --without test, linter
+RUN poetry config virtualenvs.create false && poetry install --no-dev --without test,linter
 
 
 RUN poetry add pyopenssl

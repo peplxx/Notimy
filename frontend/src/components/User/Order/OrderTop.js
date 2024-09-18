@@ -1,14 +1,15 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import DeleteButton from "./DeleteButton";
 
 import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import OrderContext from "context/OrderContext";
 import {Bulb} from "components/Bulb";
+import Slider from "components/Slider";
+import {TrashBucketSvg} from "components/svg/TrashBucketSvg";
 
 const OrderTop = () => {
     const {order, backgroundColorStyles} = useContext(OrderContext);
-
+    const {deleteOrder} = useContext(OrderContext);
     const MenuClickable = useRef(null);
     const titleRef = useRef(null); // Reference for the title element
 
@@ -57,7 +58,16 @@ const OrderTop = () => {
                     e.stopPropagation();
                 }}
             >
-                <DeleteButton MenuClickable={MenuClickable.current}/>
+                {
+                    isSideOpen ?
+                        <Slider onDone={deleteOrder}
+                                sliderColor={'red'}
+                                SliderIcon={TrashBucketSvg}
+                                parentRef={MenuClickable}
+                        />
+                        : null
+                }
+                {/*<DeleteButton MenuClickable={MenuClickable.current}/>*/}
                 <span className={styles.code}>{order.code}</span>
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

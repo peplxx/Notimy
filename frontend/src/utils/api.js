@@ -89,6 +89,18 @@ export const adminLogin = async (token) => {
     }
 }
 
+export const getMe = async () => {
+    try {
+        const res = await api.get(`/me`);
+        return res.data;
+    } catch (e) {
+        console.log(`Error /me`, e);
+        return false;
+    }
+}
+
+
+
 export const sendMessageAdmin = async (id, message) => {
     const data = {
         "message": {

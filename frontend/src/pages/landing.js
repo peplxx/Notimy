@@ -1,20 +1,42 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, {useEffect, useRef} from 'react';
+import {Link, useNavigate} from "react-router-dom";
+
+import styles from './landing.module.css';
+import Slider from "../components/Slider";
 
 const Landing = () => {
+    const parent = useRef(null);
+    const navigate = useNavigate();
+
+    const handleSliderDone = () => {
+        navigate('/app'); // Navigate to the '/app' route
+    };
+
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            color: "white",
-            textAlign: "center",
-            margin: "auto",
-        }}>
-            <p>Скоро здесь появится информация<br /> Рабочее приложение - <Link to={'/app'} style={{ color: 'lightblue' }}>перейти</Link></p>
-        </div>
+        <>
+            {/*<div className={styles.main} ref={parent}>*/}
+            {/*    /!*<Slider parentRef={parent} sliderColor={'rgb(130,255,27)'} onDone={handleSliderDone}/>*!/*/}
+            {/*    <a className={styles.btn_text}>Открыть приложение</a>*/}
+            {/*</div>*/}
+            {/*<img className={styles.presentation} src='/notimy_presentation.jpg' alt="Presentation"/>*/}
+
+            <div className={styles.center}>
+                Скоро здесь появится информация. <br/>
+                Рабочее приложение - <Link to={'/app'}>перейти</Link>
+            </div>
+            <div className={styles.icons}>
+                <Link to={'https://t.me/notimy_app'}>
+                    <svg className={styles.icon} xmlns="http://www.w3.org/2000/svg" version="1.0"
+                         viewBox="0 0 2133.000000 2133.000000">
+                        <g transform="translate(0.000000,2133.000000) scale(0.10000,-0.10000)" fill="#202123"
+                           stroke="none">
+                            <path
+                                d="M10065 21319 c-1114 -63 -2206 -298 -3245 -697 -416 -160 -990 -430 -1375 -648 -1717 -970 -3119 -2372 -4089 -4089 -140 -247 -391 -755 -501 -1015 -498 -1170 -773 -2351 -845 -3630 -13 -231 -13 -928 0 -1161 99 -1751 606 -3407 1498 -4899 309 -517 722 -1084 1127 -1546 1477 -1687 3448 -2869 5620 -3369 583 -134 1149 -216 1770 -255 207 -13 1074 -13 1280 0 1752 112 3367 609 4840 1493 774 463 1411 962 2066 1616 459 460 793 852 1145 1346 1030 1443 1681 3108 1898 4855 61 488 76 758 76 1345 0 587 -15 858 -76 1345 -321 2576 -1591 4962 -3558 6685 -562 492 -1219 954 -1871 1315 -229 127 -695 355 -935 457 -1170 501 -2363 780 -3639 853 -209 11 -975 11 -1186 -1z m6250 -5524 c202 -42 362 -189 431 -395 14 -40 19 -83 18 -160 0 -100 -49 -338 -943 -4610 -518 -2478 -953 -4554 -966 -4613 -33 -149 -73 -225 -165 -318 -88 -88 -179 -138 -296 -165 -141 -31 -309 -5 -424 65 -34 21 -2747 2007 -2906 2127 l-30 24 -743 -760 c-408 -417 -759 -773 -780 -789 -21 -17 -41 -28 -45 -24 -3 3 -6 0 -6 -7 0 -7 -3 -11 -6 -7 -4 3 -13 0 -21 -8 -27 -28 -124 -49 -221 -49 -51 0 -97 5 -102 10 -7 7 -6 20 4 40 9 21 39 421 105 1419 50 765 96 1410 102 1435 5 25 24 65 41 90 19 27 694 631 1737 1552 938 829 2111 1865 2606 2302 537 475 907 808 917 828 24 44 23 82 -3 128 -27 47 -66 70 -119 70 -39 0 -293 -156 -3132 -1917 -1700 -1054 -3103 -1930 -3119 -1946 -17 -16 -39 -48 -51 -70 -48 -95 -66 1 391 -2010 232 -1017 421 -1858 421 -1868 0 -19 -1 -19 -42 2 -59 30 -150 126 -182 191 -14 29 -265 814 -557 1743 -292 930 -534 1693 -538 1697 -3 4 -647 196 -1431 427 -784 231 -1447 431 -1474 443 -67 31 -146 110 -179 179 -89 188 -35 407 129 520 25 17 691 282 1611 640 2418 942 6368 2481 8303 3236 1486 580 1358 531 1435 548 80 18 145 18 230 0z"/>
+                        </g>
+                    </svg>
+                </Link>
+            </div>
+        </>
     );
 };
 
