@@ -22,7 +22,6 @@ class ChannelRepository(BaseRepository):
                 max_tries -= 1
                 if max_tries == 0:
                     raise e
-
         self._session.add(channel)
         await self._session.commit()
         (await spot.channels_list).append(channel)
