@@ -106,7 +106,7 @@ export const fetchOrdersAdmin = async () => {
             throw new Error("You are not an admin!");
         }
         // console.log(res.data.channels_data)
-        return res.data.channels_data;
+        return res.data;
     } catch (e) {
         console.log(`Error admin /me`, e);
         return [];

@@ -17,12 +17,10 @@ export const AdminProvider = ({children}) => {
     const updateOrders = useCallback(async () => {
         try {
             const fetchedOrders = await fetchOrdersAdmin();
-            const sortedOrders = fetchedOrders.sort((a, b) =>
+            const sortedOrders = fetchedOrders.channels_data.sort((a, b) =>
                 new Date(b.created_at) - new Date(a.created_at)
             );
-            const test = await getMeSpot();
-            // console.log(test)
-            setSpot("Coffee Cava");
+            setSpot(fetchedOrders.provider_name || "Касса");
             setOrders([...sortedOrders]);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
