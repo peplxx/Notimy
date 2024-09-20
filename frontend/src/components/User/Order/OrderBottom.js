@@ -1,11 +1,11 @@
 import React, {useContext} from "react";
 import classNames from "classnames";
 
-import MessagesList from "components/User/Order/MessagesList";
+import MessagesList from "components/MessagesList";
 import OrderContext from "context/OrderContext";
 
 import styles from './OrderBottom.module.css';
-import {formatDate} from "../../../utils/formatDate";
+import {formatDate} from "utils/formatDate";
 
 const OrderBottom = () => {
     const {order, backgroundColorStyles, isOpen} = useContext(OrderContext);
@@ -19,7 +19,7 @@ const OrderBottom = () => {
                 transition: 'box-shadow .5s ease-in-out'
             }}
         >
-            <MessagesList messages={order.messages_data}/>
+            <MessagesList messages={order.messages_data} order={order} isOpen={isOpen}  />
             <div className={styles.datetime}>{formatDate(order.created_at)}</div>
             <div className={styles.code}>код заказа: {order.code}</div>
             <div className={styles.toggleBtn}>...</div>
