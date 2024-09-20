@@ -1,19 +1,12 @@
 import styles from './MessagesList.module.css';
-import {useContext, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
-import AdminOrderContext from "context/AdminOrderContext";
 import classNames from "classnames";
 
-const MessagesList = ({children}) => {
-    const {messages, isOpen, order} = useContext(AdminOrderContext);
+const MessagesList = ({messages, isOpen, order, bottom=0  ,children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
-    // useEffect(() => {
-    //     if (listEnd.current && isOpen) {
-    //         listEnd.current.scrollIntoView({behavior: "smooth"});
-    //     }
-    // }, [messages, isOpen]);
 
     useEffect(() => {
         if (isOpen) {
@@ -38,8 +31,9 @@ const MessagesList = ({children}) => {
             });
         }
     }, [isOpen, messages]);
+
     return (
-        <div className={styles.messages} ref={parent}>
+        <div className={styles.messages} ref={parent} style={{bottom: bottom}}>
             {messages.map((message, index) => (
                 <div
                     key={index}

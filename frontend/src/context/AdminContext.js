@@ -3,7 +3,7 @@ import {
     closeOrderApiAdmin,
     createChannelAdmin,
     deleteOrderApiUser,
-    fetchOrdersAdmin,
+    fetchOrdersAdmin, getMeSpot,
     sendMessageAdmin
 } from 'utils/api';
 
@@ -12,14 +12,17 @@ const AdminContext = createContext();
 export const AdminProvider = ({children}) => {
     // Context который только взаимодействует с api и информацией о админе (список заказов)
     const [orders, setOrders] = useState([]);
+    const [spot, setSpot] = useState('...');
 
     const updateOrders = useCallback(async () => {
         try {
             const fetchedOrders = await fetchOrdersAdmin();
-            console.log('update');
             const sortedOrders = fetchedOrders.sort((a, b) =>
                 new Date(b.created_at) - new Date(a.created_at)
             );
+            const test = await getMeSpot();
+            // console.log(test)
+            setSpot("Coffee Cava");
             setOrders([...sortedOrders]);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
@@ -66,9 +69,21 @@ export const AdminProvider = ({children}) => {
 
     return (
         <AdminContext.Provider value={{orders, createOrder, deleteOrder, sendMessage, closeOrder}}>
-            {children}
+            <div style={{width: "100%", position: "absolute", display: "flex", justifyContent: "center"}}>
+                <span style={{
+                    position: "absolute",
+                    // left: "calc(50%)",
+                    top: ".2em",
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: "2em"
+                }}>
+                    {spot}
+                </span>
+            </div>
+                {children}
         </AdminContext.Provider>
-    );
+);
 };
 
 export default AdminContext;
