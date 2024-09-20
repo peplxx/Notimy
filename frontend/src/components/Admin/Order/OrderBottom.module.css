@@ -154,8 +154,9 @@
     padding: 0.5em;
     border-radius: 0.5em;
     border: .1em solid #404040;
-    font-size: 0.5em;
+    font-size: 0.6em;
     cursor: pointer;
+    text-align: center;
     flex-shrink: 0; /* Сообщения не будут сжиматься */
 }
 
