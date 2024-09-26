@@ -1,8 +1,9 @@
-__all__ = ["forget_channel_by_id", 'login_user', "find_service_user", 'join_channel_by_alias']
+__all__ = ["forget_channel_by_id", 'login_user', "find_service_user", 'join_channel_by_alias', "get_session_token",
+           "set_session_token"]
 
 from uuid import UUID
 
-from fastapi import Request
+from fastapi import Request, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,6 +58,17 @@ async def forget_channel_by_id(session: AsyncSession, user: User, channel_id: UU
     await manager.U.forget_channel(user, channel)
 
 
+async def get_session_token(session: AsyncSession, user: User):
+    manager = RepositoriesManager(session)
+
+    session_token = manager.U.create_access_token(
+        data={"id": str(user.id)},
+        expires=settings.SESSION_TOKEN_LIFETIME
+    )
+
+    return session_token
+
+
 async def login_user(session: AsyncSession, request: Request, token: str | None) -> tuple[str, str, User]:
     manager = RepositoriesManager(session)
 
@@ -74,8 +86,12 @@ async def login_user(session: AsyncSession, request: Request, token: str | None)
     if not user:  # If token is invalid and just create new user
         user = await manager.U.create()
 
-    session_token = manager.U.create_access_token(
-        data={"id": str(user.id)},
-        expires=settings.SESSION_TOKEN_LIFETIME
-    )
+    session_token = await get_session_token(session, user)
+
     return session_token, login_type, user
+
+
+async def set_session_token(response: Response, session_token: str):
+    response.set_cookie(key="session_token", value=session_token,
+                        samesite="none", secure=True,
+                        domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
