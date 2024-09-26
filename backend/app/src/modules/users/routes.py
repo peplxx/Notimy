@@ -1,9 +1,16 @@
+import hashlib
+import hmac
+import time
 from typing import Optional
+from urllib.parse import parse_qs
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 from fastapi import Request
+from jose import jwt, JWTError
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 from starlette.responses import JSONResponse, RedirectResponse
 
 from app.config import get_settings
@@ -15,7 +22,8 @@ from app.src.limiter import limiter
 from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
-from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user
+from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user, set_session_token, \
+    get_session_token
 from app.src.modules.users.schemas import UserResponse, UserChannel
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -42,9 +50,45 @@ async def login(
             "session_token": session_token,
             "token_type": "bearer"
         })
-    response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True,
-                        domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
+    await set_session_token(response, session_token)
+    return response
+
+
+def check_telegram_data(data):
+    try:
+        # Decode the JWT token
+        payload = jwt.decode(data, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        tg_data = {key: value[0] for key, value in payload.items()}
+        return tg_data
+    except JWTError:
+        return False
+
+
+@router.post("/telegram/auth")
+async def register_user_using_telegram(
+        request: Request,
+        init_data: str,
+        user: Optional[User] = Depends(current_user),  # User must already exist in system
+        session: AsyncSession = Depends(get_session),
+):
+    telegram_data = check_telegram_data(init_data)
+    if not telegram_data:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid telegram auth data")
+
+    telegram_id = telegram_data["id"]
+    exist = await session.scalar(select(User).where(User.telegram_id == telegram_id))
+    response = RedirectResponse('/me')
+    if exist:  # If user is existed so login it and redirect to me
+        await logout(request)
+        session_token = await get_session_token(session, exist)
+        await set_session_token(response, session_token)
+        return response
+    if not user.is_default:  # Ensure that user to register is default
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can't associate telegram with system user!")
+    user.telegram_username = telegram_data["username"]
+    user.telegram_id = telegram_data["id"]
+    user.telegram_firstname = telegram_data["first_name"]
+    user.telegram_lastname = telegram_data["last_name"]
     return response
 
 
@@ -58,10 +102,11 @@ async def get_self(
         request: Request,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-) :
+):
     if user.is_default:
         return await UserResponse.by_model(session, user)
     return await UserData.by_model(session, user)
+
 
 @router.get("/logout")
 @limiter.limit("3/second")
