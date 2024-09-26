@@ -1,13 +1,8 @@
-import hashlib
-import hmac
-import time
 from typing import Optional
-from urllib.parse import parse_qs
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, HTTPException
 from fastapi import Request
-from jose import jwt, JWTError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -23,7 +18,7 @@ from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user, set_session_token, \
-    get_session_token
+    get_session_token, check_telegram_data
 from app.src.modules.users.schemas import UserResponse, UserChannel
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -54,20 +49,12 @@ async def login(
     return response
 
 
-def check_telegram_data(data):
-    try:
-        # Decode the JWT token
-        payload = jwt.decode(data, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        tg_data = {key: value[0] for key, value in payload.items()}
-        return tg_data
-    except JWTError:
-        return False
 
 
 @router.post("/telegram/auth")
 async def register_user_using_telegram(
         request: Request,
-        init_data: str,
+        init_data: str,  # JWT token from telegram bot
         user: Optional[User] = Depends(current_user),  # User must already exist in system
         session: AsyncSession = Depends(get_session),
 ):

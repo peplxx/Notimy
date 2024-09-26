@@ -1,9 +1,10 @@
 __all__ = ["forget_channel_by_id", 'login_user', "find_service_user", 'join_channel_by_alias', "get_session_token",
-           "set_session_token"]
+           "set_session_token", "check_telegram_data"]
 
 from uuid import UUID
 
 from fastapi import Request, Response
+from jose import jwt, JWTError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -90,6 +91,14 @@ async def login_user(session: AsyncSession, request: Request, token: str | None)
 
     return session_token, login_type, user
 
+def check_telegram_data(data):
+    try:
+        # Decode the JWT token
+        payload = jwt.decode(data, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        tg_data = {key: value[0] for key, value in payload.items()}
+        return tg_data
+    except JWTError:
+        return False
 
 async def set_session_token(response: Response, session_token: str):
     response.set_cookie(key="session_token", value=session_token,
