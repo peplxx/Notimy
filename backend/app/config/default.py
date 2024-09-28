@@ -35,7 +35,7 @@ class DefaultSettings(BaseSettings):
     TESTING: bool = environ.get("TESTING", False)
 
     # to get a string like this run: "openssl rand -hex 32"
-    SECRET_KEY: str = environ.get("SECRET_KEY", "")
+    SECRET_KEY: str = environ.get("SECRET_KEY", None)
     ALGORITHM: str = environ.get("ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(
         environ.get("ACCESS_TOKEN_EXPIRE_MINUTES", 1440)
@@ -50,6 +50,11 @@ class DefaultSettings(BaseSettings):
     SESSION_TOKEN_LIFETIME: timedelta = timedelta(weeks=3600)
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
+
+    VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", None)
+    VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", None)
+    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com"}
+
 
     @property
     def is_dev(self) -> bool:
@@ -99,9 +104,9 @@ class DefaultSettings(BaseSettings):
     @property
     def docs_path(self) -> str | None:
         """
-        path for docs
+        Path for docs
         """
-        if self.ENV == "default":
+        if self.is_dev or self.is_test:
             return "/swagger"
         return None
 
