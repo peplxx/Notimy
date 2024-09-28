@@ -45,8 +45,8 @@ class PushNotification(BaseModel):
     badge: Optional[str] = Field(None, description="URL of the badge for the notification")
     vibrate: Optional[List[int]] = Field(None, description="Vibration pattern for the notification")
     tag: Optional[str] = Field(None, description="Tag for the notification")
-    actions: Optional[List[Action]] = Field(..., description="List of actions associated with the notification")
-    data: Optional[NotificationData] = Field(..., description="Additional data related to the notification")
+    actions: Optional[List[Action]] = Field(None, description="List of actions associated with the notification")
+    data: Optional[NotificationData] = Field(None, description="Additional data related to the notification")
     url: Optional[str] = Field(None, description="URL associated with the notification")
 
 

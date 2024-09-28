@@ -53,7 +53,7 @@ class DefaultSettings(BaseSettings):
 
     VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
     VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
-    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com"}
+    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://notimy.ru"}
 
 
     @property

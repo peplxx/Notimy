@@ -38,7 +38,7 @@ async def webpush_unsubscribe(
 
 
 @router.post("/webpush/test")
-async def webpush_unsubscribe(
+async def webpush_test(
         user: User = Depends(current_user),
         session: AsyncSession = Depends(get_session)
 ):
