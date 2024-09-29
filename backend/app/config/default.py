@@ -53,7 +53,7 @@ class DefaultSettings(BaseSettings):
 
     VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
     VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
-    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://notimy.ru"}
+    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
 
 
     @property
@@ -104,9 +104,9 @@ class DefaultSettings(BaseSettings):
     @property
     def docs_path(self) -> str | None:
         """
-        Path for docs
+        path for docs
         """
-        if self.is_dev or self.is_test:
+        if self.ENV == "default":
             return "/swagger"
         return None
 
