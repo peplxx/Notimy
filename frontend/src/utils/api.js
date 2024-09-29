@@ -164,7 +164,6 @@ export const sendMessageAdmin = async (id, message) => {
 export async function sendSubscriptionToServer(subscription) {
     try {
         const result = await api.post(`/webpush/subscribe`, subscription);
-        await api.post(`/webpush/test`);
         return result;
     } catch (e) {
         console.log(`Error /webpush/subscribe`, subscription, e);
