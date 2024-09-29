@@ -6,7 +6,7 @@ from app.data.db.connection import get_session
 from app.data.db.models import Spot
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.limiter import limiter
-from app.src.middleware.push_notifications import send_notification, PushNotification
+from app.src.middleware.push_notifications import PushNotification, send_notification
 from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
 from app.src.modules.spots.logic import create_channel, change_alias, add_message, close_channel_by_id
@@ -86,17 +86,11 @@ async def close_channel(
         spot: Spot = Depends(spot_auth)
 ) -> ChannelData:
     channel = await close_channel_by_id(session, spot, channel_id=data.channel_id)
-    users = await channel.listeners
-    print('='*10)
-    print(users)
+    users = await channel.awaitable_attrs.listeners
     test_msg = PushNotification(title=f"Заказ готов!", body="Ваш заказ готов!\nПриятного аппетита!😋")
     for user in users:
-        print(user)
         if user.can_get_push:
-            print(user.can_get_push)
             await send_notification(user, test_msg)
-            print('send push ok')
         else:
             print("send push !BAD!")
-    print('=' * 10)
     return await ChannelData.by_model(session, channel)
