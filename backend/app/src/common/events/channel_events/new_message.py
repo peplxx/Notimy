@@ -11,7 +11,7 @@ event_type = "NewMessageEvent"
 
 class NewMessageEvent(ChannelEvent):
     event_type: str = ChannelEvent._event_type(event_type)
-    pushNotification: PushNotification = ...
+    pushNotification: PushNotification = PushNotification(title=f"У вас новое сообщение!", body="какой то текст")
 
     def __init__(self, message: Message, source: Channel, session: AsyncSession) -> None:
         self.message = message
