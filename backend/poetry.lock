@@ -1479,6 +1479,31 @@ docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
 testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
 
 [[package]]
+name = "python-acache"
+version = "0.1.4"
+description = "Async cache"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "python-acache-0.1.4.tar.gz", hash = "sha256:409860bd335b8ce357fe4ff5788f78c776e467984f840c04c8bad4c7e3751b5b"},
+    {file = "python_acache-0.1.4-py3-none-any.whl", hash = "sha256:c7590a26a012e78baf4832cbf4309a775e2abf6107e11493d78fe1e44ab70bbf"},
+]
+
+[[package]]
+name = "python-depends"
+version = "0.1.4"
+description = "A FastAPI like dependency injector"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "python-depends-0.1.4.tar.gz", hash = "sha256:e9bd6b129083eb2b89ba74fc2dde0dcd5f753917600e3d94a7dd167450e54476"},
+    {file = "python_depends-0.1.4-py3-none-any.whl", hash = "sha256:ad5861b17811da93da0774f88f36c627fc33fc1907eb8994be62569d4e8530eb"},
+]
+
+[package.dependencies]
+python-acache = ">=0,<1"
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -2042,4 +2067,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "87bda10687e90813e5c6ebe4755857eee220a53ba705bf774169560513aae2b6"
+content-hash = "c84c683e3f7ecc44b09ecc600b4465565073fb1be09e46442f0b1a028965e702"

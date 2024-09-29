@@ -1,4 +1,4 @@
-__all__ = ["generate_vapid_keys", "SubscriptionKeys", "PushSubscription"]
+__all__ = ["generate_vapid_keys", "SubscriptionKeys", "PushSubscription", "PushNotification", "send_notification"]
 
 import base64
 from json import dumps
@@ -81,6 +81,8 @@ def generate_vapid_keys():
 
 
 async def send_notification(user: User, push_data: PushNotification):
+    if not user.can_get_push:
+        return
     try:
         webpush(
             subscription_info=user.push_data,

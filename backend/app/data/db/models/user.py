@@ -39,4 +39,4 @@ class User(Base, IndexedObject):
 
     @property
     def can_get_push(self):
-        return len(self.push_data.keys())
+        return len(self.push_data.keys()) and self.is_default
