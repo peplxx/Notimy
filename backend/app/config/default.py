@@ -51,6 +51,11 @@ class DefaultSettings(BaseSettings):
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
 
+    VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
+    VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
+    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
+
+
     @property
     def is_dev(self) -> bool:
         return self.ENV == 'dev'
