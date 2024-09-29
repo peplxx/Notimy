@@ -5,6 +5,7 @@ import App from './App';
 
 import 'normalize.css';
 import './index.css';
+import {sendSubscriptionToServer} from "./utils/api";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -35,6 +36,13 @@ function urlBase64ToUint8Array(base64String) {
 // Регистрация service worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                // Теперь можно регистрировать push-уведомления
+            } else {
+                console.log('Разрешение на уведомления не предоставлено.');
+            }
+        });
         navigator.serviceWorker.register('/sw.js')
             .then(registration => {
                 // Проверяем, существует ли подписка
@@ -66,20 +74,3 @@ function subscribeUser(registration) {
     });
 }
 
-// Функция отправки подписки на сервер
-function sendSubscriptionToServer(subscription) {
-    return fetch('https://localhost/api/webpush/subscribe', {
-        method: 'POST',
-        body: JSON.stringify(subscription),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Не удалось отправить подписку на сервер');
-        }
-        return response.json();
-    }).catch(error => {
-        console.error('Ошибка при отправке подписки на сервер:', error);
-    });
-}
