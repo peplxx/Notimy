@@ -1,2 +1,2 @@
 __all__ = ["NewMessageEvent"]
-from channel_events import NewMessageEvent
+from app.src.common.events.channel_events import NewMessageEvent
