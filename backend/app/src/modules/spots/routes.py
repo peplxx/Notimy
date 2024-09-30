@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.data.db.connection import get_session
-from app.data.db.models import Spot, Channel
+from app.data.db.models import Spot, Channel, Message
 from app.src.common.dtos import SpotData, ChannelData
 from app.src.common.events import NewMessageEvent
 from app.src.limiter import limiter
@@ -70,6 +70,8 @@ async def add_message_to_channel(
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
     channel = await Channel.find_by_id(session, data.channel_id)
+
+
     await NewMessageEvent(message=data.message, source=channel, session=session).process()
     return await ChannelData.by_model(session, channel)
 
