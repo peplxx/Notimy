@@ -45,6 +45,7 @@ jobs:
     - name: Install dependencies
       run: |
         make env
+        echo "TESTING=True" >> .env
         cd backend
         poetry install --with test
 

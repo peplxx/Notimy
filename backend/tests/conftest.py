@@ -14,15 +14,13 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from app.config.utils import get_settings
 from app.data.db.connection import SessionManager
-from app.src.limiter import NoOpLimiter
+
 from app.src.app import app
 from tests.fixtures import *
 from tests.utils import make_alembic_config
 
 logger = getLogger('[pytest] conftest')
 settings = get_settings()
-get_settings().TESTING = True
-limiter = NoOpLimiter()
 
 
 def url(url):
@@ -32,6 +30,9 @@ def url(url):
 def auth(client: AsyncClient, entity):
     client.headers.update({"Authorization": f"Bearer {entity.token}"})
     return client
+
+
+
 
 
 @pytest.fixture(scope="module")

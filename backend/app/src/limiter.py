@@ -5,6 +5,7 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from starlette.responses import JSONResponse
+from app.config import get_settings
 
 
 class NoOpLimiter:
@@ -15,19 +16,14 @@ class NoOpLimiter:
         return decorator
 
 
-from app.config import get_settings
-
-
 async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
     return JSONResponse(
         status_code=429,
         content={"message": "Rate limit exceeded"},
     )
 
-
-if get_settings().is_test:
-    limiter = NoOpLimiter()
-else:
+limiter = NoOpLimiter()
+if not get_settings().is_test:
     limiter = Limiter(
         key_func=get_remote_address,
         # default_limits=["200 per day", "50 per hour"]
