@@ -46,6 +46,8 @@ jobs:
       run: |
         make env
         echo "TESTING=True" >> .env
+        # Remove all comments in env file
+        sed -i '/;/d' .env
         cd backend
         poetry install --with test
 
