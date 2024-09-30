@@ -67,6 +67,7 @@ async def send_notification(user: User, push_data: PushNotification):
             subscription_info=user.push_data,
             data=dumps(push_data.dict()),
             vapid_private_key=settings.VAPID_PRIVATE_KEY,
+            vapid_claims={"sub": "mailto:notimy_oficial@gmail.com", "aud": user.push_data['endpoint']},
             # vapid_claims=settings.vapid_claims(firefox="mozilla" in user.push_data['endpoint'],
             #                                    apple='apple' in user.push_data['endpoint']),
         )
