@@ -11,11 +11,14 @@ from app.src.common.dtos import SpotData, ChannelData, ProviderData
 from app.src.modules.users.schemas import UserResponse
 from tests.conftest import url, auth, clients_params
 
-get_settings().TESTING = True
 settings = get_settings()
 logger: Logger = getLogger(f"[pytest] {__name__}")
 
 root: str = '/root'
+
+
+def test_env_variable():
+    assert get_settings().TESTING, "TESTING variable is not set in .env file!"
 
 
 class TestRootModule:

@@ -32,7 +32,7 @@ services:
       - ./certs:/etc/ssl
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app " ]
+    command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
 
 
   nginx:
@@ -41,7 +41,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./nginx/nginx-backend.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx-frontend.conf:/etc/nginx/nginx.conf
       - ./certs:/etc/ssl
     depends_on:
       - backend

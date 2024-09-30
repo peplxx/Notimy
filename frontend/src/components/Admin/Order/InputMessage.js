@@ -2,7 +2,7 @@ import styles from "./OrderBottom.module.css";
 import React, {useContext} from "react";
 import AdminOrderContext from "context/AdminOrderContext";
 
-export const InputMessage = () => {
+export const InputMessage = ({inputRef}) => {
 
     const {newMessage, setNewMessage, sendMessage} = useContext(AdminOrderContext);
 
@@ -20,6 +20,7 @@ export const InputMessage = () => {
     return (
         <div className={styles.inputMessage}>
             <input
+                ref={inputRef}
                 className={styles.messageInput}
                 placeholder="Введите сообщение"
                 value={newMessage}
@@ -27,12 +28,12 @@ export const InputMessage = () => {
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={handleKeyDown}
             />
-            <button
+            <div
                 className={styles.sendBtn}
                 onClick={send}
             >
-                &gt;
-            </button>
+                <img src="/svg/Vector.svg" style={{width: ".8em",position: "absolute", top: ".55em", left: ".55em"}}/>
+            </div>
         </div>
     )
 }

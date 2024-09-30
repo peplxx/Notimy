@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import classNames from "classnames";
 
 import OrderTop from './OrderTop';
@@ -13,8 +13,6 @@ const Order = () => {
     const toggleOrder = () => {
         setIsOpen(!isOpen);
     };
-
-
 
     return (
         <div className={

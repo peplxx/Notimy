@@ -23,11 +23,6 @@ config = get_settings()
 class Message(BaseModel):
     text: str
 
-    def __dict__(self):
-        return {
-            "text": self.text
-        }
-
 
 class Channel(Base, IndexedObject):
     __tablename__ = 'channels'
@@ -70,7 +65,7 @@ class Channel(Base, IndexedObject):
 
     @messages.setter
     def messages(self, new_value: list):
-        self.messages_raw = dumps([_.__dict__ for _ in new_value], default=str)
+        self.messages_raw = dumps([_.dict() for _ in new_value], default=str)
 
     def add_message(self, message):
         messages = self.messages

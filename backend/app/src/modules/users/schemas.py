@@ -27,7 +27,7 @@ class UserChannel(BaseModel):
                 code=channel_data.code,
                 created_at=channel_data.created_at,
                 provider_name=channel_data.provider_name,
-                messages_data=[i.__dict__ for i in channel_data.messages_data]
+                messages_data=[i.dict() for i in channel_data.messages_data]
             )
         return result
 

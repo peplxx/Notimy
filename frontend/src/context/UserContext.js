@@ -12,21 +12,13 @@ export const UserProvider = ({children}) => {
     const loadOrders = useCallback(async () => {
         try {
             const fetchedOrders = await fetchOrders();
-            // console.log('====')
-            // console.log(a === b);
-            // console.log('====')
-            // console.log('before')
-            // console.log(fetchedOrders)
             const sortedOrders = fetchedOrders.sort((a, b) => {
                 if (a.open === b.open) {
                     return new Date(b.created_at) - new Date(a.created_at); // Sort by creation date if both are either open or closed
                 }
                 return a.open ? 1 : -1; // Closed orders (open: false) come first
             });
-            setOrders([...sortedOrders]); //fetchedOrders.map(order => ({...order, open: order.open, messages_data: [...order.messages_data], jopa: Date.now()})));
-            // console.log('setting')
-            // console.log(fetchedOrders.map(order => ({...order, open: order.open, messages_data: [...order.messages_data], jopa: Date.now()})))
-            // console.log('after')
+            setOrders([...sortedOrders]);
         } catch (error) {
             console.error("Failed to fetch orders:", error);
         }

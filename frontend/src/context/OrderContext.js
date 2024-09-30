@@ -14,6 +14,7 @@ export const OrderProvider = ({ children, InitOrder }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [isReady, setIsReady] = useState(false);
+    const [backgroundColorStyles, setBackground] = useState(getBackground(order.id, isReady));
 
     useEffect(() => {
         if ( messages.length !== order.messages_data.length ) {
@@ -29,14 +30,16 @@ export const OrderProvider = ({ children, InitOrder }) => {
     }
 
     useEffect(() => {
-        setOrder(InitOrder)
+        setOrder(InitOrder);
     }, [InitOrder]);
 
     useEffect(() => {
-        setIsReady(!order.open);
-    }, [order]);
+        setIsReady(!InitOrder.open);
+    }, [InitOrder]);
 
-    const backgroundColorStyles = getBackground(order.id, isReady);
+    useEffect(() => {
+        setBackground(getBackground(order.id, isReady));
+    }, [isReady])
 
     return (
         <OrderContext.Provider value={{order, setOrder, isOpen, setIsOpen, isDeleting,
