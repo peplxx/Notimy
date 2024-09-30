@@ -44,10 +44,7 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: |
-        make env
-        echo "\nTESTING=True\n" >> .env
-        # Remove all comments in env file
-        sed -i '/;/d' .env
+        make test-env
         cd backend
         poetry install --with test
 
