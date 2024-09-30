@@ -31,16 +31,14 @@ const Home = () => {
         const registerServiceWorkerAndSubscribe = async () => {
             try {
                 // Регистрация service worker
-                const register = await navigator.serviceWorker.register('/sw.js', {
-                    scope: '/'
-                });
-
+                const register = await navigator.serviceWorker.register('/sw.js');
+                toast(register)
                 // Подписываемся на push уведомления
                 const subscription = await register.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: convertedVapidKey
                 });
-                console.log(subscription);
+                toast(subscription)
                 toast.success('Подписка выполнена');
 
                 // Отправляем подписку на сервер
