@@ -62,11 +62,12 @@ async def send_notification(user: User, push_data: PushNotification):
     if not user.can_get_push:
         return
     try:
+
         webpush(
             subscription_info=user.push_data,
             data=dumps(push_data.dict()),
             vapid_private_key=settings.VAPID_PRIVATE_KEY,
-            vapid_claims=settings.VAPID_CLAIMS
+            vapid_claims=settings.vapid_claims("mozilla" in user.push_data['endpoint']),
         )
     except WebPushException as ex:
         print("Error while send push notification: ", repr(ex))

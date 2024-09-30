@@ -53,10 +53,18 @@ class DefaultSettings(BaseSettings):
 
     VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
     VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
-    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
+    GOOGLE_VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
+    FIREFOX_VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://updates.push.services"
+                                                                                   ".mozilla.com"}
+
 
     PUSH_NOTIFICATION_ICON: str = environ.get("PUSH_NOTIFICATION_ICON", "https://notimy.ru/logo_circle.png")
     PUSH_NOTIFICATION_URL: str = environ.get("PUSH_NOTIFICATION_URL", "https://notimy.ru/app")
+
+    def vapid_claims(self, firefox: bool = False) -> dict:
+        if firefox:
+            return self.FIREFOX_VAPID_CLAIMS
+        return self.GOOGLE_VAPID_CLAIMS
 
     @property
     def is_dev(self) -> bool:
