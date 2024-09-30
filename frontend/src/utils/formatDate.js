@@ -5,7 +5,6 @@ export const formatDate = (dateStr) => {
         hour: '2-digit',
         minute: '2-digit'
     };
-
+    date.setTime(date.getTime() - 60 * 1000 * new Date().getTimezoneOffset())
     return date.toLocaleTimeString('ru-RU', options)   + ' | ' +  date.toLocaleDateString('ru-RU');
-
 };
