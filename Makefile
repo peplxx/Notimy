@@ -46,6 +46,12 @@ vapid:
 env:
 	cp .env.example .env
 
+test-env:
+	cp .env.example .env
+	echo "\nTESTING=True\n" >> .env
+	sed -i '/;/d' .env
+	sed -i '/ENV/d' .env
+
 setup:
 	make key
 	make env

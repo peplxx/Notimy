@@ -64,7 +64,7 @@ class DefaultSettings(BaseSettings):
 
     @property
     def is_test(self) -> bool:
-        return self.ENV == "default"
+        return self.TESTING
 
     @property
     def cookie_domain(self):
