@@ -56,13 +56,15 @@ class DefaultSettings(BaseSettings):
     GOOGLE_VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
     FIREFOX_VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://updates.push.services"
                                                                                    ".mozilla.com"}
-
+    APPLE_VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://api.push.apple.com"}
     PUSH_NOTIFICATION_ICON: str = environ.get("PUSH_NOTIFICATION_ICON", "https://notimy.ru/logo_circle.png")
     PUSH_NOTIFICATION_URL: str = environ.get("PUSH_NOTIFICATION_URL", "https://notimy.ru/app")
 
-    def vapid_claims(self, firefox: bool = False) -> dict:
+    def vapid_claims(self, firefox: bool = False, apple: bool = False) -> dict:
         if firefox:
             return self.FIREFOX_VAPID_CLAIMS
+        if apple:
+            return self.APPLE_VAPID_CLAIMS
         return self.GOOGLE_VAPID_CLAIMS
 
     @property
