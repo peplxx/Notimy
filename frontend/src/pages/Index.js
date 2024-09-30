@@ -29,6 +29,21 @@ function urlBase64ToUint8Array(base64String) {
 const Home = () => {
     useEffect(() => {
         const registerServiceWorkerAndSubscribe = async () => {
+
+            // Запрашиваем разрешение на уведомления
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    toast.success('Разрешение на уведомления предоставлено', {
+                        duration: 3000,
+                    });
+                } else {
+                    toast.error('Разрешение на уведомления не предоставлено', {duration: 3000});
+                }
+            } catch (e) {
+                toast.error(`Ошибка запроса разрешения на уведомления`, {duration: 3000});
+            }
+
             try {
                 let register
                 try {
@@ -37,7 +52,7 @@ const Home = () => {
                         scope: '/app'
                     });
                 } catch (e) {
-                    toast.error("fail register sub", e.message)
+                    toast.error("Пожалуйста, создайте PWA",{duration: 3000})
                 }
                 // Подписываемся на push уведомления
                 let subscription
@@ -47,27 +62,16 @@ const Home = () => {
                         applicationServerKey: convertedVapidKey
                     });
                 } catch (e) {
-                    toast.error(`fail register sub: ${e.message}`)
+                    toast.error(`Ошибка при подписке на уведомления`,{duration: 3000})
                 }
-                toast.success('Подписка выполнена');
+                toast.success('Подписка выполнена',{duration: 3000});
 
                 // Отправляем подписку на сервер
                 await sendSubscriptionToServer(subscription);
             } catch (e) {
-                toast.error(`Ошибка регистрации или подписки: ${e.message}`);
+                toast.error(`Ошибка регистрации или подписки`,{duration: 2000});
             }
 
-            // Запрашиваем разрешение на уведомления
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    toast.success('Разрешение на уведомления предоставлено');
-                } else {
-                    toast.error('Разрешение на уведомления не предоставлено');
-                }
-            } catch (e) {
-                toast.error(`Ошибка запроса разрешения на уведомления: ${e.message}`);
-            }
         };
 
         // Запускаем асинхронную функцию
