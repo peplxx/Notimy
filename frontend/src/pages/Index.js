@@ -30,15 +30,23 @@ const Home = () => {
     useEffect(() => {
         const registerServiceWorkerAndSubscribe = async () => {
             try {
-                // Регистрация service worker
-                const register = await navigator.serviceWorker.register('/sw.js');
-                toast(register)
+                let register
+                try {
+                    // Регистрация service worker
+                    register = await navigator.serviceWorker.register('/sw.js');
+                } catch (e) {
+                    toast.error("fail register sub", e.message)
+                }
                 // Подписываемся на push уведомления
-                const subscription = await register.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: convertedVapidKey
-                });
-                toast(subscription)
+                let subscription
+                try {
+                    subscription = await register.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: convertedVapidKey
+                    });
+                } catch (e) {
+                    toast.error("fail register sub", e.message)
+                }
                 toast.success('Подписка выполнена');
 
                 // Отправляем подписку на сервер
