@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.db.models import Channel, Message
 from app.src.common.events.channel_events.base import ChannelEvent
-from app.src.middleware.push_notifications import PushNotification
+from app.src.common.push_notifications.dto import PushNotification
 from app.src.modules.spots.logic import add_message
 
 event_type = "NewMessageEvent"
