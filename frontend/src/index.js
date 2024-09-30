@@ -34,45 +34,28 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
 }
-// Регистрация service worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                // Проверяем, существует ли подписка
-                return registration.pushManager.getSubscription()
-                    .then(subscription => {
-                        if (!subscription) {
-                            // Если подписки нет, подписываем пользователя заново
-                            return subscribeUser(registration);
-                        } else {
-                            // Если подписка существует, отправляем её на сервер для проверки
-                            return sendSubscriptionToServer(subscription);
-                        }
-                    });
-            })
-            .catch(error => {
-                console.log('Ошибка регистрации ServiceWorker или проверки подписки:', error);
-            });
-        await sleep(1000);
-       Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                // Теперь можно регистрировать push-уведомления
-            } else {
-                console.log('Разрешение на уведомления не предоставлено.');
-            }
-        });
-    });
-}
 
-// Функция подписки пользователя на push-уведомления
-function subscribeUser(registration) {
-    return registration.pushManager.subscribe({
+window.addEventListener('load', async () => {
+    const register = await navigator.serviceWorker.register('/worker.js', {
+        scope: '/'
+    });
+
+    // Подписываемся на push уведомления
+    const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey
-    }).then(subscription => {
-        console.log(subscription)
-        return sendSubscriptionToServer(subscription);
+        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
     });
-}
 
+    // Если подписка существует, отправляем её на сервер для проверки
+    sendSubscriptionToServer(subscription);
+
+    await sleep(1000);
+
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            // Теперь можно регистрировать push-уведомления
+        } else {
+            console.log('Разрешение на уведомления не предоставлено.');
+        }
+    });
+});
