@@ -12,11 +12,12 @@ event_type = "NewMessageEvent"
 
 class NewMessageEvent(ChannelEvent):
     event_type: str = ChannelEvent._event_type(event_type)
+    message: Message
 
     def __init__(self, message: Message, source: Channel, session: AsyncSession) -> None:
-        self.message = message
-        self.pushNotification = DefaultPushNotification(title=f"У вас новое сообщение!", body=f"{self.message.text}")
         super().__init__(source, session)
+        self.message = message
+        self.pushNotification = DefaultPushNotification(title=f"У вас новое сообщение!", body=f"{message.text}")
 
     async def invoke(self):
         await add_message(self.session, (await self.source.spot), message=self.message, channel_id=self.source.id)
