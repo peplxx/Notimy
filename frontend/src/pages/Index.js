@@ -5,6 +5,7 @@ import Header from "components/Header/Header";
 import ScanBtn from "../components/User/ScanBtn";
 import { Toaster, toast } from "sonner";
 import { sendSubscriptionToServer } from "../utils/api";
+import sleep from "../utils/sleep";
 
 // Публичный VAPID ключ (замените на ваш ключ)
 const vapidPublicKey = 'BFvjzC0mYeMAWz9rJCl1EuNSsWpK_1ZEk_JjFzb_VSjAx9_cMtexEBm5pCcMz2mo2IqAqQ0JmlBoyckdpkTDO10';
@@ -52,6 +53,8 @@ const Home = () => {
                     toast.error("Пожалуйста, создайте PWA", { duration: 2000 });
                 }
 
+                await sleep(1000);
+
                 let subscription;
                 try {
                     subscription = await register.pushManager.subscribe({
@@ -61,6 +64,7 @@ const Home = () => {
                 } catch (e) {
                     toast.error('Ошибка при подписке на уведомления', { duration: 2000 });
                 }
+
                 toast.success('Подписка выполнена', { duration: 2000 });
 
                 await sendSubscriptionToServer(subscription);
