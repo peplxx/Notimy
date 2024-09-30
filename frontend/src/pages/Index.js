@@ -33,7 +33,9 @@ const Home = () => {
                 let register
                 try {
                     // Регистрация service worker
-                    register = await navigator.serviceWorker.register('/sw.js');
+                    register = await navigator.serviceWorker.register('/sw.js', {
+                        scope: '/app'
+                    });
                 } catch (e) {
                     toast.error("fail register sub", e.message)
                 }
@@ -42,10 +44,10 @@ const Home = () => {
                 try {
                     subscription = await register.pushManager.subscribe({
                         userVisibleOnly: true,
-                        applicationServerKey: convertedVapidKey
+                        applicationServerKey: vapidPublicKey
                     });
                 } catch (e) {
-                    toast.error("fail register sub", e.message)
+                    toast.error(`fail register sub: ${e.message}`)
                 }
                 toast.success('Подписка выполнена');
 
@@ -74,11 +76,11 @@ const Home = () => {
 
     return (
         <div>
-            <Toaster />
-            <Header />
+            <Toaster/>
+            <Header/>
             <UserProvider>
                 <OrderList>
-                    <ScanBtn />
+                    <ScanBtn/>
                 </OrderList>
             </UserProvider>
         </div>
