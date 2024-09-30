@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.db import DeclarativeBase as Base
 from app.data.db.utils import get_now
-from app.src.middleware.push_notifications import PushNotification
+from app.src.common.push_notifications.dto import PushNotification
 
 
 class Event(ABC):
