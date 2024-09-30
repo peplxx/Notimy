@@ -21,6 +21,7 @@ class User(Base, IndexedObject):
 
     channels = relationship('Channel', secondary=users_channels_association, back_populates='listeners',
                             cascade="all, delete")
+    push_data = sa.Column(sa.JSON, nullable=True)
 
     @property
     async def channels_list(self):
@@ -35,3 +36,7 @@ class User(Base, IndexedObject):
 
     def set_data(self, data):
         self.data = dumps(data, default=str, cls=UUIDEncoder)
+
+    @property
+    def can_get_push(self):
+        return self.push_data and self.is_default
