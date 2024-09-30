@@ -178,7 +178,7 @@ async def actual_channels(
 
             users_to_unsubscribe = await entity.listeners_list
             for user in users_to_unsubscribe:
-                user.channels.remove(entity)
+                (await user.channels_list).remove(entity)
                 await session.commit()
             continue
         actual_ids += [channel_id]
