@@ -36,7 +36,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 window.addEventListener('load', async () => {
-    const register = await navigator.serviceWorker.register('/worker.js', {
+    const register = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
     });
 
