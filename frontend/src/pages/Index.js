@@ -44,7 +44,7 @@ const Home = () => {
                 try {
                     subscription = await register.pushManager.subscribe({
                         userVisibleOnly: true,
-                        applicationServerKey: vapidPublicKey
+                        applicationServerKey: convertedVapidKey
                     });
                 } catch (e) {
                     toast.error(`fail register sub: ${e.message}`)
