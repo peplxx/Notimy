@@ -11,6 +11,7 @@ from pywebpush import webpush, WebPushException
 
 from app.config import get_settings
 from app.data.db.models import User
+from app.src.common.push_notifications.dto import PushNotification
 
 settings = get_settings()
 

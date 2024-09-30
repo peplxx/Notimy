@@ -55,7 +55,7 @@ class DefaultSettings(BaseSettings):
     VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
     VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
 
-    PUSH_ICON_URL: str = environ.get("PUSH_ICON_URL", "https://notimy.ru/favicon.ico")
+    PUSH_NOTIFICATION_ICON: str = environ.get("PUSH_NOTIFICATION_ICON", "https://notimy.ru/favicon.ico")
     PUSH_NOTIFICATION_URL: str = environ.get("PUSH_NOTIFICATION_URL", "https://notimy.ru/app")
 
     @property
