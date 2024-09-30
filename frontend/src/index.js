@@ -6,6 +6,7 @@ import App from './App';
 import 'normalize.css';
 import './index.css';
 import {sendSubscriptionToServer} from "./utils/api";
+import sleep from "./utils/sleep";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -35,14 +36,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 // Регистрация service worker
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                // Теперь можно регистрировать push-уведомления
-            } else {
-                console.log('Разрешение на уведомления не предоставлено.');
-            }
-        });
+    window.addEventListener('load', async () => {
         navigator.serviceWorker.register('/sw.js')
             .then(registration => {
                 // Проверяем, существует ли подписка
@@ -60,6 +54,14 @@ if ('serviceWorker' in navigator) {
             .catch(error => {
                 console.log('Ошибка регистрации ServiceWorker или проверки подписки:', error);
             });
+        await sleep(1000);
+       Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                // Теперь можно регистрировать push-уведомления
+            } else {
+                console.log('Разрешение на уведомления не предоставлено.');
+            }
+        });
     });
 }
 
