@@ -32,7 +32,7 @@ services:
       - ./certs:/etc/ssl
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
+    command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app " ]
 
 
   nginx:

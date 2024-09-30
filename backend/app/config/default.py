@@ -51,13 +51,20 @@ class DefaultSettings(BaseSettings):
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
 
+    VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
+    VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
+    VAPID_CLAIMS: dict = {"sub": "mailto:notimy_oficial@gmail.com", "aud": "https://fcm.googleapis.com"}
+
+    PUSH_NOTIFICATION_ICON: str = environ.get("PUSH_NOTIFICATION_ICON", "https://notimy.ru/logo_circle.png")
+    PUSH_NOTIFICATION_URL: str = environ.get("PUSH_NOTIFICATION_URL", "https://notimy.ru/app")
+
     @property
     def is_dev(self) -> bool:
         return self.ENV == 'dev'
 
     @property
     def is_test(self) -> bool:
-        return self.ENV == "default"
+        return self.TESTING
 
     @property
     def cookie_domain(self):
