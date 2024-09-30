@@ -45,7 +45,7 @@ jobs:
     - name: Install dependencies
       run: |
         make env
-        echo "TESTING=True" >> .env
+        echo "\nTESTING=True\n" >> .env
         # Remove all comments in env file
         sed -i '/;/d' .env
         cd backend
