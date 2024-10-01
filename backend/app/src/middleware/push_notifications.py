@@ -80,4 +80,4 @@ async def send_notification(user: User, push_data: PushNotification):
         )
     except WebPushException as ex:
         print("Error while send push notification: ", repr(ex))
-        raise HTTPException(status_code=500, detail=str(ex))
+        # raise HTTPException(status_code=500, detail=str(ex))
