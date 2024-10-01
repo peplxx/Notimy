@@ -38,6 +38,10 @@
     text-align: center;
 }
 
+a {
+    color: #e4e4e4;
+}
+
 .icons {
     position: fixed; /* Ensures it's relative to the viewport */
     bottom: 10%; /* Centers it vertically */

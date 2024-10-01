@@ -4,14 +4,10 @@
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "192x192"
-    },
-    {
-      "src": "favicon.ico",
-      "sizes": "512x512"
+      "sizes": "720x716"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://notimy.ru/app",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#000000"
