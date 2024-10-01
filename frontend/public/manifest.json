@@ -4,7 +4,11 @@
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "720x716"
+      "sizes": "192x192"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "512x512"
     }
   ],
   "start_url": "https://notimy.ru/app",
