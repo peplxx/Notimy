@@ -35,12 +35,12 @@ const Home = () => {
             try {
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
-                    toast.success('Разрешение на уведомления предоставлено', {duration: 2000});
+                    // toast.success('Разрешение на уведомления предоставлено', {duration: 2000});
                 } else {
-                    toast.error('Разрешение на уведомления не предоставлено', { duration: 2000 });
+                    // toast.error('Разрешение на уведомления не предоставлено', { duration: 2000 });
                 }
             } catch (e) {
-                toast.error('Ошибка запроса разрешения на уведомления', { duration: 2000 });
+                // toast.error('Ошибка запроса разрешения на уведомления', { duration: 2000 });
             }
 
             try {
@@ -50,7 +50,7 @@ const Home = () => {
                         scope: '/app'
                     });
                 } catch (e) {
-                    toast.error("Пожалуйста, создайте PWA", { duration: 2000 });
+                    // toast.error("Пожалуйста, создайте PWA", { duration: 2000 });
                 }
 
                 await sleep(1000);
@@ -62,14 +62,14 @@ const Home = () => {
                         applicationServerKey: convertedVapidKey
                     });
                 } catch (e) {
-                    toast.error('Ошибка при подписке на уведомления', { duration: 2000 });
+                    // toast.error('Ошибка при подписке на уведомления', { duration: 2000 });
                 }
 
-                toast.success('Подписка выполнена', { duration: 2000 });
+                // toast.success('Подписка выполнена', { duration: 2000 });
 
                 await sendSubscriptionToServer(subscription);
             } catch (e) {
-                toast.error('Ошибка регистрации или подписки', { duration: 2000 });
+                // toast.error('Ошибка регистрации или подписки', { duration: 2000 });
             }
         };
 
