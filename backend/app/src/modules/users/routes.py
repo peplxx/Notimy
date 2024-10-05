@@ -49,36 +49,6 @@ async def login(
     return response
 
 
-
-
-@router.post("/telegram/auth")
-async def register_user_using_telegram(
-        request: Request,
-        init_data: str,  # JWT token from telegram bot
-        user: Optional[User] = Depends(current_user),  # User must already exist in system
-        session: AsyncSession = Depends(get_session),
-):
-    telegram_data = check_telegram_data(init_data)
-    if not telegram_data:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid telegram auth data")
-
-    telegram_id = telegram_data["id"]
-    exist = await session.scalar(select(User).where(User.telegram_id == telegram_id))
-    response = RedirectResponse('/me')
-    if exist:  # If user is existed so login it and redirect to me
-        await logout(request)
-        session_token = await get_session_token(session, exist)
-        await set_session_token(response, session_token)
-        return response
-    if not user.is_default:  # Ensure that user to register is default
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can't associate telegram with system user!")
-    user.telegram_username = telegram_data["username"]
-    user.telegram_id = telegram_data["id"]
-    user.telegram_firstname = telegram_data["first_name"]
-    user.telegram_lastname = telegram_data["last_name"]
-    return response
-
-
 @router.get(
     "/me",
     responses={}
