@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.responses import RedirectResponse
@@ -42,6 +42,7 @@ async def auth_telegram_user(
     status_code=status.HTTP_307_TEMPORARY_REDIRECT
 )
 async def login_existing_user(
+        request: Request,
         uuid: UUID = Query(..., description="UUID of existing user in system"),
         session: AsyncSession = Depends(get_session)
 ) -> RedirectResponse:
