@@ -3,6 +3,7 @@ __all__ = ["generate_vapid_keys", "SubscriptionKeys", "PushSubscription", "send_
 import base64
 from json import dumps
 from typing import Optional
+from urllib.parse import urlparse
 
 import ecdsa
 from fastapi import HTTPException
@@ -62,12 +63,21 @@ async def send_notification(user: User, push_data: PushNotification):
     if not user.can_get_push:
         return
     try:
+
+        # Парсим URL
+        parsed_url = urlparse(user.push_data['endpoint'])
+
+        # Извлекаем протокол (scheme) и хост (netloc)
+        protocol = parsed_url.scheme
+        host = parsed_url.netloc
         webpush(
             subscription_info=user.push_data,
             data=dumps(push_data.dict()),
             vapid_private_key=settings.VAPID_PRIVATE_KEY,
-            vapid_claims=settings.VAPID_CLAIMS
+            vapid_claims={"sub": "mailto:notimy_oficial@gmail.com", "aud": protocol + "://" + host},
+            # vapid_claims=settings.vapid_claims(firefox="mozilla" in user.push_data['endpoint'],
+            #                                    apple='apple' in user.push_data['endpoint']),
         )
     except WebPushException as ex:
         print("Error while send push notification: ", repr(ex))
-        raise HTTPException(status_code=500, detail=str(ex))
+        # raise HTTPException(status_code=500, detail=str(ex))
