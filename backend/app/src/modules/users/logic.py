@@ -50,6 +50,17 @@ async def join_channel_by_alias(session: AsyncSession, user: User, alias_name: s
     await manager.C.add_listener(channel, user)
 
 
+async def join_channel_by_channel_id(session: AsyncSession, user: User, channel_id: UUID):
+    manager = RepositoriesManager(session)
+    if not user.is_default:
+        raise SystemUsersJoinRestrict
+    channel = await Channel.find_by_id(session, channel_id)
+    if not channel:
+        raise InvalidInvitationLink
+
+    await manager.C.add_listener(channel, user)
+
+
 async def forget_channel_by_id(session: AsyncSession, user: User, channel_id: UUID):
     manager = RepositoriesManager(session)
     channels_ids = await manager.U.channels_ids(user)

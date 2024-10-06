@@ -18,7 +18,7 @@ from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user, set_session_token, \
-    get_session_token, check_telegram_data
+    get_session_token, check_telegram_data, join_channel_by_channel_id
 from app.src.modules.users.schemas import UserResponse, UserChannel
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -130,4 +130,22 @@ async def forget_channel(
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
     await forget_channel_by_id(session, user, channel_id)
+    return await UserResponse.by_model(session, user)
+
+
+@router.post(
+    "/join/channel/{channel_id}",
+    responses={
+        **exceptions.InvalidInvitationLink.responses,
+        **SystemUsersJoinRestrict.responses,
+    }
+)
+@limiter.limit("10/second")
+async def join_channel_by_id(
+        request: Request,
+        channel_id: UUID,
+        session: AsyncSession = Depends(get_session),
+        user: Optional[User] = Depends(current_user)
+) -> UserResponse:
+    await join_channel_by_channel_id(session, user, channel_id)
     return await UserResponse.by_model(session, user)
