@@ -57,3 +57,29 @@
     animation: shaking .15s .15s;
     animation-iteration-count: 2;
 }
+
+.qrCode {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    padding: 1em;
+    /* height: 30em;
+    width: 80%; */
+    border-radius: inherit;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    z-index: 99999;
+    background-color: white;
+}
+
+.darkBackground {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99998;
+    background-color: rgba(0, 0, 0, 0.6);
+}

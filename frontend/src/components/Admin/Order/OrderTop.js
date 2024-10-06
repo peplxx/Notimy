@@ -1,10 +1,12 @@
-import React, {useContext, useRef} from "react";
+import React, {useContext, useRef, useState} from "react";
 import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
+import AdminContext from "context/AdminContext";
 import Slider from "components/Slider";
 import {TrashBucketSvg} from "components/svg/TrashBucketSvg";
 import {AcceptSvg} from "components/svg/AcceptSvg";
+import { QRCodeCanvas } from 'qrcode.react';
 
 const OrderTop = () => {
     const {
@@ -14,12 +16,22 @@ const OrderTop = () => {
         isSideOpen,
         setIsSideOpen,
         setIsOpen,
-        isOpen
+        isOpen,
+        isQrOpen,
+        setIsQrOpen
     } = useContext(AdminOrderContext);
+   
     const {deleteOrder} = useContext(AdminOrderContext);
     const {closeOrder} = useContext(AdminOrderContext);
 
+    const {setQrCode} = useContext(AdminContext);
+
     const MenuClickable = useRef(null);
+
+    const emSize = parseFloat(getComputedStyle(document.documentElement).fontSize); // Получаем размер 1em в пикселях
+    const qrSize = 14 * emSize; // Пример: если 10em
+    
+       
 
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
@@ -29,7 +41,7 @@ const OrderTop = () => {
         <div className={styles.top} style={backgroundStyles} onClick={() => {
             setIsOpen(!isOpen)
         }}>
-            <span className={styles.title}>#{order.local_number}</span>
+            <span className={styles.title}>#{order.code.slice(0, 2)}</span>
             <div
                 className={
                     classNames(
@@ -57,7 +69,18 @@ const OrderTop = () => {
                     null
                 }
 
-                <span className={styles.code}>{order.code}</span>
+                {/* <span className={styles.code}>{order.code}</span> */}
+                {isSideOpen ?
+                    <div className={styles.qrCodeBtn} onClick={(e)=>{ setQrCode(
+                        <QRCodeCanvas value={`https://notimy.ru/j/c/${order.id}`} size={qrSize} />
+                    );e.stopPropagation()}}>
+                        QR code
+                    </div>
+            
+                 :
+                <></>    
+                 }
+
                 <span className={styles.expandSign}>{"<"}</span>
             </div>
         </div>

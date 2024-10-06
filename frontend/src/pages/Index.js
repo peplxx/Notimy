@@ -28,8 +28,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 const Home = () => {
-    const [showImage, setShowImage] = useState(true); // Стейт для показа/скрытия картинки
-
+    
     useEffect(() => {
         const registerServiceWorkerAndSubscribe = async () => {
             try {
@@ -76,10 +75,7 @@ const Home = () => {
         registerServiceWorkerAndSubscribe();
     }, []);
 
-    const handleImageClick = () => {
-        setShowImage(false); // Скрываем изображение при клике
-    };
-
+    
     return (
         <div>
             <Toaster />
@@ -90,40 +86,9 @@ const Home = () => {
                 </OrderList>
             </UserProvider>
 
-            {/* Условный рендеринг изображения */}
-            {showImage && (
-                <div style={styles.overlay} onClick={handleImageClick}>
-                    <img
-                        src="/pwa_hint.png" // Замени на свою картинку
-                        alt="pwa_hint"
-                        style={styles.image}
-                    />
-                </div>
-            )}
+            
         </div>
     );
-};
-
-// Стили для картинки и оверлея
-const styles = {
-    overlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2000,
-    },
-    image: {
-        width: '80%',
-        maxWidth: '800px',
-        height: 'auto',
-        cursor: 'pointer',
-    },
 };
 
 export default Home;

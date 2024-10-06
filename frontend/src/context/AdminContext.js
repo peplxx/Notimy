@@ -6,6 +6,7 @@ import {
     fetchOrdersAdmin, getMeSpot,
     sendMessageAdmin
 } from 'utils/api';
+import styles from "components/Admin/Order/OrderTop.module.css";
 
 const AdminContext = createContext();
 
@@ -13,6 +14,7 @@ export const AdminProvider = ({children}) => {
     // Context который только взаимодействует с api и информацией о админе (список заказов)
     const [orders, setOrders] = useState([]);
     const [spot, setSpot] = useState('...');
+    const [qrCode, setQrCode] = useState(null);
 
     const updateOrders = useCallback(async () => {
         try {
@@ -66,7 +68,7 @@ export const AdminProvider = ({children}) => {
     }
 
     return (
-        <AdminContext.Provider value={{orders, createOrder, deleteOrder, sendMessage, closeOrder}}>
+        <AdminContext.Provider value={{orders, createOrder, deleteOrder, sendMessage, closeOrder, setQrCode}}>
             <div style={{width: "100%", position: "absolute", display: "flex", justifyContent: "center"}}>
                 <span style={{
                     position: "absolute",
@@ -79,6 +81,15 @@ export const AdminProvider = ({children}) => {
                     {spot}
                 </span>
             </div>
+            {qrCode !== null ? (
+                <> 
+                <div className={styles.qrCode} onClick={(e) => { setQrCode(null); e.stopPropagation(); }}>
+                    {qrCode}
+                </div>
+                <div className={styles.darkBackground}></div>
+                </>
+
+            ) : null}
                 {children}
         </AdminContext.Provider>
 );

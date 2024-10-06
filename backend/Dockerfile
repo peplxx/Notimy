@@ -11,7 +11,6 @@ COPY ./pyproject.toml .
 
 RUN poetry config virtualenvs.create false && poetry install --no-dev --without test,linter
 
-
 COPY . /backend/
 
 WORKDIR /backend/
