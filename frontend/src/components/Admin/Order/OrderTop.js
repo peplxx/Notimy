@@ -2,6 +2,7 @@ import React, {useContext, useRef, useState} from "react";
 import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
+import AdminContext from "context/AdminContext";
 import Slider from "components/Slider";
 import {TrashBucketSvg} from "components/svg/TrashBucketSvg";
 import {AcceptSvg} from "components/svg/AcceptSvg";
@@ -15,19 +16,21 @@ const OrderTop = () => {
         isSideOpen,
         setIsSideOpen,
         setIsOpen,
-        isOpen
+        isOpen,
+        isQrOpen,
+        setIsQrOpen
     } = useContext(AdminOrderContext);
-    const [isQrOpen, setIsQrOpen] = useState(false);
-
+   
     const {deleteOrder} = useContext(AdminOrderContext);
     const {closeOrder} = useContext(AdminOrderContext);
+
+    const {setQrCode} = useContext(AdminContext);
 
     const MenuClickable = useRef(null);
 
     const emSize = parseFloat(getComputedStyle(document.documentElement).fontSize); // Получаем размер 1em в пикселях
     const qrSize = 14 * emSize; // Пример: если 10em
     
-        
        
 
     const toggleMenu = () => {
@@ -38,7 +41,7 @@ const OrderTop = () => {
         <div className={styles.top} style={backgroundStyles} onClick={() => {
             setIsOpen(!isOpen)
         }}>
-            <span className={styles.title}>#{order.local_number}</span>
+            <span className={styles.title}>#{order.code.slice(0, 2)}</span>
             <div
                 className={
                     classNames(
@@ -68,20 +71,15 @@ const OrderTop = () => {
 
                 {/* <span className={styles.code}>{order.code}</span> */}
                 {isSideOpen ?
-                    <div className={styles.qrCodeBtn} onClick={(e)=>{ setIsQrOpen(true);e.stopPropagation()}}>
+                    <div className={styles.qrCodeBtn} onClick={(e)=>{ setQrCode(
+                        <QRCodeCanvas value={`https://notimy.ru/j/c/${order.id}`} size={qrSize} />
+                    );e.stopPropagation()}}>
                         QR code
                     </div>
-                    :
-                    <></>    
-                }
-                {isQrOpen ? (
-                    <>                    <div className={styles.qrCode} onClick={(e) => { setIsQrOpen(false); e.stopPropagation(); }}>
-                        <QRCodeCanvas value={`https://notimy.ru/j/c/${order.id}`} size={qrSize} />
-                    </div>
-                    <div className={styles.darkBackground}></div>
-                    </>
-
-                ) : null}
+            
+                 :
+                <></>    
+                 }
 
                 <span className={styles.expandSign}>{"<"}</span>
             </div>

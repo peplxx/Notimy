@@ -9,7 +9,7 @@ import styles from './Order.module.css';
 
 const Order = () => {
     const {setIsOpen, isOpen, isDeleting} = useContext(OrderContext);
-
+    
     const toggleOrder = () => {
         setIsOpen(!isOpen);
     };

@@ -20,6 +20,8 @@ export const AdminOrderProvider = ({children, InitOrder}) => {
     const [messages, setMessages] = useState([]);
     const [isSideOpen, setIsSideOpen] = useState(false); // Открытие/Закрытие Слайдера
     const [newMessage, setNewMessage] = useState('');
+    const [isQrOpen, setIsQrOpen] = useState(false);
+
     useEffect(() => {
         setOrder(InitOrder)
     }, [InitOrder]);
@@ -75,7 +77,7 @@ export const AdminOrderProvider = ({children, InitOrder}) => {
             value={{
                 order, setOrder, isOpen, setIsOpen, isDeleting,
                 deleteOrder, isReady, closeOrder, backgroundStyles, isSideOpen, setIsSideOpen,
-                newMessage, setNewMessage, sendMessage, messages
+                newMessage, setNewMessage, sendMessage, messages, isQrOpen, setIsQrOpen
             }}>
             {children}
         </AdminOrderContext.Provider>

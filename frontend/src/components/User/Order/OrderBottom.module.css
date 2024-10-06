@@ -2,10 +2,10 @@
     font-family: "Rubik", sans-serif;
     color: #202123;
     font-weight: 700;
-    font-size: 0.6em;
+    font-size: 0.8em;
     position: absolute;
-    bottom: 2%;
-    right: 3.5%;
+    bottom: 3%;
+    right: 2%;
     user-select: none;
 }
 
@@ -37,8 +37,9 @@
 
 
 .code {
+    color: #202123;
     font-weight: 700;
-    font-size: 0.6em;
+    font-size: 1em;
     position: absolute;
     bottom: 2%;
     left: 4%;

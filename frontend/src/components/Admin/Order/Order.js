@@ -7,8 +7,9 @@ import AdminOrderContext from "context/AdminOrderContext";
 import styles from './Order.module.css';
 
 const Order = () => {
-    const {isOpen, isDeleting} = useContext(AdminOrderContext);
+    const {isOpen, isDeleting, isQrOpen, setIsQrOpen, order} = useContext(AdminOrderContext);
 
+        
     return (
         <div className={
             classNames(
@@ -17,6 +18,7 @@ const Order = () => {
                 isDeleting ? styles.orderShaking : null
             )}
         >
+            
             <OrderTop/>
             <OrderBottom/>
         </div>

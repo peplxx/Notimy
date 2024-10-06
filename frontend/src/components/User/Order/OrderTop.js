@@ -41,7 +41,7 @@ const OrderTop = () => {
     return (
         <div className={styles.top} style={backgroundColorStyles}>
             <Bulb/>
-            <span className={styles.title} ref={titleRef}>{order.provider_name}</span>
+            <span className={styles.title} ref={titleRef}>#{order.code.slice(0, 2)}</span>
             <div
                 className={
                     classNames(
@@ -68,7 +68,7 @@ const OrderTop = () => {
                         : null
                 }
                 {/*<DeleteButton MenuClickable={MenuClickable.current}/>*/}
-                <span className={styles.code}>{order.code}</span>
+                {/* <span className={styles.code}>{order.code}</span> */}
                 <span className={styles.expandSign}>{"<"}</span>
             </div>
         </div>
