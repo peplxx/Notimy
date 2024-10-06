@@ -1,10 +1,11 @@
-import React, {useContext, useRef} from "react";
+import React, {useContext, useRef, useState} from "react";
 import classNames from "classnames";
 import styles from './OrderTop.module.css';
 import AdminOrderContext from "context/AdminOrderContext";
 import Slider from "components/Slider";
 import {TrashBucketSvg} from "components/svg/TrashBucketSvg";
 import {AcceptSvg} from "components/svg/AcceptSvg";
+import { QRCodeCanvas } from 'qrcode.react';
 
 const OrderTop = () => {
     const {
@@ -16,10 +17,18 @@ const OrderTop = () => {
         setIsOpen,
         isOpen
     } = useContext(AdminOrderContext);
+    const [isQrOpen, setIsQrOpen] = useState(false);
+
     const {deleteOrder} = useContext(AdminOrderContext);
     const {closeOrder} = useContext(AdminOrderContext);
 
     const MenuClickable = useRef(null);
+
+    const emSize = parseFloat(getComputedStyle(document.documentElement).fontSize); // Получаем размер 1em в пикселях
+    const qrSize = 14 * emSize; // Пример: если 10em
+    
+        
+       
 
     const toggleMenu = () => {
         setIsSideOpen(!isSideOpen);
@@ -57,7 +66,23 @@ const OrderTop = () => {
                     null
                 }
 
-                <span className={styles.code}>{order.code}</span>
+                {/* <span className={styles.code}>{order.code}</span> */}
+                {isSideOpen ?
+                    <div className={styles.qrCodeBtn} onClick={(e)=>{ setIsQrOpen(true);e.stopPropagation()}}>
+                        QR code
+                    </div>
+                    :
+                    <></>    
+                }
+                {isQrOpen ? (
+                    <>                    <div className={styles.qrCode} onClick={(e) => { setIsQrOpen(false); e.stopPropagation(); }}>
+                        <QRCodeCanvas value={`https://notimy.ru/j/c/${order.id}`} size={qrSize} />
+                    </div>
+                    <div className={styles.darkBackground}></div>
+                    </>
+
+                ) : null}
+
                 <span className={styles.expandSign}>{"<"}</span>
             </div>
         </div>

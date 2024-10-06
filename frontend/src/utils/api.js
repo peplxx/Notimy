@@ -58,7 +58,7 @@ export const fetchOrders = async () => {
     }
 };
 
-export const joinChannel = async (id) => {
+export const joinChannelSpot = async (id) => {
     try {
         await api.post(`/join/${id}`);
         return true;
@@ -68,6 +68,15 @@ export const joinChannel = async (id) => {
     }
 };
 
+export const joinChannel = async (id) => {
+    try {
+        await api.post(`/join/channel/${id}`);
+        return true;
+    } catch (e) {
+        console.log(`Error /join/channel/${id}.`);
+        return false;
+    }
+};
 export const deleteOrderApiUser = async (id) => {
     try {
         await api.delete(`/forget/${id}`);
@@ -124,7 +133,7 @@ export const adminLogin = async (token) => {
 }
 
 export const getMe = async () => {
-    if (dev) return {role: 'spot_user'}
+    if (dev) return {role: 'spot_user', 'uuid': 'fake_jopa'}
     try {
         const res = await api.get(`/me`);
         return res.data;

@@ -30,3 +30,18 @@
 }
 
 
+.hint {
+    position: absolute;
+    right: .5em;
+    margin-top: .05em;
+    font-size: 1.5em;
+    font-weight: 800;
+    color: white;
+    border: .05em solid  #404040 ;
+    width: 1.1em;
+    background-color: #999;
+    color:  var(--htmlBackground);
+    text-align: center;
+    border-radius: 50%;
+    text-decoration: none;
+}
