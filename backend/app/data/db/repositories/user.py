@@ -12,7 +12,6 @@ from app.data.db.repositories.base import BaseRepository
 from fastapi import Request
 
 from app.src.middleware.login_manager import manager
-from app.src.modules.telegram.schemas import TelegramData
 
 settings = get_settings()
 
@@ -86,7 +85,7 @@ class UserRepository(AuthModule):
         user.channels.remove(channel)
         await self._session.commit()
 
-    async def set_telegram_data(self, user: User, tg_data: TelegramData):
+    async def set_telegram_data(self, user: User, tg_data):
         user.telegram_id = tg_data.telegram_id
         user.telegram_username = tg_data.telegram_username
         user.telegram_firstname = tg_data.telegram_firstname

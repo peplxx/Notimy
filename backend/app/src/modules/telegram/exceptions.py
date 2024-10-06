@@ -1,5 +1,6 @@
 __all__ = ["UserNotFound", "JWTIsInvalid", "TelegramUserAlreadyConnected"]
 
+from pydantic import BaseModel
 from starlette import status
 
 from app.src.common.exceptions import CustomHTTPException
@@ -13,7 +14,7 @@ class UserNotFound(CustomHTTPException):
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=self.responses[self.status_code]["description"],
+            detail=self.responses[404]["description"],
         )
 
     responses = {404: {"description": "User not found!"}}
@@ -27,21 +28,9 @@ class JWTIsInvalid(CustomHTTPException):
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=self.responses[self.status_code]["description"],
+            detail=self.responses[403]["description"],
         )
 
     responses = {403: {"description": "Something is wrong with token!"}}
 
 
-class TelegramUserAlreadyConnected(CustomHTTPException):
-    """
-    HTTP_400_BAD_REQUEST
-    """
-
-    def __init__(self):
-        super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=self.responses[self.status_code]["description"],
-        )
-
-    responses = {400: {"description": "Telegram user is already connected it's account!"}}

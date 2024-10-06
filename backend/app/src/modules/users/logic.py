@@ -18,6 +18,7 @@ from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribe
 
 settings = get_settings()
 
+
 async def find_service_user(
         session: AsyncSession,
         token: str,
@@ -91,6 +92,7 @@ async def login_user(session: AsyncSession, request: Request, token: str | None)
 
     return session_token, login_type, user
 
+
 def check_telegram_data(data):
     try:
         # Decode the JWT token
@@ -99,6 +101,7 @@ def check_telegram_data(data):
         return tg_data
     except JWTError:
         return False
+
 
 async def set_session_token(response: Response, session_token: str):
     response.set_cookie(key="session_token", value=session_token,
