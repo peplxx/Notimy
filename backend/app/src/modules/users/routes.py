@@ -88,7 +88,8 @@ async def get_channel_info(
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
 ) -> UserChannel:
-    if channel_id not in user.channels:
+    user_channels = await user.channels_list
+    if channel_id not in user_channels:
         raise NotSubscribedOrChannelDoesntExist()
     channel_data: ChannelData = await ChannelData.by_id(session, channel_id)
     return await UserChannel.by_data(channel_data)

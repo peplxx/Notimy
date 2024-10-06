@@ -3,9 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.data.db.connection import get_session
-from app.data.db.models import Spot
+from app.data.db.models import Spot, Channel, Message
 from app.src.common.dtos import SpotData, ChannelData
+from app.src.common.events import NewMessageEvent
+from app.src.common.events.channel_events import ChannelClosedEvent
 from app.src.limiter import limiter
+from app.src.middleware.push_notifications import PushNotification, send_notification
 from app.src.middleware.token_auth import spot_auth, subscribed_spot
 from app.src.modules.spots.exceptions import WrongAliasName, AliasAlreadyExist, InvalidChannelLink, ChannelIsNotFound
 from app.src.modules.spots.logic import create_channel, change_alias, add_message, close_channel_by_id
@@ -67,7 +70,8 @@ async def add_message_to_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(subscribed_spot)
 ) -> ChannelData:
-    channel = await add_message(session, spot, message=data.message, channel_id=data.channel_id)
+    channel = await Channel.find_by_id(session, data.channel_id)
+    await NewMessageEvent(message=data.message, source=channel, session=session).process()
     return await ChannelData.by_model(session, channel)
 
 
@@ -84,5 +88,6 @@ async def close_channel(
         session: AsyncSession = Depends(get_session),
         spot: Spot = Depends(spot_auth)
 ) -> ChannelData:
-    channel = await close_channel_by_id(session, spot, channel_id=data.channel_id)
+    channel = await Channel.find_by_id(session, data.channel_id)
+    await ChannelClosedEvent(source=channel, session=session).process()
     return await ChannelData.by_model(session, channel)
