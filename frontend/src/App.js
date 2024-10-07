@@ -54,7 +54,7 @@ const ProtectedRoute = ({ visitingForAdmin, children }) => {
     }
     console.log(`isAdmin ${isAdmin}, vForAdmin ${visitingForAdmin}, isIOS ${isIOS}`)
     console.log(`https://t.me/NotimyAppBot?start=uuid=${me['id']}`)
-    if (!isAdmin && !visitingForAdmin && !isIOS) {
+    if (!isAdmin && !visitingForAdmin && isIOS) {
         console.log('Redirecting to external link for iOS with me=', me);
         window.location.href = `https://t.me/NotimyAppBot?start=uuid=${me['id']}`; // Редирект на внешнюю ссылку
         return null;
