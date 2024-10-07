@@ -36,10 +36,10 @@ const Home = () => {
                 if (permission === 'granted') {
                     // toast.success('Разрешение на уведомления предоставлено', {duration: 2000});
                 } else {
-                    toast.error('Разрешите отправку уведомлений', { duration: 2000 });
+                    // toast.error('Разрешите отправку уведомлений', { duration: 2000 });
                 }
             } catch (e) {
-                toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
+                // toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
             }
 
             try {
@@ -49,7 +49,7 @@ const Home = () => {
                         scope: '/app'
                     });
                 } catch (e) {
-                    toast.error("Пожалуйста, добавьте приложение на главный экран", { duration: 2000 });
+                    // toast.error("Пожалуйста, добавьте приложение на главный экран", { duration: 2000 });
                 }
 
                 await sleep(1000);
@@ -61,14 +61,14 @@ const Home = () => {
                         applicationServerKey: convertedVapidKey
                     });
                 } catch (e) {
-                    toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
+                    // toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
                 }
 
                 // toast.success('Подписка выполнена', { duration: 2000 });
 
                 await sendSubscriptionToServer(subscription);
             } catch (e) {
-                toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
+                // toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
             }
         };
 
