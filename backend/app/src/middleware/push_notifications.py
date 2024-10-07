@@ -28,7 +28,6 @@ class PushSubscription(BaseModel):
     keys: SubscriptionKeys
 
 
-
 def generate_vapid_keypair():
     """
   Generate a new set of encoded key-pair for VAPID
@@ -74,9 +73,10 @@ async def send_notification(user: User, push_data: PushNotification):
         print("Error while send push notification: ", repr(ex))
         raise HTTPException(status_code=500, detail=str(ex))
 
+
 async def notify(user: User, push_data: PushNotification):
     if user.telegram_id:
-        await send_telegram_message(chat_id=user.telegram_id, push_data=push_data)
+        await send_telegram_message(user, push_data=push_data)
         # do telegram push
         pass
     elif user.can_get_push:

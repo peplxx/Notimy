@@ -13,7 +13,7 @@ event_type = "ChannelClosedEvent"
 
 class ChannelClosedEvent(ChannelEvent):
     event_type: str = ChannelEvent._event_type(event_type)
-    pushNotification: PushNotification = DefaultPushNotification(title="Заказ готов!",
+    pushNotification: PushNotification = DefaultPushNotification(title="Изменился статус заказа!",
                                                                  body="Ваш заказ готов!\nПриятного аппетита!😋")
 
     def __init__(self, source: Channel, session: AsyncSession) -> None:
