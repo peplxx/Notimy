@@ -27,7 +27,7 @@ settings = get_settings()
 
 @router.get("/login")
 @router.post("/login")
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def login(
         request: Request,
         next: Optional[str] = Query(None),
@@ -54,7 +54,7 @@ async def login(
     responses={}
 )
 @router.post('/me')
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def get_self(
         request: Request,
         session: AsyncSession = Depends(get_session),
@@ -66,7 +66,7 @@ async def get_self(
 
 
 @router.get("/logout")
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def logout(
         request: Request
 ):
@@ -83,7 +83,7 @@ async def logout(
         **NotSubscribedOrChannelDoesntExist.responses
     }
 )
-@limiter.limit("5/second")
+@limiter.limit("10/second")
 async def get_channel_info(
         request: Request,
         channel_id: UUID,
