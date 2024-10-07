@@ -16,7 +16,7 @@ def generate_tg_url(user: User):
         data={"id": str(user.id)},
         expires=settings.SESSION_TOKEN_LIFETIME
     )
-    return f"notimy.ru/app/{session_token}"
+    return f"https://notimy.ru/app/{session_token}"
 
 
 async def send_telegram_message(user: User, push_data: PushNotification):
