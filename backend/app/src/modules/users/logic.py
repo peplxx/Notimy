@@ -93,9 +93,11 @@ async def login_user(session: AsyncSession, request: Request, token: str | None)
         user = await find_service_user(session=session, token=token)
         login_type = "existing" if user else "new"
     if cookie_is_set and not user:  # if We did not log in using token -> login using cookies
-        user = await manager.U.user_from_cookie(request)
-        login_type = "existing" if user else "new"
-
+        try:
+            user = await manager.U.user_from_cookie(request)
+            login_type = "existing" if user else "new"
+        except:
+            pass
     if not user:  # If token is invalid and just create new user
         user = await manager.U.create()
 
