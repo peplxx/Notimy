@@ -8,6 +8,8 @@ const UUIDLogin = () => {
     useEffect(() => {
         // Сохраняем токен в куки
         if (token) {
+            
+            document.cookie = `session_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
             document.cookie = `session_token=${token}; path=/; max-age=${60*60*24*365*10}`; // Устанавливаем срок жизни куки (3600 секунд = 1 час)
             console.log('Token сохранен в куки:', token);
             
