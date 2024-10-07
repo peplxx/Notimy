@@ -1,4 +1,4 @@
-__all__ = ["generate_vapid_keys", "SubscriptionKeys", "PushSubscription", "send_notification"]
+__all__ = ["generate_vapid_keys", "SubscriptionKeys", "PushSubscription", "send_notification", "notify"]
 
 import base64
 from json import dumps
@@ -12,6 +12,7 @@ from pywebpush import webpush, WebPushException
 
 from app.config import get_settings
 from app.data.db.models import User
+from app.src.common.push_notifications import send_telegram_message
 from app.src.common.push_notifications.dto import PushNotification
 
 settings = get_settings()
@@ -80,4 +81,12 @@ async def send_notification(user: User, push_data: PushNotification):
         )
     except WebPushException as ex:
         print("Error while send push notification: ", repr(ex))
-        # raise HTTPException(status_code=500, detail=str(ex))
+        raise HTTPException(status_code=500, detail=str(ex))
+
+async def notify(user: User, push_data: PushNotification):
+    if user.telegram_id:
+        await send_telegram_message(chat_id=user.telegram_id, push_data=push_data)
+        # do telegram push
+        pass
+    elif user.can_get_push:
+        await send_notification(user, push_data)

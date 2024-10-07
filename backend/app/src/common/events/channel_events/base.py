@@ -2,7 +2,7 @@ from abc import ABC
 
 from app.data.db.models import Channel
 from app.src.common.events.base import Event
-from app.src.middleware.push_notifications import send_notification
+from app.src.middleware.push_notifications import notify
 
 
 class ChannelEvent(Event, ABC):
@@ -15,7 +15,7 @@ class ChannelEvent(Event, ABC):
     async def after_invoke(self):
         # Send notifications after success invoke
         for user in (await self.source.listeners_list):
-            await user.notify(self.pushNotification)
+            await notify(user, self.pushNotification)
 
     async def before_invoke(self):
         pass
