@@ -33,10 +33,8 @@ const useAuth = () => {
     }, []);
 
     useEffect(()=>{
-        console.log("in effetc", me);
         setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream);
         
-        console.log("IOS", isIOS);
     }, [me])
 
 
@@ -63,7 +61,7 @@ const ProtectedRoute = ({ visitingForAdmin, children }) => {
     console.log(`isAdmin ${isAdmin}, vForAdmin ${visitingForAdmin}, isIOS ${isIOS}`)
     if (!isAdmin && !visitingForAdmin && isIOS) {
         console.log('Redirecting to external link for iOS');
-        window.location.href = `https://t.me/NotimyAppBot?start=uuid=${me['uuid']}`; // Редирект на внешнюю ссылку
+        window.location.href = `https://t.me/NotimyAppBot?start=uuid=${me['id']}`; // Редирект на внешнюю ссылку
         return null;
     }
 
