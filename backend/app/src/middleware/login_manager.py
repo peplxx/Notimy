@@ -49,7 +49,7 @@ async def load_user(
     user_id = await get_current_user_id(session_token)
     if not user_id:
         return None
-    result = await User.find_by_id(session,user_id)
+    result = await User.find_by_id(session, user_id)
     return result
 
 

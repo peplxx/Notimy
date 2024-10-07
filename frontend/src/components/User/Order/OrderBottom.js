@@ -21,7 +21,7 @@ const OrderBottom = () => {
         >
             <MessagesList messages={order.messages_data} order={order} isOpen={isOpen}  />
             <div className={styles.datetime}>{formatDate(order.created_at)}</div>
-            <div className={styles.code}>код заказа: {order.code}</div>
+            <div className={styles.code}>{order.provider_name}</div> 
             <div className={styles.toggleBtn}>...</div>
         </div>
     );

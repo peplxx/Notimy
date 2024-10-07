@@ -15,8 +15,14 @@ from app.data.db.utils.encoders import UUIDEncoder
 class User(Base, IndexedObject):
     __tablename__ = 'users'
 
+    # Telegram data
+    telegram_id = sa.Column(sa.INTEGER, nullable=True, index=True)
+    telegram_username = sa.Column(sa.String(255), nullable=True, index=True)
+    telegram_firstname = sa.Column(sa.String(255), nullable=True)
+    telegram_lastname = sa.Column(sa.String(255), nullable=True)
+
     registered_at = sa.Column(sa.TIMESTAMP, nullable=False, default=now)
-    role = sa.Column(sa.String, nullable=False, default=Roles.default.value)
+    role = sa.Column(sa.String(255), nullable=False, default=Roles.default.value)
     data = sa.Column(sa.String, nullable=False, default='{}')
 
     channels = relationship('Channel', secondary=users_channels_association, back_populates='listeners',
@@ -40,3 +46,5 @@ class User(Base, IndexedObject):
     @property
     def can_get_push(self):
         return self.push_data and self.is_default
+
+

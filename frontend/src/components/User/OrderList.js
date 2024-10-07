@@ -17,8 +17,6 @@ const OrderList = ({children}) => {
         const currentReadyOrderCount = orders.filter(order => !order.open).length;
 
         // Если текущее количество готовых заказов больше предыдущего, воспроизвести звук
-        console.log('current', currentReadyOrderCount)
-        console.log('readyOrderCount', readyOrderCount)
         if (currentReadyOrderCount > readyOrderCount) {
             console.log('done')
             const audio = new Audio('/ready.mp3');
