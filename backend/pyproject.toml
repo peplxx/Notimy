@@ -22,6 +22,7 @@ slowapi = "^0.1.9"
 py-vapid = "^1.9.1"
 pywebpush = "^2.0.0"
 python-depends = "^0.1.4"
+python-telegram-bot = "^21.6"
 
 
 [tool.poetry.group.test.dependencies]

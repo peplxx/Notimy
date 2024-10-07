@@ -15,7 +15,7 @@ class ChannelEvent(Event, ABC):
     async def after_invoke(self):
         # Send notifications after success invoke
         for user in (await self.source.listeners_list):
-            await send_notification(user, self.pushNotification)
+            await user.notify(self.pushNotification)
 
     async def before_invoke(self):
         pass
