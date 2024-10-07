@@ -13,6 +13,7 @@ from app.data.db.models import Provider
 from app.data.db.models import User, Spot, Channel
 from app.data.db.repositories import RepositoriesManager
 from app.src.common.exceptions import InvalidInvitationLink
+from app.src.middleware.login_manager import NotAuthenticatedException
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
 
@@ -96,7 +97,7 @@ async def login_user(session: AsyncSession, request: Request, token: str | None)
         try:
             user = await manager.U.user_from_cookie(request)
             login_type = "existing" if user else "new"
-        except:
+        except Exception as e:
             pass
     if not user:  # If token is invalid and just create new user
         user = await manager.U.create()
