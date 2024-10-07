@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {joinChannelSpot} from "../utils/api";
+import {joinChannel} from "../utils/api";
 
 const JoinChannel = () => {
     const {id} = useParams();
@@ -9,7 +9,7 @@ const JoinChannel = () => {
     useEffect(() => {
         const joinAndNavigate = async () => {
             try {
-                await joinChannelSpot(id);
+                await joinChannel(id);
                 navigate('/app'); // Redirect after joining the channel
             } catch (error) {
                 console.error("Failed to join channel", error);
