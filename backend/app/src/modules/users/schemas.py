@@ -36,7 +36,7 @@ class UserResponse(BaseModel):
     id: UUID
     registered_at: datetime
     role: str
-    tg: bool
+    tg: Optional[bool]
 
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list] = []
@@ -54,6 +54,7 @@ class UserResponse(BaseModel):
             registered_at=user_data.registered_at,
             role=user_data.role,
             channels_ids=user_data.channels_ids,
+            tg=user_data.tg,
         )
         channels_data = []
         for channel_data in user_data.channels_data:
