@@ -65,6 +65,7 @@ class UserData(BaseModel):
     registered_at: datetime.datetime
     role: str
 
+    tg: Optional[bool] = False
     provider_name: Optional[str] = ''
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list[ChannelData]] = []
@@ -92,6 +93,7 @@ class UserData(BaseModel):
             result.provider_name = provider.name
         result.channels_ids = ids
         result.channels_data = data
+        result.tg = bool(user.telegram_id is not None)
         return result
 
 
