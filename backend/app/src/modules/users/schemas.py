@@ -36,6 +36,7 @@ class UserResponse(BaseModel):
     id: UUID
     registered_at: datetime
     role: str
+    tg: bool
 
     channels_ids: Optional[list[UUID]] = []
     channels_data: Optional[list] = []
