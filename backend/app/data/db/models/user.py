@@ -10,6 +10,9 @@ from app.data.db.models.assotiations import users_channels_association
 from app.data.db.models.mixins.index import IndexedObject
 from app.data.db.utils import get_now as now
 from app.data.db.utils.encoders import UUIDEncoder
+from app.src.common.push_notifications.dto import PushNotification
+from app.src.common.telegram_api.send_message import send_telegram_message
+from app.src.middleware.push_notifications import send_notification
 
 
 class User(Base, IndexedObject):
@@ -46,3 +49,11 @@ class User(Base, IndexedObject):
     @property
     def can_get_push(self):
         return self.push_data and self.is_default
+
+    async def notify(self, push_data: PushNotification):
+        if self.telegram_id:
+            await send_telegram_message(chat_id=self.telegram_id, push_data=push_data)
+            # do telegram push
+            pass
+        elif self.can_get_push:
+            await send_notification(self, push_data)

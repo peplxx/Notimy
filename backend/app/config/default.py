@@ -50,6 +50,7 @@ class DefaultSettings(BaseSettings):
     SESSION_TOKEN_LIFETIME: timedelta = timedelta(weeks=3600)
 
     ROOT_TOKEN: str = environ.get("ROOT_TOKEN", "gUg8iTYWxbGQPFZJc0c7CS5RZQ9MVXawYHJ9WESUMeERNW2YmX")
+    BOT_TOKEN: str = environ.get("BOT_TOKEN", False)
 
     VAPID_PUBLIC_KEY: str = environ.get("VAPID_PUBLIC_KEY", "")
     VAPID_PRIVATE_KEY: str = environ.get("VAPID_PRIVATE_KEY", "")
