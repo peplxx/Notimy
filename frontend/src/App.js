@@ -21,6 +21,7 @@ const useAuth = () => {
             try {
                 const get_me = await getMe(); // Запрос данных пользователя
                 setMe(get_me);
+                setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream);
                 setIsAdmin(get_me['role'] === 'spot_user'); // Устанавливаем значение isAdmin
             } catch (error) {
                 console.error('Ошибка при получении данных пользователя:', error);
@@ -31,13 +32,6 @@ const useAuth = () => {
         };
         fetchUser();
     }, []);
-
-    useEffect(()=>{
-        setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream);
-        
-    }, [me])
-
-
 
     return {isAdmin, loading, isIOS, me};
 };
@@ -59,8 +53,9 @@ const ProtectedRoute = ({ visitingForAdmin, children }) => {
         return <Navigate to="/app/admin" />
     }
     console.log(`isAdmin ${isAdmin}, vForAdmin ${visitingForAdmin}, isIOS ${isIOS}`)
+    console.log(`https://t.me/NotimyAppBot?start=uuid=${me['id']}`)
     if (!isAdmin && !visitingForAdmin && isIOS) {
-        console.log('Redirecting to external link for iOS');
+        console.log('Redirecting to external link for iOS with me=', me);
         window.location.href = `https://t.me/NotimyAppBot?start=uuid=${me['id']}`; // Редирект на внешнюю ссылку
         return null;
     }
