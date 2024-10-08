@@ -1,9 +1,11 @@
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 from fastapi import Request
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 from starlette.responses import JSONResponse, RedirectResponse
 
 from app.config import get_settings
@@ -15,7 +17,8 @@ from app.src.limiter import limiter
 from app.src.middleware.login_manager import current_user
 from app.src.modules.users.exceptions import SpotDoestHaveChannels, NotSubscribedOrChannelDoesntExist, \
     SystemUsersJoinRestrict
-from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user
+from app.src.modules.users.logic import join_channel_by_alias, forget_channel_by_id, login_user, set_session_token, \
+    get_session_token, check_telegram_data, join_channel_by_channel_id
 from app.src.modules.users.schemas import UserResponse, UserChannel
 
 router = APIRouter(prefix='', tags=['Users'])
@@ -24,7 +27,7 @@ settings = get_settings()
 
 @router.get("/login")
 @router.post("/login")
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def login(
         request: Request,
         next: Optional[str] = Query(None),
@@ -42,9 +45,7 @@ async def login(
             "session_token": session_token,
             "token_type": "bearer"
         })
-    response.set_cookie(key="session_token", value=session_token,
-                        samesite="none", secure=True,
-                        domain=settings.cookie_domain, max_age=int(settings.SESSION_TOKEN_LIFETIME.total_seconds()))
+    await set_session_token(response, session_token)
     return response
 
 
@@ -53,18 +54,19 @@ async def login(
     responses={}
 )
 @router.post('/me')
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def get_self(
         request: Request,
         session: AsyncSession = Depends(get_session),
         user: Optional[User] = Depends(current_user)
-) :
+):
     if user.is_default:
         return await UserResponse.by_model(session, user)
     return await UserData.by_model(session, user)
 
+
 @router.get("/logout")
-@limiter.limit("3/second")
+@limiter.limit("10/second")
 async def logout(
         request: Request
 ):
@@ -81,7 +83,7 @@ async def logout(
         **NotSubscribedOrChannelDoesntExist.responses
     }
 )
-@limiter.limit("5/second")
+@limiter.limit("10/second")
 async def get_channel_info(
         request: Request,
         channel_id: UUID,
@@ -128,4 +130,22 @@ async def forget_channel(
         user: Optional[User] = Depends(current_user)
 ) -> UserResponse:
     await forget_channel_by_id(session, user, channel_id)
+    return await UserResponse.by_model(session, user)
+
+
+@router.post(
+    "/join/channel/{channel_id}",
+    responses={
+        **exceptions.InvalidInvitationLink.responses,
+        **SystemUsersJoinRestrict.responses,
+    }
+)
+@limiter.limit("10/second")
+async def join_channel_by_id(
+        request: Request,
+        channel_id: UUID,
+        session: AsyncSession = Depends(get_session),
+        user: Optional[User] = Depends(current_user)
+) -> UserResponse:
+    await join_channel_by_channel_id(session, user, channel_id)
     return await UserResponse.by_model(session, user)

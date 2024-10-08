@@ -24,3 +24,8 @@ class PushNotification(BaseModel):
     actions: Optional[List[Action]] = Field(None, description="List of actions associated with the notification")
     data: Optional[NotificationData] = Field(None, description="Additional data related to the notification")
     url: Optional[str] = Field(None, description="URL associated with the notification")
+
+    @property
+    def to_telegram_msg(self):
+        return (f"<b>{self.title}</b>\n"
+                f"{self.body}")
