@@ -2,9 +2,7 @@ import styles from "./OrderBottom.module.css";
 import React, {useContext} from "react";
 import AdminOrderContext from "context/AdminOrderContext";
 
-export const InputMessage = ({inputRef}) => {
-
-    const {newMessage, setNewMessage, sendMessage} = useContext(AdminOrderContext);
+export const InputMessage = ({newMessage, setNewMessage, sendMessage, inputRef}) => {
 
     const send = () => {
         sendMessage(newMessage);
@@ -19,6 +17,7 @@ export const InputMessage = ({inputRef}) => {
 
     return (
         <div className={styles.inputMessage}>
+
             <input
                 ref={inputRef}
                 className={styles.messageInput}

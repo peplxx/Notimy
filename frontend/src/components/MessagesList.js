@@ -3,16 +3,17 @@ import {useEffect, useRef} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import classNames from "classnames";
 
-const MessagesList = ({messages, isOpen, order, bottom=0  ,children}) => {
+const MessagesList = ({messages, isOpen, order_id, bottom=0 , children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
-    console.log(`messages = ${messages}`);
+
+    // Для Анимации выезда сообщений
     useEffect(() => {
         if (isOpen) {
             messages.forEach((message, index) => {
                 setTimeout(() => {
-                    const messageElement = document.getElementById(`order-${order.id}-message-${index}`);
+                    const messageElement = document.getElementById(`order-${order_id}-message-${index}`);
                     if (messageElement) {
                         messageElement.classList.remove(styles.disappear);
                         messageElement.classList.add(styles.appear);
@@ -22,7 +23,7 @@ const MessagesList = ({messages, isOpen, order, bottom=0  ,children}) => {
         } else if (!isOpen) {
             messages.forEach((message, index) => {
                 setTimeout(() => {
-                    const messageElement = document.getElementById(`order-${order.id}-message-${index}`);
+                    const messageElement = document.getElementById(`order-${order_id}-message-${index}`);
                     if (messageElement) {
                         messageElement.classList.remove(styles.appear);
                         messageElement.classList.add(styles.disappear);
@@ -37,7 +38,7 @@ const MessagesList = ({messages, isOpen, order, bottom=0  ,children}) => {
             {messages.map((message, index) => (
                 <div
                     key={index}
-                    id={`order-${order.id}-message-${index}`}
+                    id={`order-${order_id}-message-${index}`}
                     className={classNames(styles.message, styles.disappear)}
                 >
                     {message.text}

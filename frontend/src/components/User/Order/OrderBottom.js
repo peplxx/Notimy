@@ -19,7 +19,7 @@ const OrderBottom = () => {
                 transition: 'box-shadow .5s ease-in-out'
             }}
         >
-            <MessagesList messages={order.messages_data} order={order} isOpen={isOpen}  />
+            <MessagesList messages={order.messages_data} order_id={order.id} isOpen={isOpen}  />
             <div className={styles.datetime}>{formatDate(order.created_at)}</div>
             <div className={styles.code}>{order.provider_name}</div> 
             <div className={styles.toggleBtn}>...</div>

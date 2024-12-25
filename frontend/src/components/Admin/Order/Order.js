@@ -6,12 +6,15 @@ import AdminOrderContext from "context/AdminOrderContext";
 
 import styles from './Order.module.css';
 import OrderContext from "../../../context/OrderContext";
+import {sendMessageAdmin} from "../../../utils/api";
+import {formatDate} from "../../../utils/formatDate";
 
 const Order = ({order}) => {
-    const {isOpen} = useState(false);
-    const {isDeleting} = useState(false);
-    const {setIsQrOpen} = useState(false);
-    const {isQrOpen} = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSideOpen, setIsSideOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isQrOpen, setIsQrOpen] = useState(false);
+    const [qrCode, setQrCode] = useState("");
 
     return (
         <div className={
@@ -21,27 +24,28 @@ const Order = ({order}) => {
                 isDeleting ? styles.orderShaking : null
             )}
         >
-
             <OrderTop order={order}
-            backgroundStyles={{}}
-            isReady={false}
-            isSideOpen={false}
-            setIsSideOpen={false}
-            setIsOpen={false}
-            isOpen={false}
-            isQrOpen={false}
-            setIsQrOpen={false}
-            deleteOrder={false}
+                      backgroundStyles={{backgroundColor:'red'}}
+                      isReady={false}
+                      isSideOpen={isSideOpen}
+                      setIsSideOpen={setIsSideOpen}
+                      setIsOpen={setIsOpen}
+                      isOpen={isOpen}
+                      deleteOrder={() => {
+                      }}
                       closeOrder={0}
-                      setQrCode={0}/>
+
+                      isQrOpen={isQrOpen} // TODO fix qr code open
+                      setIsQrOpen={setIsQrOpen}
+                      setQrCode={setQrCode}
+            />
             <OrderBottom
-                order={order}
+                order_id={order.id}
+                messages_data={order.messages_data}
+                creatated_at={formatDate(order.created_at)}
                 backgroundStyles={0}
-                isOpen={0}
-                sendMessage={0}
-                sendMessageApi={0}
-                newMessage={0}
-                setNewMessage={0}
+                isOpen={isOpen}
+                sendMessage={sendMessageAdmin} // TODO fix this func
             />
         </div>
     );

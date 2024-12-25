@@ -1,88 +1,60 @@
-import React, {useContext, useRef, useState} from "react";
-import classNames from "classnames";
+import React, {useRef, useState} from "react";
+import {styled} from "styled-components";
+
 import MessagesList from "components//MessagesList";
-import AdminOrderContext from "context/AdminOrderContext";
-import styles from './OrderBottom.module.css';
 import {InputMessage} from "./InputMessage";
-import AdminContext from "context/AdminContext";
 import {formatDate} from "utils/formatDate";
+import {QuickMessages} from "../../QuickMessages";
 
-// Predefined quick messages
-const QUICK_MESSAGES = [
-    "Ваш заказ готов!",
-    "Ваш заказ принят!",
-    "Ваш заказ будет готов через  мин.",
-    "Ваш заказ задерживается на  мин."
-];
+import styles from './OrderBottom.module.css';
 
-const OrderBottom = ({order, backgroundStyles, isOpen, sendMessage, sendMessageApi, newMessage, setNewMessage}) => {
-    const [showQuickMessages, setShowQuickMessages] = useState(false);
-    const inputRef = useRef(null); // Добавляем реф для инпута
+const OrderBottomStyled = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2ecc71;
+    border-radius: inherit;
+    z-index: -10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    box-shadow: ${(props) => (props.isOpen ? 'inset 0 0 10em rgba(0, 0, 0, 0.3)' : 'none')};
+    transition: box-shadow 0.5s ease-in-out;
+    ${(props) => props.backgroundStyles};
+`;
 
-    const toggleQuickMessages = () => {
-        setShowQuickMessages(!showQuickMessages);
-    };
 
-    const onQuickMessageClick = (message) => {
-        const position = message.indexOf(" мин.");
+const OrderBottom = ({order_id, messages_data, creatated_at, backgroundStyles, isOpen, sendMessage}) => {
+    // Компнент нижней части заказа
+    // Получает на вход props:
+    //  - айди заказа
+    //  - Список сообещний
+    //  - Стили для цвета
+    //  - Состояние открыт или закрыт
+    //  - Функцию отправки сообщения
+    //  - Дату создания заказа
+    // Содержит:
+    //  - список сообщений заказ
+    //  - Инпут для сообщения, кнопку отрпавить, заготовленные сообщение
 
-        if (position !== -1) {
-            // Если в сообщении есть фраза "...на ", добавляем текст и устанавливаем курсор
-            setNewMessage(`${message}`);
+    const [newMessage, setNewMessage] = useState("");
+    // Добавляем референс для инпута
+    const inputRef = useRef(null);
 
-            // Для установки курсора после текста "...на ":
-            setTimeout(() => {
-                const cursorPosition = position;
-                inputRef.current.focus();
-                inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
-            }, 0);
-        } else {
-            // Для остальных сообщений просто добавляем их в инпут
-            setNewMessage(message);
-        }
 
-        toggleQuickMessages();
-    };
-
-    console.log(`messages = ${order.messages_data}`);
     return (
+        <OrderBottomStyled isOpen={isOpen} backgroundStyles={backgroundStyles} >
+            <MessagesList messages={messages_data} isOpen={isOpen} order_id={order_id} bottom="1.1em"/>
 
-        <div
-            className={classNames(styles.bottom)}
-            style={{
-                ...backgroundStyles,
-                boxShadow: !isOpen ? 'inset 0 0 10em rgba(0, 0, 0, 0.3)' : 'none',
-                transition: 'box-shadow .5s ease-in-out'
-            }}
-        >
-            <MessagesList messages={order.messages_data} isOpen={isOpen} order={order} bottom="1.1em"/>
+            <QuickMessages setNewMessage={setNewMessage} inputRef={inputRef}/>
+            <InputMessage newMessage={newMessage} setNewMessage={setNewMessage} sendMessage={sendMessage} inputRef={inputRef} />
 
-            {/* Toggle button for quick messages */}
-            <div className={styles.toggleQuickMessages} onClick={toggleQuickMessages}>
-                <img src='/svg/Group.svg' style={{width: ".8em", position: "absolute", top: ".8em", left: ".4em"}}/>
-            </div>
-
-            {/* Quick messages popup */}
-            {showQuickMessages && (
-                <div className={styles.quickMessagesPopup}>
-                    {QUICK_MESSAGES.map((quickMessage, index) => (
-                        <div
-                            key={index}
-                            className={styles.quickMessage}
-                            onClick={() => onQuickMessageClick(quickMessage)}
-                        >
-                            {quickMessage}
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {/* Добавляем реф к компоненту InputMessage */}
-            <InputMessage inputRef={inputRef} />
-            <div className={styles.datetime}>{formatDate(order.created_at)}</div>
+            <div className={styles.datetime}>{creatated_at}</div>
             <div className={styles.toggleBtn}>...</div>
-            {/* <div className={styles.code}>код заказа: {order.code}</div> */}
-        </div>
+             {/*<div className={styles.code}>код заказа: {order.code}</div>*/}
+        </OrderBottomStyled>
     );
 };
 
