@@ -7,7 +7,7 @@ import {Toaster} from "sonner";
 import {registerServiceWorkerAndSubscribe} from "../utils/serviceWorker";
 
 
-const Home = () => {
+const UserApp = ({orders}) => {
 
     useEffect(() => {
         registerServiceWorkerAndSubscribe();
@@ -17,13 +17,11 @@ const Home = () => {
         <div>
             <Toaster/>
             <Header/>
-            <UserProvider>
-                <OrderList>
-                    <ScanBtn/>
-                </OrderList>
-            </UserProvider>
+            <OrderList orders={orders}>
+                <ScanBtn/>
+            </OrderList>
         </div>
     );
 };
 
-export default Home;
+export default UserApp;

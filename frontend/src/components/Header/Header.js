@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import styles from './Header.module.css';
 import {Link, redirect} from "react-router-dom";
-
 
 
 // Стили для картинки и оверлея
@@ -29,21 +28,21 @@ const hint_styles = {
 
 
 const Header = ({withLogo = true, children}) => {
-    // const [showImage, setShowImage] = useState(false); // Стейт для показа/скрытия картинки
+    const [showImage, setShowImage] = useState(false); // Стейт для показа/скрытия картинки
 
-    // const handleImageClick = () => {
-    //     setShowImage(false); // Скрываем изображение при клике
-    // };
+    const handleImageClick = () => {
+        setShowImage(false); // Скрываем изображение при клике
+    };
 
     return (
-        
-            <div className={styles.header} >
-                {withLogo ?
-                    <>
-                    <Link to={'https://t.me/notimy_app'} >
+
+        <div className={styles.header}>
+            {withLogo ?
+                <>
+                    <Link to={'https://t.me/notimy_app'}>
                         <img src='/logo.svg' alt='logo' className={styles.logo}></img>
                     </Link>
-                    <Link to={'https://t.me/notimy_app'} >
+                    <Link to={'https://t.me/notimy_app'}>
                         <div className={styles.text}>
                             <a>OTIMY</a>
                         </div>
@@ -51,14 +50,14 @@ const Header = ({withLogo = true, children}) => {
                     {/* <div className={styles.hint} onClick={()=>{setShowImage(false)}}>
                             !
                         </div> */}
-                    </>
-                    :
-                    <img src='/logo.svg' alt='logo' className={styles.logo}
-                         style={{position: "absolute", left: "1em"}}/>
-                }
-                {children}
+                </>
+                :
+                <img src='/logo.svg' alt='logo' className={styles.logo}
+                     style={{position: "absolute", left: "1em"}}/>
+            }
+            {children}
 
-                {/* {showImage && (
+            {/* {showImage && (
                     <div style={hint_styles.overlay} onClick={handleImageClick}>
                         <img
                             src="/pwa_hint.png" // Замени на свою картинку
@@ -67,7 +66,7 @@ const Header = ({withLogo = true, children}) => {
                         />
                     </div>
                 )} */}
-            </div>
+        </div>
     )
 };
 

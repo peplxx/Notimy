@@ -6,17 +6,14 @@ import {AdminOrderProvider} from "context/AdminOrderContext";
 import styles from './OrderList.module.css';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 
-const OrderList = ({children}) => {
-    const {orders} = useContext(AdminContext);
+const OrderList = ({orders, children}) => {
     const [parent] = useAutoAnimate()
-
+    console.log(orders);
     return (
         <div className={styles.order_list} ref={parent}>
             {children}
             {orders.map(order => (
-                <AdminOrderProvider key={`OrderProvider${order.id}`} InitOrder={order}>
-                    <Order key={`Order${order.id}`}/>
-                </AdminOrderProvider>
+                <Order key={`Order${order.id}`} order={order} />
             ))}
         </div>
     );

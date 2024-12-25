@@ -15,10 +15,7 @@ const QUICK_MESSAGES = [
     "Ваш заказ задерживается на  мин."
 ];
 
-const OrderBottom = () => {
-    const {order, backgroundStyles, isOpen} = useContext(AdminOrderContext);
-    const {sendMessage: sendMessageApi} = useContext(AdminContext);
-    const {newMessage, setNewMessage, sendMessage} = useContext(AdminOrderContext);
+const OrderBottom = ({order, backgroundStyles, isOpen, sendMessage, sendMessageApi, newMessage, setNewMessage}) => {
     const [showQuickMessages, setShowQuickMessages] = useState(false);
     const inputRef = useRef(null); // Добавляем реф для инпута
 
@@ -47,6 +44,7 @@ const OrderBottom = () => {
         toggleQuickMessages();
     };
 
+    console.log(`messages = ${order.messages_data}`);
     return (
 
         <div

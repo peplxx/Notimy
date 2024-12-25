@@ -12,6 +12,7 @@ export const useAuth = () => {
         const fetchUser = async () => {
             try {
                 const get_me = await getMe(); // Запрос данных пользователя
+                console.log(get_me);
                 setMe(get_me);
                 setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream);
                 setIsAdmin(get_me['role'] === 'spot_user'); // Устанавливаем значение isAdmin

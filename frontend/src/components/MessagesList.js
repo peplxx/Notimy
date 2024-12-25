@@ -7,7 +7,7 @@ const MessagesList = ({messages, isOpen, order, bottom=0  ,children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
-
+    console.log(`messages = ${messages}`);
     useEffect(() => {
         if (isOpen) {
             messages.forEach((message, index) => {
