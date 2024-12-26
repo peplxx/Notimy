@@ -1,11 +1,9 @@
-import React, {useContext} from 'react';
-import OrderList from 'components/Admin/OrderList';
-import Header from "components/Header/Header";
-import AdminContext, {AdminProvider} from "context/AdminContext";
+import React from 'react';
+import OrderList from 'components/OrderList';
+import Header from "components/Header";
 import AdminAddBtn from "components/Admin/AdminAddBtn";
 
 const AdminApp = ({orders}) => {
-    console.log(orders);
     return (
         <div>
             <Header withLogo={false}>
@@ -17,7 +15,7 @@ const AdminApp = ({orders}) => {
                 }}>
                 </h1>
             </Header>
-            <OrderList orders={orders}>
+            <OrderList orders={orders} admin={true}>
                 <AdminAddBtn/>
             </OrderList>
         </div>

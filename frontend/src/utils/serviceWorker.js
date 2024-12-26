@@ -1,6 +1,5 @@
-// Публичный VAPID ключ (замените на ваш ключ)
 import sleep from "./sleep";
-import {sendSubscriptionToServer} from "./api";
+import { sendSubscriptionToServer } from "./api";
 
 const vapidPublicKey = 'BFvjzC0mYeMAWz9rJCl1EuNSsWpK_1ZEk_JjFzb_VSjAx9_cMtexEBm5pCcMz2mo2IqAqQ0JmlBoyckdpkTDO10';
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
@@ -22,6 +21,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export const registerServiceWorkerAndSubscribe = async () => {
+    console.log("Registering Service Worker...");
     try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
@@ -40,6 +40,7 @@ export const registerServiceWorkerAndSubscribe = async () => {
                 scope: '/app'
             });
         } catch (e) {
+            console.error('Error registering service worker:', e);
             // toast.error("Пожалуйста, добавьте приложение на главный экран", { duration: 2000 });
         }
 
@@ -51,14 +52,20 @@ export const registerServiceWorkerAndSubscribe = async () => {
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             });
+            console.log('Subscription:', subscription);
         } catch (e) {
+            console.error('Error subscribing to push manager:', e);
             // toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
         }
 
-        // toast.success('Подписка выполнена', { duration: 2000 });
+        // Send subscription to the server
+        if (subscription) {
+            await sendSubscriptionToServer(subscription);
+        }
 
-        await sendSubscriptionToServer(subscription);
     } catch (e) {
+        console.error('General error during service worker registration or subscription:', e);
         // toast.error('Пожалуйста, добавьте приложение на главный экран', { duration: 2000 });
     }
 };
+

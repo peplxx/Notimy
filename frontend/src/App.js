@@ -5,8 +5,7 @@ import JoinChannel from "./pages/JoinChannel";
 import AdminLogin from "./pages/AdminLogin";
 import Landing from "./pages/landing";
 import UUIDLogin from "./pages/UUID";
-import MainApp from "./pages/MainApp";
-import {AppContextProvider} from "./context/App";
+import MainApp from "pages/App/MainApp";
 
 
 function App() {

@@ -3,7 +3,7 @@ import {handleMockOrders} from "./mockUtils";
 import {mock} from "./mockData";
 
 
-const dev = true;
+const dev = false;
 
 
 const getBaseURL = () => {
@@ -12,7 +12,7 @@ const getBaseURL = () => {
 };
 
 const api = axios.create({
-    baseURL: getBaseURL(),
+    baseURL: 'https://notimy.ru/api', // getBaseURL(),
     withCredentials: true
 });
 
@@ -110,7 +110,7 @@ export const adminLogin = async (token) => {
 }
 
 export const getMe = async () => {
-    if (dev) return {role: 'spot_user', uuid: 'fake_jopa', orders: [mock]}
+    if (dev) return {role: 'spot_user', uuid: 'fake_jopa', channels_data: [mock]}
     try {
         const res = await api.get(`/me`);
         return res.data;
@@ -147,13 +147,38 @@ export const sendMessageAdmin = async (id, message) => {
 }
 
 // Функция отправки подписки на сервер
-export async function sendSubscriptionToServer(subscription) {
+// Send subscription to the server
+export const sendSubscriptionToServer = async (subscription) => {
     try {
-        const result = await api.post(`/webpush/subscribe`, subscription);
-        return result;
+        const response = await api.post('/webpush/subscribe', subscription);
+        if (response.status === 200) {
+            console.log('Subscription successfully sent to server', response.data);
+        } else {
+            console.error('Failed to send subscription to server', response.data);
+        }
+    } catch (error) {
+        console.error('Error sending subscription to server:', error);
+    }
+};
+
+// export async function sendSubscriptionToServer(subscription) {
+//     try {
+//         const result = await api.post(`/webpush/subscribe`, subscription);
+//         return result;
+//     } catch (e) {
+//         console.log(`Error /webpush/subscribe`, subscription, e);
+//         return false;
+//     }
+// }
+
+
+
+export const logoutApi = async () => {
+    try {
+        await api.get(`/logout`);
+        return true;
     } catch (e) {
-        console.log(`Error /webpush/subscribe`, subscription, e);
+        console.log(`Error /logout`, e);
         return false;
     }
 }
-

@@ -1,5 +1,9 @@
-import styles from "./Admin/Order/OrderBottom.module.css";
+import styles from "components/OrderBottom.module.css";
 import React, {useState} from "react";
+import {Popover, PopoverContent, PopoverTrigger} from "@nextui-org/popover";
+import {MdAccountBox} from "react-icons/md";
+import {formatDate} from "../../utils/formatDate";
+import deleteSessionToken from "../../utils/deleteSessionToken";
 
 // Predefined quick messages
 const QUICK_MESSAGES = [
@@ -38,17 +42,24 @@ export function QuickMessages({setNewMessage, inputRef}) {
     };
 
     return (<>
-            <div className={styles.toggleQuickMessages} onClick={toggleQuickMessages}>
-                <img src='/svg/Group.svg' style={{width: ".8em", position: "absolute", top: ".8em", left: ".4em"}}/>
-            </div>
-            {showQuickMessages && (<div className={styles.quickMessagesPopup}>
-                {QUICK_MESSAGES.map((quickMessage, index) => (<div
-                    key={index}
-                    className={styles.quickMessage}
-                    onClick={() => onQuickMessageClick(quickMessage)}
-                >
-                    {quickMessage}
-                </div>))}
-            </div>)}
-        </>)
+            <Popover placement='top-end'>
+                <PopoverTrigger>
+                    <div className={styles.toggleQuickMessages} onClick={toggleQuickMessages}>
+                        <img src='/svg/Group.svg' className={styles.quickMessageBtnIcon} />
+                    </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <div className={styles.quickMessagesPopup}>
+                        {QUICK_MESSAGES.map((quickMessage, index) => (<div
+                            key={index}
+                            className={styles.quickMessage}
+                            onClick={() => onQuickMessageClick(quickMessage)}
+                        >
+                            {quickMessage}
+                        </div>))}
+                    </div>
+                </PopoverContent>
+            </Popover>
+
+    </>)
 }

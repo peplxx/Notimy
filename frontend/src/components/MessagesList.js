@@ -3,7 +3,7 @@ import {useEffect, useRef} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import classNames from "classnames";
 
-const MessagesList = ({messages, isOpen, order_id, bottom=0 , children}) => {
+const MessagesList = ({messages, isOpen, order_id, children}) => {
     const listEnd = useRef();
 
     const [parent] = useAutoAnimate()
@@ -34,7 +34,7 @@ const MessagesList = ({messages, isOpen, order_id, bottom=0 , children}) => {
     }, [isOpen, messages]);
 
     return (
-        <div className={styles.messages} ref={parent} style={{bottom: bottom}}>
+        <div className={styles.messages} ref={parent} >
             {messages.map((message, index) => (
                 <div
                     key={index}

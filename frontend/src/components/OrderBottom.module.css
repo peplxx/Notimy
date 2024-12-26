@@ -36,30 +36,28 @@
 
 
 .inputMessage {
+    position: relative;
+    display: flex;
+    bottom: 1.1rem;
     width: 100%;
+
+    justify-content: space-evenly;
 }
 
 .messageInput {
-    position: absolute;
-    bottom: 1.8em;
-    left: 3%;
-    width: 68%;
-    border: .1em solid #404040;
+    height: 1.4rem;
+    width: 10rem;
+    padding: 0.3rem 1rem;
+    z-index: 5;
+
+    border: .1rem solid #404040;
     color: var(--messageText); /* Use the CSS variable */
     font-weight: 700;
-    font-size: 0.7em;
-    padding: 0.3em 1em;
+    font-size: 1rem;
     background-color: var(--messageBackground); /* Use the CSS variable */
     border-radius: 1em .2em 1em .2em; /* Rounded corners */
-    display: inline-block;
-
     font-family: "Rubik", sans-serif;
     word-wrap: break-word; /* Ensure long words break correctly */
-    margin: 0.0em 0 0 0.6em; /* Add some space between messages */
-    z-index: 5;
-    /*-webkit-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
-    /*-moz-box-shadow: 4px 4px 8px 2px rgba(99, 99, 99, 0.42);*/
-    /*box-shadow: 1em 1em 2em .5em rgba(99, 99, 99, 0.42);*/
 }
 
 .messageInput:hover, .sendBtn:hover {
@@ -72,25 +70,23 @@
 }
 
 .sendBtn {
-    position: absolute;
-    right: 2.5em;
-    bottom: 1.8em;
-    width: 1.9em;
-    height: 2em;
+    display: flex;
+    width: 2rem;
+    height: 2rem;
     border: .1em solid #404040;
-    /*max-width: 80%; !* Ensure the message doesn't take full width *!*/
-    margin: 0; /* Add some space between messages */
-    /*padding: 0.3em .5em;*/
-    border-radius: 1em .2em 1em .2em; /* Rounded corners */
-    /*display: inline-block;*/
+    border-radius: 1em .2em 1em .2em;
     z-index: 5;
+    justify-content: center;
+
+    word-wrap: break-word;
     background-color: var(--messageBackground); /* Dark background */
-    color: var(--messageText); /* White text */
+    color: var(--messageText);
     font-family: "Rubik", sans-serif;
-    font-weight: 700;
-    font-size: 0.7em;
-    word-wrap: break-word; /* Ensure long words break correctly */
     box-shadow: 1em 1em 2em .5em rgba(99, 99, 99, 0.42);
+}
+
+.sendBtnIcon {
+    width: 50%;
 }
 
 .code {
@@ -101,30 +97,27 @@
     left: 4%;
 }
 
-/* CSS for quick messages popup */
 .quickMessagesPopup {
-    position: absolute;
-    width: calc(100% - 3em); /* Оставляем ширину почти на весь экран */
-    margin: .3em;
-    bottom: 0.96em;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    border-radius: 0.5em;
+    max-width: 15rem; /* Оставляем ширину почти на весь экран */
+    height: 1.7rem; /* Делаем высоту такой же, как у кнопки */
     padding: .4em;
-    padding-right: 2em;
-    z-index: 9;
+
     display: flex;
     flex-direction: row;
     gap: 0.3em;
-    height: 1.7em; /* Делаем высоту такой же, как у кнопки */
+
+    z-index: 9;
+
+    border-radius: 0.5em;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
     overflow-x: auto; /* Добавляем горизонтальный скролл */
     white-space: nowrap; /* Сообщения располагаются в одну строку */
-    /*scrollbar-width: none;*/
 }
 
- Кастомизация горизонтального скроллбара
+ /*Кастомизация горизонтального скроллбара*/
 .quickMessagesPopup::-webkit-scrollbar {
-    height: 4px; /* Устанавливаем высоту скроллбара как маленькую линию */
+    height: 0.1rem; /* Устанавливаем высоту скроллбара как маленькую линию */
 }
 
 .quickMessagesPopup::-webkit-scrollbar-track {
@@ -143,7 +136,7 @@
 /* Отключаем скроллбар для Firefox */
 .quickMessagesPopup {
     scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
-    scrollbar-color: #404040 transparent; /* Цвет для Firefox */
+    scrollbar-color: #616161 transparent; /* Цвет для Firefox */
 }
 
 
@@ -166,20 +159,24 @@
 
 /* Кнопка открытия быстрого меню */
 .toggleQuickMessages {
-    position: absolute;
-    bottom: 1.6em;
-    right: .3em;
-    height: 2.1em; /* Высота кнопки */
-    width: .8em;
+    height: 2rem;
+    width: 2rem;
+
+    display: flex;
+    justify-content: center;
+
     border: .1em solid #404040;
     border-radius: .7em;
     background-color: var(--messageBackground); /* Use the CSS variable */
     color: #fff;
-    padding: 0.4em;
-    font-size: 0.8em;
     z-index: 11;
     cursor: pointer;
 }
+
+.quickMessageBtnIcon {
+    width: 50%;
+}
+
 
 .toggleQuickMessages:hover {
     background-color: #404040;

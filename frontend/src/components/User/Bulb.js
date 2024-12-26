@@ -1,12 +1,8 @@
 import styles from './Bulb.module.css';
 import classNames from "classnames";
-import {useContext} from "react";
-import OrderContext from "context/OrderContext";
 
 
-export const Bulb = () => {
-
-    const {isReady} = useContext(OrderContext);
+const Bulb = ({isReady}) => {
 
     return (
         <div className={styles.circle}>
@@ -18,3 +14,5 @@ export const Bulb = () => {
         </div>
     );
 }
+
+export default Bulb;

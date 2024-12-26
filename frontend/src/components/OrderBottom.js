@@ -2,9 +2,8 @@ import React, {useRef, useState} from "react";
 import {styled} from "styled-components";
 
 import MessagesList from "components//MessagesList";
-import {InputMessage} from "./InputMessage";
-import {formatDate} from "utils/formatDate";
-import {QuickMessages} from "../../QuickMessages";
+import {InputMessage} from "components/Admin/InputMessage";
+import {QuickMessages} from "components/Admin/QuickMessages";
 
 import styles from './OrderBottom.module.css';
 
@@ -26,7 +25,7 @@ const OrderBottomStyled = styled.div`
 `;
 
 
-const OrderBottom = ({order_id, messages_data, creatated_at, backgroundStyles, isOpen, sendMessage}) => {
+const OrderBottom = ({order_id, messages_data, created_at, admin = false, backgroundStyles, isOpen, sendMessage}) => {
     // Компнент нижней части заказа
     // Получает на вход props:
     //  - айди заказа
@@ -45,15 +44,18 @@ const OrderBottom = ({order_id, messages_data, creatated_at, backgroundStyles, i
 
 
     return (
-        <OrderBottomStyled isOpen={isOpen} backgroundStyles={backgroundStyles} >
-            <MessagesList messages={messages_data} isOpen={isOpen} order_id={order_id} bottom="1.1em"/>
+        <OrderBottomStyled isOpen={isOpen} backgroundStyles={backgroundStyles}>
+            <MessagesList messages={messages_data} isOpen={isOpen} order_id={order_id} />
 
-            <QuickMessages setNewMessage={setNewMessage} inputRef={inputRef}/>
-            <InputMessage newMessage={newMessage} setNewMessage={setNewMessage} sendMessage={sendMessage} inputRef={inputRef} />
-
-            <div className={styles.datetime}>{creatated_at}</div>
+            {admin &&
+                <>
+                    <InputMessage newMessage={newMessage} setNewMessage={setNewMessage} sendMessage={sendMessage}
+                                  inputRef={inputRef}/>
+                </>
+            }
+            <div className={styles.datetime}>{created_at}</div>
+            {!admin && <div className={styles.code}>provider_name</div>}
             <div className={styles.toggleBtn}>...</div>
-             {/*<div className={styles.code}>код заказа: {order.code}</div>*/}
         </OrderBottomStyled>
     );
 };

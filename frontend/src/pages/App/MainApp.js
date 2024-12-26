@@ -1,9 +1,15 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
-import {AppContext} from "../context/App";
-import AdminApp from "./AdminApp";
-import UserApp from "./UserApp";
-import {useAuth} from "../utils/auth";
-import {createChannelAdmin, deleteOrderApiUser, fetchOrdersAdmin} from "../utils/api";
+import React, {useCallback, useEffect, useState} from "react";
+import {AppContext} from "context/App";
+import AdminApp from "pages/App/AdminApp";
+import UserApp from "pages/App//UserApp";
+import {useAuth} from "utils/auth";
+import {
+    closeOrderApiAdmin,
+    createChannelAdmin,
+    deleteOrderApiUser,
+    fetchOrdersAdmin,
+    sendMessageAdmin
+} from "utils/api";
 
 function MainApp() {
     // Че я хочу
@@ -13,13 +19,15 @@ function MainApp() {
     // orders = [order1, order2, ...]
 
     const {me} = useAuth();
-    const [status, setStatus] = useState('anon');
+    const [user_status, setUserStatus] = useState('anon');
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         if ( me ) {
-            setStatus(me.role);
-            setOrders(me.orders);
+            setUserStatus(me.role);
+            setOrders(me.channels_data.sort((a, b) =>
+                new Date(b.created_at) - new Date(a.created_at)
+            ))
             console.log(orders)
         }
     }, [me])
@@ -50,6 +58,16 @@ function MainApp() {
         }
     }, []);
 
+    async function sendMessage(orderId, messageText) {
+        await sendMessageAdmin(orderId, messageText)
+        await updateOrders()
+    }
+
+    async function closeOrder (id) {
+        await closeOrderApiAdmin(id);
+        await updateOrders()
+    }
+
     const createOrder = async () => {
         const response = await createChannelAdmin();
         if (response) {
@@ -61,14 +79,17 @@ function MainApp() {
 
     return (
         <AppContext.Provider value={{
-            status,
+            me,
+            user_status,
             orders,
+            createOrder,
+            closeOrder,
             deleteOrder,
-            createOrder
+            sendMessage
         }} >
             <>
-                {status === 'user' && <UserApp orders={orders}/>}
-                {status === 'spot_user' && <AdminApp orders={orders}/>}
+                {user_status === 'user' && <UserApp orders={orders}/>}
+                {user_status === 'spot_user' && <AdminApp orders={orders}/>}
             </>
         </AppContext.Provider>
     );
