@@ -44,12 +44,14 @@ export const Navbar = () => {
         className="sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="sm:flex gap-3">
-          <Link isExternal aria-label="Telegram" href={siteConfig.links.telegram}>
+
+        <Link isExternal aria-label="Telegram" href={siteConfig.links.telegram}>
+        <NavbarItem className="sm:flex border-2 rounded-xl p-2">
+            <span className="text-gray-900 hover:text-gray-700">Связаться с нами</span>
             <TelegramIcon className="text-default-500" />
-          </Link>
         </NavbarItem>
-        {/*<NavbarItem className="sm:flex gap-3">*/}
+        </Link>
+          {/*<NavbarItem className="sm:flex gap-3">*/}
         {/*  <ThemeSwitch />*/}
         {/*</NavbarItem>*/}
       </NavbarContent>
