@@ -39,6 +39,12 @@ services:
     container_name: 'notimy_frontend'
     build: ./frontend
 
+
+  landing:
+    container_name: 'notimy_landing'
+    build: ./NotimyLanding
+
+
   nginx:
     container_name: 'notimy_nginx'
     image: nginx:latest
