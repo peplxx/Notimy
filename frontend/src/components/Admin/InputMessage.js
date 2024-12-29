@@ -1,10 +1,8 @@
-import styles from "./OrderBottom.module.css";
-import React, {useContext} from "react";
-import AdminOrderContext from "context/AdminOrderContext";
+import styles from "components/OrderBottom.module.css";
+import React from "react";
+import {QuickMessages} from "./QuickMessages";
 
-export const InputMessage = ({inputRef}) => {
-
-    const {newMessage, setNewMessage, sendMessage} = useContext(AdminOrderContext);
+export const InputMessage = ({newMessage, setNewMessage, sendMessage, inputRef}) => {
 
     const send = () => {
         sendMessage(newMessage);
@@ -32,8 +30,9 @@ export const InputMessage = ({inputRef}) => {
                 className={styles.sendBtn}
                 onClick={send}
             >
-                <img src="/svg/Vector.svg" style={{width: ".8em",position: "absolute", top: ".55em", left: ".55em"}}/>
+                    <img src="/app/static/Vector.svg" className={styles.sendBtnIcon} />
             </div>
+            <QuickMessages setNewMessage={setNewMessage} inputRef={inputRef}/>
         </div>
     )
 }

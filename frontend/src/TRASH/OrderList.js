@@ -1,4 +1,3 @@
-// src/components/OrderList.js
 import React, {useContext, useEffect, useState} from 'react';
 import Order from 'components/User/Order/Order';
 import UserContext from '../../context/UserContext';
@@ -7,8 +6,7 @@ import {OrderProvider} from "context/OrderContext";
 import styles from './OrderList.module.css';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 
-const OrderList = ({children}) => {
-    const {orders} = useContext(UserContext);
+const OrderList = ({orders, admin=false, children}) => {
     const [parent] = useAutoAnimate()
     const [readyOrderCount, setReadyOrderCount] = useState(1000);
 
@@ -31,17 +29,13 @@ const OrderList = ({children}) => {
         setReadyOrderCount(currentReadyOrderCount);
     }, [orders]);
 
-    useEffect(() => {
-
-    }, [orders]);
-
     return (
         <div className={styles.order_list} ref={parent}>
             {children}
             {orders.map(order => (
-                <OrderProvider key={`OrderProviderFor${order.id}`} InitOrder={order}>
-                    <Order id={`order-${order.id}-${Date.now()}`} key={`Order${order.id}`}/>
-                </OrderProvider>
+                <Order key={`order-${order.id}`} admin={admin} />
+                // <OrderProvider key={`OrderProviderFor${order.id}`} InitOrder={order}>
+                // </OrderProvider>
             ))}
         </div>
     );
