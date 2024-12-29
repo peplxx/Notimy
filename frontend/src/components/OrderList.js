@@ -25,7 +25,7 @@ const OrderList = ({orders, admin=false, children}) => {
         // Если текущее количество готовых заказов больше предыдущего, воспроизвести звук
         if (!admin && currentReadyOrderCount > readyOrderCount) {
             console.log('done')
-            const audio = new Audio('/ready.mp3');
+            const audio = new Audio('/app/static/ready.mp3');
             try {
                 audio.play()
             } catch (e) {

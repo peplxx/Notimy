@@ -11,12 +11,12 @@ import MainApp from "pages/App/MainApp";
 function App() {
     // Main Entry
     return (
-        <Router>
+        <Router basename="/app">
             <Routes>
-                <Route path="/" element={<Landing/>}/>
-                <Route path="/app" element={<MainApp/>}/>
-                <Route path="/app/:token" element={<UUIDLogin/>}/>
-                <Route path="/app/admin/login/:token" element={<AdminLogin/>}/>
+                {/*<Route path="/" element={<Landing/>}/>*/}
+                <Route path="/" element={<MainApp/>}/>
+                <Route path="/:token" element={<UUIDLogin/>}/>
+                <Route path="/admin/login/:token" element={<AdminLogin/>}/>
                 <Route path="/j/:id" element={<JoinChannelSpot/>}/>
                 <Route path="/j/c/:id" element={<JoinChannel/>}/>
                 <Route path="*" element={<Navigate to="/"/>}/>

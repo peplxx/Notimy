@@ -2,6 +2,7 @@
   "name": "notimy",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/app",
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@nextui-org/popover": "^2.3.8",

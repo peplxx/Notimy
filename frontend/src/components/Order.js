@@ -57,6 +57,7 @@ const Order = ({order, admin = false}) => {
                     order_id={order.id}
                     messages_data={order.messages_data}
                     created_at={formatDate(order.created_at)}
+                    provider_name={order.provider_name}
                     admin={admin}
                     backgroundStyles={backgroundStyles}
                     isOpen={isOpen}

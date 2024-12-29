@@ -30,7 +30,7 @@ RUN npm run build
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/package*.json ./
 
-RUN npm install -g serve
+RUN PUBLIC_URL=/app npm install -g serve
 
 # Указываем порт, который будет прослушиваться приложением
 EXPOSE 3000

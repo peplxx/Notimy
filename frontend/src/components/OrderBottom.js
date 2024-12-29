@@ -25,7 +25,7 @@ const OrderBottomStyled = styled.div`
 `;
 
 
-const OrderBottom = ({order_id, messages_data, created_at, admin = false, backgroundStyles, isOpen, sendMessage}) => {
+const OrderBottom = ({order_id, messages_data, created_at, provider_name, admin = false, backgroundStyles, isOpen, sendMessage}) => {
     // Компнент нижней части заказа
     // Получает на вход props:
     //  - айди заказа
@@ -54,7 +54,7 @@ const OrderBottom = ({order_id, messages_data, created_at, admin = false, backgr
                 </>
             }
             <div className={styles.datetime}>{created_at}</div>
-            {!admin && <div className={styles.code}>provider_name</div>}
+            {!admin && <div className={styles.code}>{provider_name}</div>}
             <div className={styles.toggleBtn}>...</div>
         </OrderBottomStyled>
     );

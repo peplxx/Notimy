@@ -36,7 +36,7 @@ export const registerServiceWorkerAndSubscribe = async () => {
     try {
         let register;
         try {
-            register = await navigator.serviceWorker.register('/sw.js', {
+            register = await navigator.serviceWorker.register('/app/static/sw.js', {
                 scope: '/app'
             });
         } catch (e) {

@@ -30,7 +30,7 @@ export const InputMessage = ({newMessage, setNewMessage, sendMessage, inputRef})
                 className={styles.sendBtn}
                 onClick={send}
             >
-                    <img src="/svg/Vector.svg" className={styles.sendBtnIcon} />
+                    <img src="/app/static/Vector.svg" className={styles.sendBtnIcon} />
             </div>
             <QuickMessages setNewMessage={setNewMessage} inputRef={inputRef}/>
         </div>

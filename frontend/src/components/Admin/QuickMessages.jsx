@@ -45,7 +45,7 @@ export function QuickMessages({setNewMessage, inputRef}) {
             <Popover placement='top-end'>
                 <PopoverTrigger>
                     <div className={styles.toggleQuickMessages} onClick={toggleQuickMessages}>
-                        <img src='/svg/Group.svg' className={styles.quickMessageBtnIcon} />
+                        <img src='/app/static/Group.svg' className={styles.quickMessageBtnIcon} />
                     </div>
                 </PopoverTrigger>
                 <PopoverContent>

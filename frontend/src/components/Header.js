@@ -49,7 +49,7 @@ const Header = ({withLogo = true, children}) => {
             {withLogo ?
                 <div className={styles.centerHeader}>
                     <Link to={'https://t.me/notimy_app'}>
-                        <img src='/logo.svg' alt='logo' className={styles.logo}></img>
+                        <img src='/app/static/logo.svg' alt='logo' className={styles.logo}></img>
                     </Link>
                     <Link to={'https://t.me/notimy_app'} className={styles.text}>
                         <div>
@@ -61,8 +61,7 @@ const Header = ({withLogo = true, children}) => {
                         </div> */}
                 </div>
                 :
-                <img src='/logo.svg' alt='logo' className={styles.logo}
-                     style={{position: "absolute", left: "1em"}}/>
+                <img src='/app/static/logo.svg' alt='logo' className={styles.logo} style={{position: "absolute", left: "1em"}}/>
             }
             {children}
             <div className={styles.rightHeader}>
@@ -89,7 +88,7 @@ const Header = ({withLogo = true, children}) => {
             {/* {showImage && (
                     <div style={hint_styles.overlay} onClick={handleImageClick}>
                         <img
-                            src="/pwa_hint.png" // Замени на свою картинку
+                            src="/app/static/pwa_hint.png" // Замени на свою картинку
                             alt="pwa_hint"
                             style={hint_styles.image}
                         />
