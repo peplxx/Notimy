@@ -28,7 +28,7 @@ export default function AboutPage() {
 
       {/* Features Section */}
       <section id="features" className="flex flex-wrap p-3">
-        <div className="flex-1 flex flex-col justify-center min-w-[300px]">
+        <div className="flex-1 flex flex-col justify-center">
           <div className="text-3xl font-semibold text-center mb-8">Современный интерфейс</div>
           <div className="text-3xl font-semibold text-center mb-8">Лёгкое управление</div>
           <div className="text-3xl font-semibold text-center mb-8">Максимальная прозрачность</div>
