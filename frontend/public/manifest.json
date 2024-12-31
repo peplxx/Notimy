@@ -1,13 +1,14 @@
+// issues
 {
   "short_name": "Notimy",
   "name": "Notimy",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/app/staic/favicon.ico",
       "sizes": "192x192"
     },
     {
-      "src": "favicon.ico",
+      "src": "/app/staic/favicon.ico",
       "sizes": "512x512"
     }
   ],
@@ -16,3 +17,4 @@
   "theme_color": "#000000",
   "background_color": "#000000"
 }
+
