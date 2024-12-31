@@ -104,3 +104,16 @@
     align-content: center;
     cursor: pointer;
 }
+
+.TgLoginBtn {
+    position: relative;
+    width: 30%;
+    height: 2rem;
+    background: var(--htmlBackground);
+    border-radius: .5rem;
+    border: .1em #404040 solid;
+    box-shadow: 0 .3em .9em black;
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+}

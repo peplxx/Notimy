@@ -5,7 +5,6 @@ import ScanBtn from "components/User/ScanBtn";
 import {Toaster} from "sonner";
 import {registerServiceWorkerAndSubscribe} from "utils/serviceWorker";
 
-
 const UserApp = ({orders}) => {
 
     useEffect(() => {
@@ -26,6 +25,7 @@ const UserApp = ({orders}) => {
             </OrderList>
         </div>
     );
+
 };
 
 export default UserApp;

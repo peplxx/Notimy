@@ -5,6 +5,7 @@
   "homepage": "/app",
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "@nextui-org/alert": "^2.2.8",
     "@nextui-org/popover": "^2.3.8",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -53,9 +54,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.3",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "tailwindcss": "^3.4.17"
   }
 }

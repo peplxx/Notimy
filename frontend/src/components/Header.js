@@ -6,7 +6,7 @@ import {AppContext} from "../context/App";
 
 import {Popover, PopoverTrigger, PopoverContent, Button} from "@nextui-org/popover";
 import {formatDate} from "../utils/formatDate";
-import { MdAccountBox } from "react-icons/md";
+import {MdAccountBox} from "react-icons/md";
 import deleteSessionToken from "../utils/deleteSessionToken";
 
 // Стили для картинки и оверлея
@@ -61,7 +61,8 @@ const Header = ({withLogo = true, children}) => {
                         </div> */}
                 </div>
                 :
-                <img src='/app/static/logo.svg' alt='logo' className={styles.logo} style={{position: "absolute", left: "1em"}}/>
+                <img src='/app/static/logo.svg' alt='logo' className={styles.logo}
+                     style={{position: "absolute", left: "1em"}}/>
             }
             {children}
             <div className={styles.rightHeader}>
@@ -76,10 +77,12 @@ const Header = ({withLogo = true, children}) => {
                             {user_status === 'spot_user' && <>
                                 <p> Касса: <br/> {me.provider_name}</p>
                             </>}
-                            <p>id: <br/> {me.id}</p>
-                            <p>tg: <br/> {me.tg}</p>
-                            <p> role: <br/> {me.role} </p>
-                            <p>registered at: <br/> {formatDate(me.registered_at)}</p>
+                            <p>id: <br/>{me.id}</p>
+                            <p>Телеграм: {me.tg ? 'Привязан' :
+                                <a href={`https://t.me/NotimyAppBot?start=uuid=${me.id}`}><div className={styles.TgLoginBtn}>Войти</div></a>
+                            }</p>
+                            <p>Роль: {me.role} </p>
+                            <p>Зарегистрирован: <br/> {formatDate(me.registered_at)}</p>
                             <div className={styles.logoutBtn} onClick={deleteSessionToken}>Выйти</div>
                         </div>
                     </PopoverContent>
