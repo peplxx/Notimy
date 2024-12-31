@@ -2,8 +2,11 @@
   "name": "notimy",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/app",
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "@nextui-org/alert": "^2.2.8",
+    "@nextui-org/popover": "^2.3.8",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -15,11 +18,13 @@
     "qrcode.react": "^4.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "serve": "^14.2.3",
     "sonner": "^1.5.0",
+    "styled-components": "^6.1.13",
     "web-vitals": "^2.1.4",
     "webpack": "^5.94.0"
   },
@@ -48,6 +53,12 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.3",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^3.4.17"
   }
 }

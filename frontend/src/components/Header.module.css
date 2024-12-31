@@ -1,0 +1,119 @@
+.header {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;/* Выравнивание по вертикали */
+    height: 3em;
+    color: black;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, .6);
+    user-select: none;
+}
+
+.leftHeader {
+    flex: 4;
+}
+
+.centerHeader {
+    flex: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rightHeader {
+    flex: 4;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logo {
+    width: auto; /* Автоматическая ширина */
+    height: 2.2em;
+}
+
+.text {
+    margin-top: .1em;
+    font-size: 2.41em;
+    font-weight: 800;
+    color: white;
+
+    text-decoration: none;
+}
+
+.text, a {
+    text-decoration: none;
+}
+
+.hint {
+    position: absolute;
+    right: .5em;
+    margin-top: .05em;
+    font-size: 1.5em;
+    font-weight: 800;
+    color: white;
+    border: .05em solid  #404040 ;
+    width: 1.1em;
+    background-color: #999;
+    color:  var(--htmlBackground);
+    text-align: center;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.accountBtn {
+    /*position: relative;*/
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    margin-right: .5rem;
+    background: var(--htmlBackground);
+    border-radius: .5em .5em .5em .5em;
+    border: .1em #404040 solid;
+    box-shadow: 0 .3em .9em black;
+    cursor: pointer;
+}
+.accountBtnIcon {
+    color: white;
+    width: 90%;
+    height: 90%;
+    margin: auto;
+}
+.accountInfo {
+    max-width: 15rem;
+    padding: .5rem;
+    border-radius: .5rem;
+    background: var(--htmlBackground);
+    border: .1em #404040 solid;
+    z-index: 4;
+    font-weight: 800;
+    color: white;
+    font-family: "Rubik", sans-serif;
+}
+
+.logoutBtn {
+    position: relative;
+    width: 90%;
+    height: 2rem;
+    margin: auto;
+    background: var(--htmlBackground);
+    border-radius: .5rem;
+    border: .1em #404040 solid;
+    box-shadow: 0 .3em .9em black;
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+}
+
+.TgLoginBtn {
+    position: relative;
+    width: 30%;
+    height: 2rem;
+    background: var(--htmlBackground);
+    border-radius: .5rem;
+    border: .1em #404040 solid;
+    box-shadow: 0 .3em .9em black;
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+}

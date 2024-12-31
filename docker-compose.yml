@@ -39,6 +39,14 @@ services:
       - "${APP_PORT}:${APP_PORT}"
     command: [ "sh", "-c", "poetry run alembic upgrade head && poetry run python -m app" ]
 
+  landing:
+    container_name: 'notimy_landing'
+    build: ./NotimyLanding
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./NotimyLanding:/app
+    command: [ "npm", "run", "dev" ]
 
   nginx:
     container_name: 'notimy_nginx'

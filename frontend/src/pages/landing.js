@@ -18,7 +18,7 @@ const Landing = () => {
             {/*    /!*<Slider parentRef={parent} sliderColor={'rgb(130,255,27)'} onDone={handleSliderDone}/>*!/*/}
             {/*    <a className={styles.btn_text}>Открыть приложение</a>*/}
             {/*</div>*/}
-            {/*<img className={styles.presentation} src='/notimy_presentation.jpg' alt="Presentation"/>*/}
+            {/*<img className={styles.presentation} src='/app/static/notimy_presentation.jpg' alt="Presentation"/>*/}
 
             <div className={styles.center}>
                 Скоро здесь появится информация. <br/>

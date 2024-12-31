@@ -10,7 +10,7 @@ const AdminLogin = () => {
         const loginAdminAndRedirect = async () => {
             try {
                 await adminLogin(token);
-                navigate('/app/admin');
+                navigate('/app');
             } catch (error) {
                 console.error("Failed to login admin: ", error);
             }
